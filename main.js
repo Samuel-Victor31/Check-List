@@ -118,10 +118,14 @@ async function salvarMotoristaComProva(respostas) {
 // ============================================
 
 async function gerarJSONeToken() {
+  // Trata a placa antes de enviar
+  let placaDigitada = document.getElementById('placa').value;
+  placaDigitada = formatarPlacaTexto(placaDigitada);
+
   const inspecao = {
     nome: document.getElementById('nome').value,
     cnh: document.getElementById('cnh').value,
-    placa: document.getElementById('placa').value,
+    placa: placaDigitada,
     pedido: document.getElementById('pedido').value,
     eixos: document.getElementById('eixos').value,
     pneus: document.getElementById('pneus').value,
@@ -186,6 +190,9 @@ function irParaIntegracao() {
 function irParaInspecao() {
   ocultarTodas();
   document.getElementById('step-inspecao').classList.remove('hidden');
+  
+  // Ativa a máscara no campo de placa assim que a tela abre
+  configurarMascaraPlaca();
 }
 
 function irParaSucesso() {
@@ -201,28 +208,28 @@ function ocultarTodas() {
 }
 
 // ============================================
-// MÁSCARA AUTOMÁTICA DE PLACA (MERCCOSUL / TRADICIONAL)
+// FUNÇÃO DE FORMATAÇÃO DA PLACA
 // ============================================
 
-document.addEventListener('DOMContentLoaded', () => {
-  irParaCPF();
-
-  const inputPlaca = document.getElementById('placa');
-
-  if (inputPlaca) {
-    inputPlaca.setAttribute('maxlength', '8');
-    inputPlaca.setAttribute('placeholder', 'ABC-1234');
-
-    inputPlaca.addEventListener('input', (e) => {
-      // Converte para maiúsculas e aceita apenas letras e números
-      let valor = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-
-      // Aplica o hífen automaticamente a partir do 4º caractere
-      if (valor.length > 3) {
-        valor = valor.slice(0, 3) + '-' + valor.slice(3, 7);
-      }
-
-      e.target.value = valor;
-    });
+function formatarPlacaTexto(valor) {
+  if (!valor) return '';
+  // Limpa tudo o que não for letra ou número e põe em maiúsculas
+  let limpo = valor.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  
+  if (limpo.length > 3) {
+    return limpo.slice(0, 3) + '-' + limpo.slice(3, 7);
   }
-});
+  return limpo;
+}
+
+function configurarMascaraPlaca() {
+  const inputPlaca = document.getElementById('placa');
+  if (inputPlaca) {
+    inputPlaca.maxLength = 8;
+    inputPlaca.oninput = function() {
+      this.value = formatarPlacaTexto(this.value);
+    };
+  }
+}
+
+document.addEventListener('DOMContentLoaded', irParaCPF);
