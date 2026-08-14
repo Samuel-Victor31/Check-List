@@ -40,22 +40,38 @@ async function verificarAcesso() {
     if (resultado.existe) {
       dadosMotoristaAtual = resultado.dados;
       console.log('Motorista encontrado:', dadosMotoristaAtual);
+      
+      // Auto-preenche os dados já cadastrados do motorista na tela de inspeção
+      if (dadosMotoristaAtual.nome) document.getElementById('nome').value = dadosMotoristaAtual.nome;
+      if (dadosMotoristaAtual.placa) document.getElementById('placa').value = dadosMotoristaAtual.placa;
+      
       irParaInspecao();
     } else {
-      console.log('Novo motorista - mostrando prova');
+      console.log('Novo motorista - mostrando prova e cadastro');
       irParaIntegracao();
     }
   } catch (erro) {
     console.error('Erro ao verificar CPF:', erro);
-    alert('⚠️ Erro ao conectar com o servidor.');
+    alert('⚠️ Erro ao conectar com o servidor. Verifique a conexão.');
   }
 }
 
 // ============================================
-// ETAPA 2: INTEGRAÇÃO & PROVA
+// ETAPA 2: INTEGRAÇÃO & PROVA (1º Acesso)
 // ============================================
 
 async function concluirIntegracao() {
+  // Capturar novos dados cadastrais
+  const nome = document.getElementById('reg-nome').value.trim();
+  const telefone = document.getElementById('reg-telefone').value.trim();
+  let placa = document.getElementById('reg-placa').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+  if (!nome || !telefone || !placa) {
+    alert('⚠️ Por favor, preencha todos os dados de cadastro (Nome, Telefone e Placa do Cavalo)!');
+    return;
+  }
+
+  // Pegar respostas da prova
   const respostas = {
     q1: document.querySelector('input[name="q1"]:checked')?.value,
     q2: document.querySelector('input[name="q2"]:checked')?.value,
@@ -63,10 +79,11 @@ async function concluirIntegracao() {
   };
 
   if (!respostas.q1 || !respostas.q2 || !respostas.q3) {
-    alert('⚠️ Responda todas as questões!');
+    alert('⚠️ Responda todas as questões da prova!');
     return;
   }
 
+  // Corrigir prova
   let acertos = 0;
   let feedback = 'Resultado da Prova:\n\n';
 
@@ -83,7 +100,13 @@ async function concluirIntegracao() {
   alert(feedback);
 
   if (acertos === 3) {
-    await salvarMotoristaComProva(respostas);
+    // Salvar o cadastro e aprovação do motorista no Cloudflare
+    await salvarMotoristaComProva(nome, telefone, placa, respostas);
+    
+    // Transfere o nome e a placa para o formulário da Etapa 3
+    document.getElementById('nome').value = nome;
+    document.getElementById('placa').value = placa;
+    
     irParaInspecao();
   } else {
     alert('⚠️ Você precisa acertar TODAS as questões. Tente novamente!');
@@ -91,16 +114,16 @@ async function concluirIntegracao() {
   }
 }
 
-async function salvarMotoristaComProva(respostas) {
+async function salvarMotoristaComProva(nome, telefone, placa, respostas) {
   try {
     await fetch(`${WORKER_URL}/api/salvar-motorista`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         cpf: cpfAtual,
-        nome: 'Motorista ' + cpfAtual.slice(-4),
-        cnh: '',
-        placa: '',
+        nome: nome,
+        telefone: telefone,
+        placa: placa,
         prova_respondida: {
           data: new Date().toISOString(),
           respostas,
@@ -118,9 +141,8 @@ async function salvarMotoristaComProva(respostas) {
 // ============================================
 
 async function gerarJSONeToken() {
-  // Pega a placa, remove espaços/hífens e converte para maiúsculas
-  let placaDigitada = document.getElementById('placa').value;
-  placaDigitada = placaDigitada.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  // Trata a placa (apenas letras/números em maiúsculas sem traço)
+  let placaDigitada = document.getElementById('placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
   const inspecao = {
     nome: document.getElementById('nome').value,
@@ -191,7 +213,7 @@ function irParaInspecao() {
   ocultarTodas();
   document.getElementById('step-inspecao').classList.remove('hidden');
   
-  // Ajusta o placeholder no HTML
+  // Limita o tamanho e ajusta o placeholder da placa
   const inputPlaca = document.getElementById('placa');
   if (inputPlaca) {
     inputPlaca.maxLength = 7;
