@@ -170,8 +170,13 @@ async function gerarJSONeToken() {
     const resultado = await response.json();
 
     if (resultado.sucesso) {
-      alert(`✅ Inspeção finalizada com sucesso!\n\nID: ${resultado.id_inspecao}`);
+      // Exibe o Token de forma bem visível
+      alert(`✅ Inspeção finalizada com sucesso!\n\n🔑 CÓDIGO DO CHECKLIST:\n${resultado.id_inspecao}\n\nGuarde este código para consulta no sistema.`);
+      
       console.log('Inspeção salva:', resultado);
+      document.getElementById('form-inspecao').reset();
+      irParaCPF();
+    }
       
       // Limpar formulário
       document.getElementById('form-inspecao').reset();
