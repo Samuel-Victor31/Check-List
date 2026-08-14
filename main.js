@@ -4,11 +4,10 @@
 
 const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev';
 
-// Gabarito correto da prova
 const GABARITO = {
-  q1: 'Madeira',       // Calço de roda deve ser de madeira
-  q2: 'Todos os dias', // Inspeção é diária
-  q3: 'Com o motorista' // Chave fica com o motorista
+  q1: 'Madeira',
+  q2: 'Todos os dias',
+  q3: 'Com o motorista'
 };
 
 let cpfAtual = '';
@@ -22,7 +21,6 @@ async function verificarAcesso() {
   const inputCPF = document.getElementById('input-cpf');
   const cpf = inputCPF.value.trim();
 
-  // Validação básica
   if (cpf.length !== 11 || isNaN(cpf)) {
     alert('❌ CPF inválido! Digite 11 números.');
     return;
@@ -40,40 +38,35 @@ async function verificarAcesso() {
     const resultado = await response.json();
 
     if (resultado.existe) {
-      // ✅ Motorista já existe - ir direto para inspeção
       dadosMotoristaAtual = resultado.dados;
       console.log('Motorista encontrado:', dadosMotoristaAtual);
       irParaInspecao();
     } else {
-      // 🆕 Primeira vez - mostrar prova
       console.log('Novo motorista - mostrando prova');
       irParaIntegracao();
     }
   } catch (erro) {
     console.error('Erro ao verificar CPF:', erro);
-    alert('⚠️ Erro ao conectar com o servidor. Verifique a conexão.');
+    alert('⚠️ Erro ao conectar com o servidor.');
   }
 }
 
 // ============================================
-// ETAPA 2: INTEGRAÇÃO & PROVA (Primeira Vez)
+// ETAPA 2: INTEGRAÇÃO & PROVA
 // ============================================
 
 async function concluirIntegracao() {
-  // Pegar respostas da prova
   const respostas = {
     q1: document.querySelector('input[name="q1"]:checked')?.value,
     q2: document.querySelector('input[name="q2"]:checked')?.value,
     q3: document.querySelector('input[name="q3"]:checked')?.value
   };
 
-  // Validar se respondeu tudo
   if (!respostas.q1 || !respostas.q2 || !respostas.q3) {
     alert('⚠️ Responda todas as questões!');
     return;
   }
 
-  // Corrigir prova
   let acertos = 0;
   let feedback = 'Resultado da Prova:\n\n';
 
@@ -87,30 +80,25 @@ async function concluirIntegracao() {
   }
 
   feedback += `\nTotal: ${acertos}/3 acertos`;
-
-  // Mostrar resultado
   alert(feedback);
 
-  // Exigir 100% de acerto para continuar
   if (acertos === 3) {
-    // ✅ Passou - salvar e ir para inspeção
     await salvarMotoristaComProva(respostas);
     irParaInspecao();
   } else {
     alert('⚠️ Você precisa acertar TODAS as questões. Tente novamente!');
-    // Limpar respostas
     document.getElementById('form-prova').reset();
   }
 }
 
 async function salvarMotoristaComProva(respostas) {
   try {
-    const response = await fetch(`${WORKER_URL}/api/salvar-motorista`, {
+    await fetch(`${WORKER_URL}/api/salvar-motorista`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         cpf: cpfAtual,
-        nome: 'Motorista ' + cpfAtual.slice(-4), // Placeholder
+        nome: 'Motorista ' + cpfAtual.slice(-4),
         cnh: '',
         placa: '',
         prova_respondida: {
@@ -120,9 +108,6 @@ async function salvarMotoristaComProva(respostas) {
         }
       })
     });
-
-    const resultado = await response.json();
-    console.log('Motorista salvo:', resultado);
   } catch (erro) {
     console.error('Erro ao salvar motorista:', erro);
   }
@@ -176,7 +161,6 @@ async function gerarJSONeToken() {
   }
 }
 
-// Copiar token para a área de transferência
 function copiarToken() {
   const token = document.getElementById('token-gerado').innerText;
   navigator.clipboard.writeText(token).then(() => {
@@ -216,5 +200,4 @@ function ocultarTodas() {
   document.getElementById('step-sucesso').classList.add('hidden');
 }
 
-// Mostrar primeira etapa ao carregar
 document.addEventListener('DOMContentLoaded', irParaCPF);
