@@ -1,0 +1,20 @@
+name = "sistema-inspecao"
+type = "javascript"
+account_id = "seu-account-id"
+workers_dev = true
+route = ""
+zone_id = ""
+
+[[kv_namespaces]]
+binding = "MOTORISTAS"
+id = "seu-namespace-id"
+
+[[kv_namespaces]]
+binding = "INSPECOES"
+id = "seu-namespace-id"
+
+[env.production]
+kv_namespaces = [
+  { binding = "MOTORISTAS", id = "seu-namespace-id" },
+  { binding = "INSPECOES", id = "seu-namespace-id" }
+]
