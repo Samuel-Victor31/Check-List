@@ -118,9 +118,9 @@ async function salvarMotoristaComProva(respostas) {
 // ============================================
 
 async function gerarJSONeToken() {
-  // Trata a placa antes de enviar
+  // Pega a placa, remove espaços/hífens e converte para maiúsculas
   let placaDigitada = document.getElementById('placa').value;
-  placaDigitada = formatarPlacaTexto(placaDigitada);
+  placaDigitada = placaDigitada.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
   const inspecao = {
     nome: document.getElementById('nome').value,
@@ -191,8 +191,12 @@ function irParaInspecao() {
   ocultarTodas();
   document.getElementById('step-inspecao').classList.remove('hidden');
   
-  // Ativa a máscara no campo de placa assim que a tela abre
-  configurarMascaraPlaca();
+  // Ajusta o placeholder no HTML
+  const inputPlaca = document.getElementById('placa');
+  if (inputPlaca) {
+    inputPlaca.maxLength = 7;
+    inputPlaca.placeholder = 'abc1234';
+  }
 }
 
 function irParaSucesso() {
@@ -205,31 +209,6 @@ function ocultarTodas() {
   document.getElementById('step-integracao').classList.add('hidden');
   document.getElementById('step-inspecao').classList.add('hidden');
   document.getElementById('step-sucesso').classList.add('hidden');
-}
-
-// ============================================
-// FUNÇÃO DE FORMATAÇÃO DA PLACA
-// ============================================
-
-function formatarPlacaTexto(valor) {
-  if (!valor) return '';
-  // Limpa tudo o que não for letra ou número e põe em maiúsculas
-  let limpo = valor.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  
-  if (limpo.length > 3) {
-    return limpo.slice(0, 3) + '-' + limpo.slice(3, 7);
-  }
-  return limpo;
-}
-
-function configurarMascaraPlaca() {
-  const inputPlaca = document.getElementById('placa');
-  if (inputPlaca) {
-    inputPlaca.maxLength = 8;
-    inputPlaca.oninput = function() {
-      this.value = formatarPlacaTexto(this.value);
-    };
-  }
 }
 
 document.addEventListener('DOMContentLoaded', irParaCPF);
