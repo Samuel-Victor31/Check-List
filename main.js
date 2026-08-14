@@ -2,12 +2,11 @@
 // CONFIGURAÇÃO INICIAL
 // ============================================
 
-// Substitua pela URL do seu Cloudflare Worker
 const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev';
 
 // Gabarito correto da prova
 const GABARITO = {
-  q1: 'Madeira',      // Calço de roda deve ser de madeira
+  q1: 'Madeira',       // Calço de roda deve ser de madeira
   q2: 'Todos os dias', // Inspeção é diária
   q3: 'Com o motorista' // Chave fica com o motorista
 };
@@ -52,7 +51,7 @@ async function verificarAcesso() {
     }
   } catch (erro) {
     console.error('Erro ao verificar CPF:', erro);
-    alert('⚠️ Erro ao conectar com o servidor. Verifique a URL do Worker.');
+    alert('⚠️ Erro ao conectar com o servidor. Verifique a conexão.');
   }
 }
 
@@ -167,13 +166,8 @@ async function gerarJSONeToken() {
     const resultado = await response.json();
 
     if (resultado.sucesso) {
-      // Limpa formulário
       document.getElementById('form-inspecao').reset();
-      
-      // Exibe o token na Tela Final
       document.getElementById('token-gerado').innerText = resultado.id_inspecao;
-      
-      // Ir para a tela de Sucesso/Confirmação
       irParaSucesso();
     }
   } catch (erro) {
@@ -191,7 +185,7 @@ function copiarToken() {
 }
 
 // ============================================
-// CONTROLE DE ABAS/ETAPAS (Atualizado)
+// CONTROLE DE ABAS/ETAPAS
 // ============================================
 
 function irParaCPF() {
@@ -219,5 +213,8 @@ function ocultarTodas() {
   document.getElementById('step-cpf').classList.add('hidden');
   document.getElementById('step-integracao').classList.add('hidden');
   document.getElementById('step-inspecao').classList.add('hidden');
-  document.getElementById('step-sucesso').classList.add('hidden'); // Ocultar nova tela
+  document.getElementById('step-sucesso').classList.add('hidden');
 }
+
+// Mostrar primeira etapa ao carregar
+document.addEventListener('DOMContentLoaded', irParaCPF);
