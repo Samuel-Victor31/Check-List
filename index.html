@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema de Inspeção Veicular</title>
-  <!-- Remover erro do favicon -->
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -151,22 +150,21 @@
       </form>
     </div>
 
-    <!-- ETAPA 4: TELA FINAL / SUCESSO -->
+    <!-- ETAPA 4: TELA FINAL / SUCESSO (FORA DO FORMULÁRIO) -->
     <div class="card hidden" id="step-sucesso" style="text-align: center;">
       <h2>🎉 Inspeção Concluída!</h2>
       <p>A inspeção foi registrada com sucesso no sistema.</p>
       
-      <div style="background: #f0f4f8; border: 2px dashed #007bff; padding: 15px; margin: 20px 0; border-radius: 8px;">
-        <span style="font-size: 14px; color: #555;">CÓDIGO DA INSPEÇÃO (TOKEN):</span>
-        <h1 id="token-gerado" style="font-size: 32px; color: #007bff; margin: 10px 0; letter-spacing: 2px;">---</h1>
+      <div style="background: #f8f9fa; border: 2px dashed #667eea; padding: 20px; margin: 20px 0; border-radius: 8px;">
+        <span style="font-size: 14px; color: #555; font-weight: 600; display: block; margin-bottom: 5px;">CÓDIGO DA INSPEÇÃO (TOKEN):</span>
+        <h1 id="token-gerado" style="font-size: 32px; color: #667eea; margin: 0; letter-spacing: 2px; font-weight: bold;">---</h1>
       </div>
 
-      <button type="button" class="btn" onclick="copiarToken()" style="background-color: #28a745; margin-bottom: 10px; cursor: pointer;">📋 Copiar Código</button>
-      <br>
-      <button type="button" class="btn" onclick="irParaCPF()" style="cursor: pointer;">🔄 Realizar Nova Inspeção</button>
+      <button type="button" class="btn" onclick="copiarToken()" style="background: #28a745; margin-bottom: 10px;">📋 Copiar Código</button>
+      <button type="button" class="btn" onclick="irParaCPF()" style="background: #6c757d;">🔄 Realizar Nova Inspeção</button>
     </div>
 
-  </div> <!-- Fim da div container -->
+  </div>
 
   <script src="main.js"></script>
 </body>
