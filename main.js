@@ -3,7 +3,7 @@
 // ============================================
 
 // Substitua pela URL do seu Cloudflare Worker
-const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev/';
+const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev';
 
 // Gabarito correto da prova
 const GABARITO = {
