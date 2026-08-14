@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Inspeção Veicular</title>
+  <!-- Adicione esta linha abaixo para remover o erro do favicon -->
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    
+    <!-- ETAPA 1: BUSCA CPF -->
+    <div class="card" id="step-cpf">
+      <h2>🚗 Acesso do Motorista</h2>
+      <label for="input-cpf">Informe seu CPF (somente números):</label>
+      <input type="text" id="input-cpf" placeholder="00000000000" maxlength="11" inputmode="numeric">
+      <button type="button" class="btn" onclick="verificarAcesso()">Continuar</button>
+    </div>
+
+    <!-- ETAPA 2: INTEGRAÇÃO & TERMOS (1º Acesso) -->
+    <div class="card hidden" id="step-integracao">
+      <h2>📋 1º Acesso: Treinamento Obrigatório</h2>
+      
+      <h3>Resumo das Regras de Segurança e PPAE</h3>
+      <ul>
+        <li>❌ É proibido trabalhar sob efeito de álcool/drogas e uso de celular ao dirigir.</li>
+        <li>❌ Proibido subir na carroceria do veículo e uso obrigatório de EPIs completos.</li>
+        <li>✅ Obrigatoriedade do uso de calço de roda na tração do veículo ao estacionar.</li>
+      </ul>
+
+      <h3>Prova de Conhecimento</h3>
+      <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
+      
+      <form id="form-prova">
+        <div class="radio-group">
+          <p><strong>1. Qual deve ser o material do calço de roda ao estacionar o caminhão?</strong></p>
+          <input type="radio" id="q1-a" name="q1" value="Borracha"> 
+          <label for="q1-a">Borracha</label><br>
+          <input type="radio" id="q1-b" name="q1" value="Madeira"> 
+          <label for="q1-b">Madeira</label>
+        </div>
+
+        <div class="radio-group">
+          <p><strong>2. Em qual dia da semana é realizada a inspeção veicular?</strong></p>
+          <input type="radio" id="q2-a" name="q2" value="Segunda-Feira"> 
+          <label for="q2-a">Segunda-Feira</label><br>
+          <input type="radio" id="q2-b" name="q2" value="Todos os dias"> 
+          <label for="q2-b">Todos os dias</label>
+        </div>
+
+        <div class="radio-group">
+          <p><strong>3. Onde deve ficar a chave do veículo durante o enlonamento/desenlonamento?</strong></p>
+          <input type="radio" id="q3-a" name="q3" value="Com o motorista"> 
+          <label for="q3-a">Com o motorista</label><br>
+          <input type="radio" id="q3-b" name="q3" value="Bloqueada pelo responsável CSN Cimentos"> 
+          <label for="q3-b">Bloqueada pelo responsável CSN Cimentos</label>
+        </div>
+
+        <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova e Avançar</button>
+      </form>
+    </div>
+
+    <!-- ETAPA 3: FORMULÁRIO DE INSPEÇÃO -->
+    <div class="card hidden" id="step-inspecao">
+      <h2>🔍 Formulário de Inspeção Veicular (FOB)</h2>
+      
+      <form id="form-inspecao">
+        <label for="nome">Nome Completo:</label>
+        <input type="text" id="nome" placeholder="João da Silva" required>
+
+        <label for="cnh">CNH:</label>
+        <input type="text" id="cnh" placeholder="00000000000" maxlength="11" required>
+
+        <label for="placa">Placa do Veículo (Cavalo/Carreta):</label>
+        <input type="text" id="placa" placeholder="ABC-1234" required>
+
+        <label for="pedido">Nº do Pedido:</label>
+        <input type="text" id="pedido" placeholder="PED-2024-001" required>
+
+        <label for="eixos">Quantidade de Eixos:</label>
+        <input type="text" id="eixos" placeholder="2" required>
+
+        <h3>Itens de Inspeção</h3>
+
+        <div class="item-check">
+          <span>🛞 Pneus (sem bolhas/cortes/careca):</span>
+          <select id="pneus" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Conforme ✅</option>
+            <option value="NAO_CONFORME">Não Conforme ❌</option>
+          </select>
+        </div>
+
+        <div class="item-check">
+          <span>📦 Carroceria (sem falhas na forração):</span>
+          <select id="carroceria" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Conforme ✅</option>
+            <option value="NAO_CONFORME">Não Conforme ❌</option>
+          </select>
+        </div>
+
+        <div class="item-check">
+          <span>🔗 Cinto de Segurança em bom estado:</span>
+          <select id="cinto" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Conforme ✅</option>
+            <option value="NAO_CONFORME">Não Conforme ❌</option>
+          </select>
+        </div>
+
+        <div class="item-check">
+          <span>💡 Faróis funcionando:</span>
+          <select id="farois" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Conforme ✅</option>
+            <option value="NAO_CONFORME">Não Conforme ❌</option>
+          </select>
+        </div>
+
+        <div class="item-check">
+          <span>🔔 Alarme de Ré operando:</span>
+          <select id="alarme_re" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Conforme ✅</option>
+            <option value="NAO_CONFORME">Não Conforme ❌</option>
+          </select>
+        </div>
+
+        <div class="item-check">
+          <span>💧 Vazamentos (Óleo/Água/Combustível):</span>
+          <select id="vazamentos" required>
+            <option value="">-- Selecione --</option>
+            <option value="SEM_VAZAMENTO">Sem Vazamento ✅</option>
+            <option value="COM_VAZAMENTO">Com Vazamento ❌</option>
+          </select>
+        </div>
+
+        <div class="item-check">
+          <span>🪵 Par de Calços de Roda presente:</span>
+          <select id="calcos" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Conforme ✅</option>
+            <option value="NAO_CONFORME">Não Conforme ❌</option>
+          </select>
+        </div>
+       
+        <!-- ETAPA 4: TELA FINAL / SUCESSO -->
+        <div class="card hidden" id="step-sucesso" style="text-align: center;">
+          <h2>🎉 Inspeção Concluída!</h2>
+          <p>A inspeção foi registrada com sucesso no sistema.</p>
+          
+          <div style="background: #f0f4f8; border: 2px dashed #007bff; padding: 15px; margin: 20px 0; border-radius: 8px;">
+            <span style="font-size: 14px; color: #555;">CÓDIGO DA INSPEÇÃO (TOKEN):</span>
+            <h1 id="token-gerado" style="font-size: 28px; color: #007bff; margin: 5px 0; letter-spacing: 2px;">20260814-A3F9</h1>
+          </div>
+        
+          <button type="button" class="btn" onclick="copiarToken()" style="background-color: #28a745; margin-bottom: 10px;">📋 Copiar Código</button>
+          <button type="button" class="btn" onclick="irParaCPF()">🔄 Realizar Nova Inspeção</button>
+        
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
