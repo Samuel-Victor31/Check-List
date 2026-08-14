@@ -169,7 +169,7 @@ function copiarToken() {
 }
 
 // ============================================
-// CONTROLE DE ABAS/ETAPAS
+// CONTROLE DE ABAS / ETAPAS
 // ============================================
 
 function irParaCPF() {
@@ -200,4 +200,29 @@ function ocultarTodas() {
   document.getElementById('step-sucesso').classList.add('hidden');
 }
 
-document.addEventListener('DOMContentLoaded', irParaCPF);
+// ============================================
+// MÁSCARA AUTOMÁTICA DE PLACA (MERCCOSUL / TRADICIONAL)
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  irParaCPF();
+
+  const inputPlaca = document.getElementById('placa');
+
+  if (inputPlaca) {
+    inputPlaca.setAttribute('maxlength', '8');
+    inputPlaca.setAttribute('placeholder', 'ABC-1234');
+
+    inputPlaca.addEventListener('input', (e) => {
+      // Converte para maiúsculas e aceita apenas letras e números
+      let valor = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+      // Aplica o hífen automaticamente a partir do 4º caractere
+      if (valor.length > 3) {
+        valor = valor.slice(0, 3) + '-' + valor.slice(3, 7);
+      }
+
+      e.target.value = valor;
+    });
+  }
+});
