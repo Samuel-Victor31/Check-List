@@ -18,21 +18,32 @@
       <button type="button" class="btn" onclick="verificarAcesso()">Continuar</button>
     </div>
 
-    <!-- ETAPA 2: INTEGRAÇÃO & TERMOS (1º Acesso) -->
+<!-- ETAPA 2: INTEGRAÇÃO & TERMOS (1º Acesso) -->
     <div class="card hidden" id="step-integracao">
-      <h2>📋 1º Acesso: Treinamento Obrigatório</h2>
-      
-      <h3>Resumo das Regras de Segurança e PPAE</h3>
-      <ul>
-        <li>❌ É proibido trabalhar sob efeito de álcool/drogas e uso de celular ao dirigir.</li>
-        <li>❌ Proibido subir na carroceria do veículo e uso obrigatório de EPIs completos.</li>
-        <li>✅ Obrigatoriedade do uso de calço de roda na tração do veículo ao estacionar.</li>
-      </ul>
-
-      <h3>Prova de Conhecimento</h3>
-      <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
+      <h2>📋 1º Acesso: Cadastro & Treinamento</h2>
       
       <form id="form-prova">
+        <h3>Dados de Cadastro do Motorista</h3>
+        
+        <label for="reg-nome">Nome Completo:</label>
+        <input type="text" id="reg-nome" placeholder="Digite seu nome completo" required>
+
+        <label for="reg-telefone">Telefone de Contato (com DDD):</label>
+        <input type="text" id="reg-telefone" placeholder="(11) 99999-9999" maxlength="15" required>
+
+        <label for="reg-placa">Placa do Cavalo:</label>
+        <input type="text" id="reg-placa" placeholder="ABC1234" maxlength="7" style="text-transform: uppercase;" required>
+
+        <h3>Resumo das Regras de Segurança e PPAE</h3>
+        <ul>
+          <li>❌ É proibido trabalhar sob efeito de álcool/drogas e uso de celular ao dirigir.</li>
+          <li>❌ Proibido subir na carroceria do veículo e uso obrigatório de EPIs completos.</li>
+          <li>✅ Obrigatoriedade do uso de calço de roda na tração do veículo ao estacionar.</li>
+        </ul>
+
+        <h3>Prova de Conhecimento</h3>
+        <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
+        
         <div class="radio-group">
           <p><strong>1. Qual deve ser o material do calço de roda ao estacionar o caminhão?</strong></p>
           <input type="radio" id="q1-a" name="q1" value="Borracha"> 
