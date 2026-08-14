@@ -7,7 +7,7 @@ const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev';
 const GABARITO = {
   q1: 'Madeira',
   q2: 'Todos os dias',
-  q3: 'Com o motorista'
+  q3: 'Bloqueada pelo responsável CSN Cimentos'
 };
 
 let cpfAtual = '';
