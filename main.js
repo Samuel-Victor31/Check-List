@@ -134,7 +134,6 @@ async function salvarMotoristaComProva(respostas) {
 // ============================================
 
 async function gerarJSONeToken() {
-  // Coletar dados do formulário de inspeção
   const inspecao = {
     nome: document.getElementById('nome').value,
     cnh: document.getElementById('cnh').value,
@@ -150,14 +149,12 @@ async function gerarJSONeToken() {
     calcos: document.getElementById('calcos').value
   };
 
-  // Validar preenchimento
   if (!inspecao.nome || !inspecao.cnh || !inspecao.placa) {
     alert('⚠️ Preencha todos os campos obrigatórios!');
     return;
   }
 
   try {
-    // Salvar inspeção no Cloudflare KV
     const response = await fetch(`${WORKER_URL}/api/salvar-inspecao`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -170,19 +167,14 @@ async function gerarJSONeToken() {
     const resultado = await response.json();
 
     if (resultado.sucesso) {
-      // Exibe o Token de forma bem visível
-      alert(`✅ Inspeção finalizada com sucesso!\n\n🔑 CÓDIGO DO CHECKLIST:\n${resultado.id_inspecao}\n\nGuarde este código para consulta no sistema.`);
-      
-      console.log('Inspeção salva:', resultado);
-      document.getElementById('form-inspecao').reset();
-      irParaCPF();
-    }
-      
-      // Limpar formulário
+      // Limpa formulário
       document.getElementById('form-inspecao').reset();
       
-      // Voltar para etapa 1 (opcional)
-      irParaCPF();
+      // Exibe o token na Tela Final
+      document.getElementById('token-gerado').innerText = resultado.id_inspecao;
+      
+      // Ir para a tela de Sucesso/Confirmação
+      irParaSucesso();
     }
   } catch (erro) {
     console.error('Erro ao salvar inspeção:', erro);
@@ -190,8 +182,16 @@ async function gerarJSONeToken() {
   }
 }
 
+// Copiar token para a área de transferência
+function copiarToken() {
+  const token = document.getElementById('token-gerado').innerText;
+  navigator.clipboard.writeText(token).then(() => {
+    alert('📋 Código copiado com sucesso!');
+  });
+}
+
 // ============================================
-// CONTROLE DE ABAS/ETAPAS
+// CONTROLE DE ABAS/ETAPAS (Atualizado)
 // ============================================
 
 function irParaCPF() {
@@ -210,11 +210,14 @@ function irParaInspecao() {
   document.getElementById('step-inspecao').classList.remove('hidden');
 }
 
+function irParaSucesso() {
+  ocultarTodas();
+  document.getElementById('step-sucesso').classList.remove('hidden');
+}
+
 function ocultarTodas() {
   document.getElementById('step-cpf').classList.add('hidden');
   document.getElementById('step-integracao').classList.add('hidden');
   document.getElementById('step-inspecao').classList.add('hidden');
+  document.getElementById('step-sucesso').classList.add('hidden'); // Ocultar nova tela
 }
-
-// Mostrar primeira etapa ao carregar
-document.addEventListener('DOMContentLoaded', irParaCPF);
