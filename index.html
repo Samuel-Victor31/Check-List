@@ -18,7 +18,7 @@
       <button type="button" class="btn" onclick="verificarAcesso()">Continuar</button>
     </div>
 
-<!-- ETAPA 2: INTEGRAÇÃO & TERMOS (1º Acesso) -->
+    <!-- ETAPA 2: INTEGRAÇÃO & TERMOS (1º Acesso) -->
     <div class="card hidden" id="step-integracao">
       <h2>📋 1º Acesso: Cadastro & Treinamento</h2>
       
@@ -27,20 +27,34 @@
         
         <label for="reg-nome">Nome Completo:</label>
         <input type="text" id="reg-nome" placeholder="Digite seu nome completo" required>
-
+    
         <label for="reg-telefone">Telefone de Contato (com DDD):</label>
         <input type="text" id="reg-telefone" placeholder="11999999999" maxlength="11" inputmode="numeric" required>
-
+    
         <label for="reg-placa">Placa do Cavalo:</label>
         <input type="text" id="reg-placa" placeholder="ABC1234" maxlength="7" style="text-transform: uppercase;" required>
-
-        <h3>Resumo das Regras de Segurança e PPAE</h3>
-        <ul>
-          <li>❌ É proibido trabalhar sob efeito de álcool/drogas e uso de celular ao dirigir.</li>
-          <li>❌ Proibido subir na carroceria do veículo e uso obrigatório de EPIs completos.</li>
-          <li>✅ Obrigatoriedade do uso de calço de roda na tração do veículo ao estacionar.</li>
-        </ul>
-
+    
+        <!-- INFORMAÇÕES DETALHADAS DA FOTO 2 -->
+        <h3>📜 Regras e Diretrizes de Inspeção Veicular</h3>
+        <div class="regras-container">
+          <p>Segurança é o valor que permeia toda nossa empresa e deve estar incorporado em tudo que fazemos. Por isso, o veículo deverá apresentar condições seguras para entrada nas plantas.</p>
+          <p>Os itens descritos neste formulário devem estar em boas condições de funcionamento. Eles zelam pela segurança de condutores, pedestres e passageiros.</p>
+          
+          <strong>VERIFIQUE COM ATENÇÃO:</strong>
+          <ul>
+            <li><strong>SINALIZAÇÃO / PLACAS / FAIXAS:</strong> Veículo deve estar devidamente identificado, com placa visível e faixas refletivas operacionais.</li>
+            <li><strong>PNEUS:</strong> Além de passível de multas, pneus carecas ou danificados (cortes, rasgos, bolhas) afetam a dirigibilidade e podem estourar quando o peso da carga for posto sobre ele.</li>
+            <li><strong>CARROCERIA:</strong> Falhas na forração da carroceria podem levar a entrada de umidade pela parte inferior e provocar queda dos operadores que trabalham sobre ele.</li>
+            <li><strong>CINTO DE SEGURANÇA:</strong> A segurança do condutor está em primeiro lugar.</li>
+            <li><strong>FARÓIS:</strong> Devem estar em funcionamento.</li>
+            <li><strong>ALARME DE RÉ:</strong> Muitos acidentes acontecem em manobras de ré. Em um ambiente com intensa movimentação de empilhadeiras, outros caminhões e eventualmente pessoas, este é um item crítico para veículos pesados.</li>
+            <li><strong>ÓLEO / ÁGUA / COMBUSTÍVEL:</strong> Há vazamento contínuo de fluido (óleo, água, combustível)? A tampa de combustível está danificada?</li>
+            <li><strong>CALÇO DE RODA:</strong> A fim de evitar acidentes com locomoção inesperada do veículo, todos os veículos de carga devem possuir um par de calços.</li>
+            <li><strong>TAMPA SILO – CARRETA GRANEL:</strong> As tampas da carreta silo deverão estar com uma trava de segurança, sem trincas, soldas e com todos os manípulos fechando corretamente.</li>
+            <li><strong>EPIS BÁSICOS:</strong> Uso obrigatório de capacete, colete refletivo, óculos de proteção, botina de segurança e luvas.</li>
+          </ul>
+        </div>
+    
         <h3>Prova de Conhecimento</h3>
         <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
         
@@ -51,7 +65,7 @@
           <input type="radio" id="q1-b" name="q1" value="Madeira"> 
           <label for="q1-b">Madeira</label>
         </div>
-
+    
         <div class="radio-group">
           <p><strong>2. Em qual dia da semana é realizada a inspeção veicular?</strong></p>
           <input type="radio" id="q2-a" name="q2" value="Segunda-Feira"> 
@@ -59,7 +73,7 @@
           <input type="radio" id="q2-b" name="q2" value="Todos os dias"> 
           <label for="q2-b">Todos os dias</label>
         </div>
-
+    
         <div class="radio-group">
           <p><strong>3. Onde deve ficar a chave do veículo durante o enlonamento/desenlonamento?</strong></p>
           <input type="radio" id="q3-a" name="q3" value="Com o motorista"> 
@@ -67,11 +81,11 @@
           <input type="radio" id="q3-b" name="q3" value="Bloqueada pelo responsável CSN Cimentos"> 
           <label for="q3-b">Bloqueada pelo responsável CSN Cimentos</label>
         </div>
-
+    
         <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova e Avançar</button>
       </form>
     </div>
-
+    
     <!-- ETAPA 3: FORMULÁRIO DE INSPEÇÃO -->
     <div class="card hidden" id="step-inspecao">
       <h2>🔍 Formulário de Inspeção Veicular (FOB)</h2>
@@ -79,21 +93,31 @@
       <form id="form-inspecao">
         <label for="nome">Nome Completo:</label>
         <input type="text" id="nome" placeholder="João da Silva" required>
-
+    
         <label for="cnh">CNH:</label>
         <input type="text" id="cnh" placeholder="00000000000" maxlength="11" inputmode="numeric" required>
-
+    
         <label for="placa">Placa do Veículo (Cavalo):</label>
         <input type="text" id="placa" placeholder="ABC-1234" required>
-
+    
         <label for="pedido">Nº do Pedido:</label>
         <input type="text" id="pedido" placeholder="8999999" maxlength="10" inputmode="numeric" required>
                 
         <label for="eixos">Quantidade total de eixos:</label>
         <input type="text" id="eixos" placeholder="2" inputmode="numeric" required>
         
-        <h3>Itens de Inspeção</h3>
-
+        <h3>Itens de Inspeção Veicular</h3>
+    
+        <!-- ITEM NOVO: SINALIZAÇÃO / FAIXA REFLETIVA / PLACA -->
+        <div class="item-check">
+          <span>🛑 Sinalização (Placa visível / Faixas refletivas):</span>
+          <select id="sinalizacao" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Conforme ✅</option>
+            <option value="NAO_CONFORME">Não Conforme ❌</option>
+          </select>
+        </div>
+    
         <div class="item-check">
           <span>🛞 Pneus (sem bolhas/cortes/careca):</span>
           <select id="pneus" required>
@@ -102,7 +126,7 @@
             <option value="NAO_CONFORME">Não Conforme ❌</option>
           </select>
         </div>
-
+    
         <div class="item-check">
           <span>📦 Carroceria (sem falhas na forração):</span>
           <select id="carroceria" required>
@@ -111,7 +135,7 @@
             <option value="NAO_CONFORME">Não Conforme ❌</option>
           </select>
         </div>
-
+    
         <div class="item-check">
           <span>🔗 Cinto de Segurança em bom estado:</span>
           <select id="cinto" required>
@@ -120,7 +144,7 @@
             <option value="NAO_CONFORME">Não Conforme ❌</option>
           </select>
         </div>
-
+    
         <div class="item-check">
           <span>💡 Faróis funcionando:</span>
           <select id="farois" required>
@@ -129,7 +153,7 @@
             <option value="NAO_CONFORME">Não Conforme ❌</option>
           </select>
         </div>
-
+    
         <div class="item-check">
           <span>🔔 Alarme de Ré operando:</span>
           <select id="alarme_re" required>
@@ -138,7 +162,7 @@
             <option value="NAO_CONFORME">Não Conforme ❌</option>
           </select>
         </div>
-
+    
         <div class="item-check">
           <span>💧 Vazamentos (Óleo/Água/Combustível):</span>
           <select id="vazamentos" required>
@@ -147,7 +171,7 @@
             <option value="COM_VAZAMENTO">Com Vazamento ❌</option>
           </select>
         </div>
-
+    
         <div class="item-check">
           <span>🪵 Par de Calços de Roda presente:</span>
           <select id="calcos" required>
@@ -156,8 +180,67 @@
             <option value="NAO_CONFORME">Não Conforme ❌</option>
           </select>
         </div>
-
-        <!-- ========== NOVO CAMPO: PALETES ========== -->
+    
+        <!-- ITEM NOVO: TAMPA SILO -->
+        <div class="item-check">
+          <span>⚙️ Tampa Silo (Carreta Granel / Pote):</span>
+          <select id="tampa_silo" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Conforme ✅</option>
+            <option value="NAO_CONFORME">Não Conforme ❌</option>
+            <option value="NA">N/A (Não Aplicável)</option>
+          </select>
+        </div>
+    
+        <!-- NOVA SEÇÃO: EQUIPAMENTOS DE PROTEÇÃO INDIVIDUAL (EPIs) -->
+        <h3>🪖 Equipamentos de Proteção Individual (EPIs)</h3>
+        
+        <div class="item-check">
+          <span>🪖 Capacete de Segurança:</span>
+          <select id="epi_capacete" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Possui/Em Uso ✅</option>
+            <option value="NAO_CONFORME">Não Possui ❌</option>
+          </select>
+        </div>
+    
+        <div class="item-check">
+          <span>🦺 Colete Refletivo:</span>
+          <select id="epi_colete" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Possui/Em Uso ✅</option>
+            <option value="NAO_CONFORME">Não Possui ❌</option>
+          </select>
+        </div>
+    
+        <div class="item-check">
+          <span>🥽 Óculos de Proteção:</span>
+          <select id="epi_oculos" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Possui/Em Uso ✅</option>
+            <option value="NAO_CONFORME">Não Possui ❌</option>
+          </select>
+        </div>
+    
+        <div class="item-check">
+          <span>🥾 Botina de Segurança:</span>
+          <select id="epi_botina" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Possui/Em Uso ✅</option>
+            <option value="NAO_CONFORME">Não Possui ❌</option>
+          </select>
+        </div>
+    
+        <div class="item-check">
+          <span>🧤 Luvas de Proteção:</span>
+          <select id="epi_luvas" required>
+            <option value="">-- Selecione --</option>
+            <option value="CONFORME">Possui/Em Uso ✅</option>
+            <option value="NAO_CONFORME">Não Possui ❌</option>
+          </select>
+        </div>
+    
+        <!-- SEÇÃO PALETES -->
         <h3>📦 Paletes</h3>
         <div class="paletes-container">
           <p style="font-weight: 600; margin-bottom: 15px;">Trouxe Paletes para Carregamento?</p>
@@ -172,14 +255,14 @@
               <input type="number" id="quantidade-paletes" placeholder="0" min="0" max="999">
             </div>
           </div>
-
+    
           <div class="paletes-opcoes">
             <label class="paletes-label">
               <input type="radio" name="paletes_opcao" value="NAO" onchange="ocultarQuantidadePaletes()">
               <span>NÃO</span>
             </label>
           </div>
-
+    
           <div class="paletes-opcoes">
             <label class="paletes-label">
               <input type="radio" name="paletes_opcao" value="NA" onchange="ocultarQuantidadePaletes()">
@@ -187,8 +270,7 @@
             </label>
           </div>
         </div>
-        <!-- ========== FIM DO CAMPO PALETES ========== -->
-
+    
         <button type="button" class="btn" onclick="gerarJSONeToken()" style="margin-top: 20px;">✅ Finalizar Inspeção</button>
       </form>
     </div>
