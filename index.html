@@ -171,13 +171,18 @@
         <label for="cnh">CNH:</label>
         <input type="text" id="cnh" placeholder="00000000000" maxlength="11" inputmode="numeric" required>
         
-        <!-- BOTÃO/INSTRUÇÃO COM A IMAGEM DA CNH -->
-        <details class="helper-cnh">
-          <summary>🔍 Clique aqui para ver onde fica o número da CNH</summary>
-          <div class="helper-cnh-img">
-            <img src="arquivos/Sem título.jpg" alt="Localização do número da CNH" loading="lazy">
-          </div>
-        </details>    
+        <!-- CAMPO CNH COM BOTÃO RETRÁTIL DE AJUDA -->
+        <div class="form-group-cnh">
+          <label for="cnh">CNH:</label>
+          <input type="text" id="cnh" placeholder="00000000000" maxlength="11" inputmode="numeric" required>
+        
+          <details class="helper-cnh">
+            <summary>🔍 Clique aqui para ver onde fica o número da CNH</summary>
+            <div class="helper-cnh-img">
+              <img src="arquivos/Sem título.jpg" alt="Localização do número da CNH" loading="lazy">
+            </div>
+          </details>
+        </div>        
         
         <label for="placa">Placa do Veículo (Cavalo):</label>
         <input type="text" id="placa" placeholder="EX: ABC1234" required>
