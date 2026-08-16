@@ -369,6 +369,13 @@ select:focus {
   padding: 12px;
   border-radius: 6px;
   margin-bottom: 18px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ESTADO VERDE QUANDO O CHECKBOX ESTIVER MARCADO */
+.aceite-container:has(input[type="checkbox"]:checked) {
+  background: #e6f4ea;
+  border: 1px solid #28a745;
 }
 
 .aceite-label {
@@ -385,6 +392,6 @@ select:focus {
   width: 18px;
   height: 18px;
   margin-right: 10px;
-  accent-color: #667eea;
+  accent-color: #28a745; /* Deixa o quadradinho do check verde */
   cursor: pointer;
 }
