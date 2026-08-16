@@ -93,34 +93,62 @@
           </label>
         </div>
     
-        <h3>Prova de Conhecimento</h3>
-        <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
-        
-        <div class="radio-group">
-          <p><strong>1. Qual deve ser o material do calço de roda ao estacionar o caminhão?</strong></p>
-          <input type="radio" id="q1-a" name="q1" value="Borracha"> 
-          <label for="q1-a">Borracha</label><br>
-          <input type="radio" id="q1-b" name="q1" value="Madeira"> 
-          <label for="q1-b">Madeira</label>
-        </div>
-    
-        <div class="radio-group">
-          <p><strong>2. Em qual dia da semana é realizada a inspeção veicular?</strong></p>
-          <input type="radio" id="q2-a" name="q2" value="Segunda-Feira"> 
-          <label for="q2-a">Segunda-Feira</label><br>
-          <input type="radio" id="q2-b" name="q2" value="Todos os dias"> 
-          <label for="q2-b">Todos os dias</label>
-        </div>
-    
-        <div class="radio-group">
-          <p><strong>3. Onde deve ficar a chave do veículo durante o enlonamento/desenlonamento?</strong></p>
-          <input type="radio" id="q3-a" name="q3" value="Com o motorista"> 
-          <label for="q3-a">Com o motorista</label><br>
-          <input type="radio" id="q3-b" name="q3" value="Bloqueada pelo responsável CSN Cimentos"> 
-          <label for="q3-b">Bloqueada pelo responsável CSN Cimentos</label>
-        </div>
-    
-        <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova e Avançar</button>
+      <h3>Prova de Conhecimento</h3>
+      <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
+      
+      <!-- QUESTÃO 1 -->
+      <div class="radio-group">
+        <p><strong>1. Regra em Pátio: Ao estacionar o caminhão ao calçar as rodas, o calço deve ser de qual material?</strong></p>
+        <input type="radio" id="q1-a" name="q1" value="Borracha">
+        <label for="q1-a">Borracha</label><br>
+        <input type="radio" id="q1-b" name="q1" value="Madeira">
+        <label for="q1-b">Madeira</label><br>
+        <input type="radio" id="q1-c" name="q1" value="Plástico">
+        <label for="q1-c">Plástico</label><br>
+        <input type="radio" id="q1-d" name="q1" value="Lata">
+        <label for="q1-d">Lata</label>
+      </div>
+      
+      <!-- QUESTÃO 2 -->
+      <div class="radio-group">
+        <p><strong>2. Inspeção de Veículos: Em que dia da semana é feita a inspeção veicular?</strong></p>
+        <input type="radio" id="q2-a" name="q2" value="Segunda-Feira">
+        <label for="q2-a">Segunda-Feira</label><br>
+        <input type="radio" id="q2-b" name="q2" value="Quinta-Feira">
+        <label for="q2-b">Quinta-Feira</label><br>
+        <input type="radio" id="q2-c" name="q2" value="Todos os dias">
+        <label for="q2-c">Todos os dias</label><br>
+        <input type="radio" id="q2-d" name="q2" value="Terça-Feira">
+        <label for="q2-d">Terça-Feira</label>
+      </div>
+      
+      <!-- QUESTÃO 3 (NOVA) -->
+      <div class="radio-group">
+        <p><strong>3. Emergência: Em caso de emergência na unidade CSN CIMENTOS, ao ouvir a sirene o que devemos fazer?</strong></p>
+        <input type="radio" id="q3-a" name="q3" value="Sair correndo">
+        <label for="q3-a">Sair correndo</label><br>
+        <input type="radio" id="q3-b" name="q3" value="Entrar no caminhão">
+        <label for="q3-b">Entrar no caminhão</label><br>
+        <input type="radio" id="q3-c" name="q3" value="Ir para um ponto mais próximo indicado pela brigada de emergência">
+        <label for="q3-c">Ir para um ponto mais próximo indicado pela brigada de emergência</label><br>
+        <input type="radio" id="q3-d" name="q3" value="Ficar parado">
+        <label for="q3-d">Ficar parado</label>
+      </div>
+      
+      <!-- QUESTÃO 4 -->
+      <div class="radio-group">
+        <p><strong>4. Enlonamento/Desenlonamento: No que se diz respeito ao enlonamento/desenlonamento, onde ficará a chave do veículo?</strong></p>
+        <input type="radio" id="q4-a" name="q4" value="Com o motorista">
+        <label for="q4-a">Com o motorista</label><br>
+        <input type="radio" id="q4-b" name="q4" value="Bloqueada pelo responsável CSN CIMENTOS.">
+        <label for="q4-b">Bloqueada pelo responsável CSN CIMENTOS.</label><br>
+        <input type="radio" id="q4-c" name="q4" value="Dentro do caminhão">
+        <label for="q4-c">Dentro do caminhão</label><br>
+        <input type="radio" id="q4-d" name="q4" value="Na expedição">
+        <label for="q4-d">Na expedição</label>
+      </div>
+      
+      <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova e Avançar</button>
       </form>
     </div>
     
