@@ -154,10 +154,8 @@ function ocultarQuantidadePaletes() {
 // ============================================
  
 async function gerarJSONeToken() {
-  // Trata a placa (apenas letras/números em maiúsculas sem traço)
   let placaDigitada = document.getElementById('placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
- 
-  // Captura dados de paletes
+
   const paletesOpcao = document.querySelector('input[name="paletes_opcao"]:checked')?.value;
   let quantidadePaletes = '';
   
@@ -168,13 +166,14 @@ async function gerarJSONeToken() {
       return;
     }
   }
- 
+
   const inspecao = {
     nome: document.getElementById('nome').value,
     cnh: document.getElementById('cnh').value,
     placa: placaDigitada,
     pedido: document.getElementById('pedido').value,
     eixos: document.getElementById('eixos').value,
+    sinalizacao: document.getElementById('sinalizacao').value,
     pneus: document.getElementById('pneus').value,
     carroceria: document.getElementById('carroceria').value,
     cinto: document.getElementById('cinto').value,
@@ -182,20 +181,27 @@ async function gerarJSONeToken() {
     alarme_re: document.getElementById('alarme_re').value,
     vazamentos: document.getElementById('vazamentos').value,
     calcos: document.getElementById('calcos').value,
+    tampa_silo: document.getElementById('tampa_silo').value,
+    epi_capacete: document.getElementById('epi_capacete').value,
+    epi_colete: document.getElementById('epi_colete').value,
+    epi_oculos: document.getElementById('epi_oculos').value,
+    epi_botina: document.getElementById('epi_botina').value,
+    epi_luvas: document.getElementById('epi_luvas').value,
     paletes_opcao: paletesOpcao || '',
     paletes_quantidade: quantidadePaletes || ''
   };
- 
-  if (!inspecao.nome || !inspecao.cnh || !inspecao.placa) {
-    alert('⚠️ Preencha todos os campos obrigatórios!');
+
+  if (!inspecao.nome || !inspecao.cnh || !inspecao.placa || !inspecao.sinalizacao || !inspecao.tampa_silo ||
+      !inspecao.epi_capacete || !inspecao.epi_colete || !inspecao.epi_oculos || !inspecao.epi_botina || !inspecao.epi_luvas) {
+    alert('⚠️ Preencha todos os campos obrigatórios da inspeção e EPIs!');
     return;
   }
- 
+
   if (!paletesOpcao) {
     alert('⚠️ Selecione uma opção para paletes!');
     return;
   }
- 
+
   try {
     const response = await fetch(`${WORKER_URL}/api/salvar-inspecao`, {
       method: 'POST',
@@ -205,9 +211,9 @@ async function gerarJSONeToken() {
         inspecao_dados: inspecao
       })
     });
- 
+
     const resultado = await response.json();
- 
+
     if (resultado.sucesso) {
       document.getElementById('form-inspecao').reset();
       document.getElementById('token-gerado').innerText = resultado.id_inspecao;
