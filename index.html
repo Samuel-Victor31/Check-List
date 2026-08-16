@@ -37,55 +37,62 @@
         <label for="reg-placa">Placa do Cavalo:</label>
         <input type="text" id="reg-placa" placeholder="ABC1234" maxlength="7" style="text-transform: uppercase;" required>
     
+        <!-- TERMOS DE COMPROMISSO E ADESÃO (EXPANDÍVEIS) -->
+        <h3>📜 Termos e Condições (Clique para abrir)</h3>
+        
         <!-- TERMO 1: PPAE -->
-        <h3>📜 1. Termo de Adesão ao PPAE (Álcool e Entorpecentes)</h3>
-        <div class="termo-box">
-          <p><strong>Programa de Prevenção para Álcool e Entorpecentes – PPAE</strong></p>
-          <p>Recebi o treinamento referente ao PPAE e declaro:</p>
-          <ol>
-            <li>Conhecer e aceitar integralmente as normas do Programa;</li>
-            <li>Concordar em submeter-me aos procedimentos de testes descritos no presente manual, autorizando desde já a coleta de qualquer material necessário para a realização daqueles exames e testes;</li>
-            <li>Autorizar que o resultado de tais testes seja informado de acordo com as informações constantes do presente manual;</li>
-            <li>Tenho conhecimento que o tratamento ambulatorial e/ou internação decorrente dos resultados positivos das testagens previstas neste Programa não gera estabilidade provisória de emprego ou salário.</li>
-          </ol>
-        </div>
-    
+        <details class="accordion-termo">
+          <summary>📜 1. Termo de Adesão ao PPAE (Álcool e Entorpecentes)</summary>
+          <div class="termo-box">
+            <p><strong>Programa de Prevenção para Álcool e Entorpecentes – PPAE</strong>[cite: 2]</p>
+            <p>Recebi no treinamento referente ao PPAE e declaro:[cite: 2]</p>
+            <ol>
+              <li>Conhecer e aceitar integralmente as normas do Programa;[cite: 2]</li>
+              <li>Concordar em submeter-me aos procedimentos de testes descritos no presente manual, autorizando desde já a coleta de qualquer material necessário para a realização daqueles exames e testes;[cite: 2]</li>
+              <li>Autorizar que o resultado de tais testes seja informado de acordo com as informações constantes do presente manual;[cite: 2]</li>
+              <li>Tenho conhecimento que o tratamento ambulatorial e/ou internação decorrente dos resultados positivos das testagens previstas neste Programa não gera estabilidade provisória de emprego ou salário.[cite: 2]</li>
+            </ol>
+          </div>
+        </details>
+        
         <div class="aceite-container">
           <label class="aceite-label">
             <input type="checkbox" id="aceite-ppae" required>
             <span>Li e estou de acordo com o Termo de Adesão ao PPAE.</span>
           </label>
         </div>
-    
+        
         <!-- TERMO 2: SAÚDE E SEGURANÇA FOB -->
-        <h3>📜 2. Termo de Compromisso de Saúde e Segurança (CSN Cimentos)</h3>
-        <div class="termo-box">
-          <p><strong>Eu declaro que fui apresentado à Política de Saúde e Segurança e assumo o compromisso de seguir todas as orientações:</strong></p>
-          <ol>
-            <li>É proibido trabalhar sob efeito de álcool e drogas;</li>
-            <li>É proibido entrar nas unidades da CSN Cimentos com caronas, acompanhantes (familiares, funcionários CSN Cimentos ou outros prestadores de serviço);</li>
-            <li>É proibido o uso de dispositivos móveis de comunicação, como celular (incluindo mensagens de texto) ou rádio, fones de ouvido, ou sistemas de viva voz (Bluetooth) especificamente para os motoristas enquanto eles estão dirigindo;</li>
-            <li>É proibido subir na carroceria ou implemento do veículo nas unidades CSN Cimentos;</li>
-            <li>É proibido realizar manutenção no veículo dentro da unidade sem autorização prévia da expedição;</li>
-            <li>É obrigatório comunicar a CSN Cimentos, imediatamente (máximo de 2 horas após o ocorrido), qualquer acidente ocorrido nas áreas internas da unidade (inclusive pátios), mesmo que seja leve e não tenha causado ferimento (incidente);</li>
-            <li>É obrigatório utilizar todos os EPIs (capacete com jugular, óculos, óculos ampla visão durante descarga de cimento a granel, calçado de segurança com palmilha anti-perfuro e biqueira, colete de alta visibilidade/camisa com refletivo e luvas) de acordo com as normas internas;</li>
-            <li>É obrigatório respeitar a capacidade máxima do conjunto (cavalo/carreta) estabelecida pela legislação;</li>
-            <li>Estacionar conforme orientação/sinalização, retirar a chave da ignição sempre que estacionar, além de manter o veículo calçado à frente e atrás da roda do lado esquerdo do eixo da tração, dentro e fora das dependências da CSN Cimentos;</li>
-            <li>É obrigatório o uso de faróis acesos mesmo durante o dia nas unidades CSN Cimentos;</li>
-            <li>Utilizar obrigatoriamente o cinto de segurança em qualquer movimentação de veículo, dentro e fora das dependências da CSN Cimentos;</li>
-            <li>Respeite a velocidade máxima indicada na placa de sinalização permitida para o tráfego no interior das unidades CSN Cimentos e nos clientes;</li>
-            <li>É proibido a utilização de fogões no pátio, bem como a manipulação (trocar, movimentar, conectar ou desconectar) botijões de gás nos pátios ou áreas internas das unidades;</li>
-            <li>Não transitar na área de carregamento. Mantenha distância dos equipamentos móveis (empilhadeira, paletizadora, etc.); permaneça nas áreas específicas para pedestres;</li>
-            <li>Comunique a CSN Cimentos as situações inseguras que encontrar;</li>
-            <li>É expressamente proibido bater no silo com materiais metálicos. De acordo com as recomendações do fabricante, durante a descarga é proibido bater com qualquer tipo de material no silo. É proibida utilização de celular nas baias de carga/descarga. Não utilizar alavanca para fechar ou abrir as conexões. Utilize o cabo anti-chicoteamento em todos os pontos de conexão pressurizada;</li>
-            <li>Proibido utilização de adornos (anéis, aliança, cordões, relógios etc.) dentro da operação de carga/descarga;</li>
-            <li>Proibido utilização de camisas regatas, short e chinelos nas unidades CSN Cimentos;</li>
-            <li>As carrocerias dos veículos devem estar organizadas;</li>
-            <li>Cumprir as demais regras internas de carregamento das unidades, conforme orientação das expedições das unidades;</li>
-            <li>É expressamente proibido tirar fotos ou realizar qualquer tipo de vídeo sem autorização formal da CSN Cimentos.</li>
-          </ol>
-        </div>
-    
+        <details class="accordion-termo">
+          <summary>📜 2. Termo de Compromisso de Saúde e Segurança (CSN Cimentos)</summary>
+          <div class="termo-box">
+            <p><strong>Eu declaro que fui apresentado à Política de Saúde e Segurança e assumo o compromisso de seguir todas as orientações:</strong>[cite: 3]</p>
+            <ol>
+              <li>É proibido trabalhar sob efeito de álcool e drogas;[cite: 3]</li>
+              <li>É proibido entrar nas unidades da CSN Cimentos com caronas, acompanhantes (familiares, funcionários CSN Cimentos ou outros prestadores de serviço);[cite: 3]</li>
+              <li>É proibido o uso de dispositivos móveis de comunicação, como celular (incluindo mensagens de texto) ou rádio, fones de ouvido, ou sistemas de viva voz (Bluetooth) especificamente para os motoristas enquanto eles estão dirigindo;[cite: 3]</li>
+              <li>É proibido subir na carroceria ou implemento do veículo nas unidades CSN Cimentos;[cite: 3]</li>
+              <li>É proibido realizar manutenção no veículo dentro da unidade sem autorização prévia da expedição;[cite: 3]</li>
+              <li>É obrigatório comunicar a CSN Cimentos, imediatamente (máximo de 2 horas após o ocorrido), qualquer acidente ocorrido nas áreas internas da unidade (inclusive pátios), mesmo que seja leve e não tenha causado ferimento (incidente);[cite: 3]</li>
+              <li>É obrigatório utilizar todos os EPIs (capacete com jugular, óculos, óculos ampla visão durante descarga de cimento a granel, calçado de segurança com palmilha anti-perfuro e biqueira, colete de alta visibilidade/camisa com refletivo e luvas) de acordo com as normas internas;[cite: 3]</li>
+              <li>É obrigatório respetar a capacidade máxima do conjunto (cavalo/carreta) estabelecida pela legislação;[cite: 3]</li>
+              <li>Estacionar conforme orientação/sinalização, retirar a chave da ignição sempre que estacionar, além de manter o veículo calçado à frente e atrás da roda do lado esquerdo do eixo da tração, dentro e fora das dependências da CSN Cimentos;[cite: 3]</li>
+              <li>É obrigatório o uso de faróis acesos mesmo durante o dia nas unidades CSN Cimentos;[cite: 3]</li>
+              <li>Utilizar obrigatoriamente o cinto de segurança em qualquer movimentação de veículo, dentro e fora das dependências da CSN Cimentos;[cite: 3]</li>
+              <li>Respeite a velocidade máxima indicada na placa de sinalização permitida para o tráfego no interior das unidades CSN Cimentos e nos clientes;[cite: 3]</li>
+              <li>É proibido a utilização de fogões no pátio, bem como a manipulação (trocar, movimentar, conectar ou desconectar) botijões de gás nos pátios ou áreas internas das unidades;[cite: 3]</li>
+              <li>Não transitar na área de carregamento. Mantenha distância dos equipamentos móveis (empilhadeira, paletizadora, etc.); permaneça nas áreas específicas para pedestres;[cite: 3]</li>
+              <li>Comunique a CSN Cimentos as situações inseguras que encontrar;[cite: 3]</li>
+              <li>É expressamente proibido bater no silo com materiais metálicos. De acordo com as recomendações do fabricante, durante a descarga é proibido bater com qualquer tipo de material no silo. É proibida utilização de celular nas baias de carga/descarga. Não utilizar alavanca para fechar ou abrir as conexões. Utilize o cabo anti-chicoteamento em todos os pontos de conexão pressurizada;[cite: 3]</li>
+              <li>Proibido utilização de adornos (anéis, aliança, cordões, relógios etc.) dentro da operação de carga/descarga;[cite: 3]</li>
+              <li>Proibido utilização de camisas regatas, short e chinelos nas unidades CSN Cimentos;[cite: 3]</li>
+              <li>As carrocerias dos veículos devem estar organizadas;[cite: 3]</li>
+              <li>Cumprir as demais regras internas de carregamento das unidades, conforme orientação das expedições das unidades;[cite: 3]</li>
+              <li>É expressamente proibido tirar fotos ou realizar qualquer tipo de vídeo sem autorização formal da CSN Cimentos.[cite: 3]</li>
+            </ol>
+          </div>
+        </details>
+        
         <div class="aceite-container">
           <label class="aceite-label">
             <input type="checkbox" id="aceite-fob" required>
