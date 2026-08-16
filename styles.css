@@ -396,10 +396,17 @@ select:focus {
   cursor: pointer;
 }
 
-/* AJUDA DA CNH (IMAGEM EXPLICATIVA) */
-.helper-cnh {
-  margin-top: -8px;
+/* CONTAINER E BOTÃO DE AJUDA CNH */
+.form-group-cnh {
   margin-bottom: 15px;
+}
+
+.helper-cnh {
+  margin-top: 5px;
+  background: #f1f3f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 8px 12px;
 }
 
 .helper-cnh summary {
@@ -408,18 +415,18 @@ select:focus {
   font-weight: 600;
   cursor: pointer;
   user-select: none;
-  transition: color 0.2s;
+  display: flex;
+  align-items: center;
 }
 
 .helper-cnh summary:hover {
   color: #764ba2;
-  text-decoration: underline;
 }
 
 .helper-cnh-img {
   margin-top: 10px;
   padding: 8px;
-  background: #f8f9fa;
+  background: #ffffff;
   border: 1px dashed #667eea;
   border-radius: 6px;
   text-align: center;
