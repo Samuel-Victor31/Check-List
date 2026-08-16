@@ -395,3 +395,39 @@ select:focus {
   accent-color: #28a745; /* Deixa o quadradinho do check verde */
   cursor: pointer;
 }
+
+/* AJUDA DA CNH (IMAGEM EXPLICATIVA) */
+.helper-cnh {
+  margin-top: -8px;
+  margin-bottom: 15px;
+}
+
+.helper-cnh summary {
+  font-size: 13px;
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.helper-cnh summary:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.helper-cnh-img {
+  margin-top: 10px;
+  padding: 8px;
+  background: #f8f9fa;
+  border: 1px dashed #667eea;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.helper-cnh-img img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
