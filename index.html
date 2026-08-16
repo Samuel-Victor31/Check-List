@@ -91,6 +91,7 @@
       <h2>🔍 Formulário de Inspeção Veicular (FOB)</h2>
       
       <form id="form-inspecao">
+        <!-- DADOS DO MOTORISTA E VEÍCULO -->
         <label for="nome">Nome Completo:</label>
         <input type="text" id="nome" placeholder="João da Silva" required>
     
@@ -106,9 +107,29 @@
         <label for="eixos">Quantidade total de eixos:</label>
         <input type="text" id="eixos" placeholder="2" inputmode="numeric" required>
         
+        <!-- BLOCO DE INFORMAÇÕES DA FOTO (REGRAS DE INSPEÇÃO) -->
+        <h3>📜 REGRAS INSPEÇÃO VEÍCULOS DE CLIENTES</h3>
+        <div class="regras-container">
+          <p>Segurança é o valor que permeia toda nossa empresa e deve estar incorporado em tudo que fazemos. Por isso, o veículo deverá apresentar condições seguras para entrada nas plantas.</p>
+          <p>Os itens descritos neste formulário devem estar em boas condições de funcionamento. Eles zelam pela segurança de condutores, pedestres e passageiros.</p>
+          
+          <p style="margin-top: 15px; font-weight: bold; color: #333;">VERIFIQUE COM ATENÇÃO:</p>
+          <ul>
+            <li><strong>SINALIZAÇÃO / PLACAS / FAIXAS:</strong> Veículo deve estar devidamente identificado, com placa visível e faixas refletivas operacionais.</li>
+            <li><strong>PNEUS:</strong> Além de passível de multas, pneus carecas ou danificados (Cortes, rasgos, bolhas) afetam a dirigibilidade e podem estourar quando o peso da carga for posta sobre ele.</li>
+            <li><strong>CARROCERIA:</strong> Falhas na forração da carroceria podem levar a entrada de umidade pela parte inferior e provocar queda dos operadores que trabalham sobre ele.</li>
+            <li><strong>CINTO DE SEGURANÇA:</strong> A segurança do condutor está em primeiro lugar.</li>
+            <li><strong>FARÓIS:</strong> Devem estar em funcionamento.</li>
+            <li><strong>ALARME DE RÉ:</strong> Muitos acidentes acontecem em manobras de ré. Em um ambiente com intensa movimentação de empilhadeiras, outros caminhões e eventualmente pessoas, este é um item crítico para veículos pesados.</li>
+            <li><strong>ÓLEO / ÁGUA / COMBUSTÍVEL:</strong> Há vazamento contínuo de fluido (óleo, água, combustível)? A tampa de combustível está danificada?</li>
+            <li><strong>CALÇO DE RODA:</strong> A fim de evitar acidentes com locomoção inesperada do veículo, todos os veículos de carga devem possuir um par de calços.</li>
+            <li><strong>TAMPA SILO – CARRETA GRANEL:</strong> As tampas da carreta silo deverão estar com uma trava de segurança, sem trincas, soldas e com todos os manípulos fechando corretamente.</li>
+          </ul>
+        </div>
+    
+        <!-- ITENS DE INSPEÇÃO VEICULAR -->
         <h3>Itens de Inspeção Veicular</h3>
     
-        <!-- ITEM NOVO: SINALIZAÇÃO / FAIXA REFLETIVA / PLACA -->
         <div class="item-check">
           <span>🛑 Sinalização (Placa visível / Faixas refletivas):</span>
           <select id="sinalizacao" required>
@@ -181,7 +202,6 @@
           </select>
         </div>
     
-        <!-- ITEM NOVO: TAMPA SILO -->
         <div class="item-check">
           <span>⚙️ Tampa Silo (Carreta Granel / Pote):</span>
           <select id="tampa_silo" required>
@@ -192,7 +212,7 @@
           </select>
         </div>
     
-        <!-- NOVA SEÇÃO: EQUIPAMENTOS DE PROTEÇÃO INDIVIDUAL (EPIs) -->
+        <!-- EQUIPAMENTOS DE PROTEÇÃO INDIVIDUAL (EPIs) -->
         <h3>🪖 Equipamentos de Proteção Individual (EPIs)</h3>
         
         <div class="item-check">
