@@ -1,13 +1,15 @@
 // ============================================
 // CONFIGURAÇÃO INICIAL
 // ============================================
- 
+
 const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev';
- 
+
+// GABARITO ATUALIZADO COM 4 QUESTÕES
 const GABARITO = {
   q1: 'Madeira',
   q2: 'Todos os dias',
-  q3: 'Bloqueada pelo responsável CSN Cimentos'
+  q3: 'Ir para um ponto mais próximo indicado pela brigada de emergência',
+  q4: 'Bloqueada pelo responsável CSN CIMENTOS.'
 };
  
 let cpfAtual = '';
@@ -79,33 +81,36 @@ async function concluirIntegracao() {
     return;
   }
 
+  // CAPTURA AS RESPOSTAS DAS 4 QUESTÕES
   const respostas = {
     q1: document.querySelector('input[name="q1"]:checked')?.value,
     q2: document.querySelector('input[name="q2"]:checked')?.value,
-    q3: document.querySelector('input[name="q3"]:checked')?.value
+    q3: document.querySelector('input[name="q3"]:checked')?.value,
+    q4: document.querySelector('input[name="q4"]:checked')?.value
   };
 
-  if (!respostas.q1 || !respostas.q2 || !respostas.q3) {
-    alert('⚠️ Responda todas as questões da prova!');
+  if (!respostas.q1 || !respostas.q2 || !respostas.q3 || !respostas.q4) {
+    alert('⚠️ Responda todas as 4 questões da prova!');
     return;
   }
 
+  // CORRIGE A PROVA
   let acertos = 0;
   let feedback = 'Resultado da Prova:\n\n';
 
   for (let questao in GABARITO) {
     if (respostas[questao] === GABARITO[questao]) {
       acertos++;
-      feedback += `✅ ${questao}: Correto!\n`;
+      feedback += `✅ Questão ${questao.replace('q', '')}: Correto!\n`;
     } else {
-      feedback += `❌ ${questao}: Incorreto. Resposta: ${GABARITO[questao]}\n`;
+      feedback += `❌ Questão ${questao.replace('q', '')}: Incorreto.\n`;
     }
   }
 
-  feedback += `\nTotal: ${acertos}/3 acertos`;
+  feedback += `\nTotal: ${acertos}/4 acertos`;
   alert(feedback);
 
-  if (acertos === 3) {
+  if (acertos === 4) {
     await salvarMotoristaComProva(nome, rg, telefone, placa, respostas);
     
     document.getElementById('nome').value = nome;
@@ -113,7 +118,7 @@ async function concluirIntegracao() {
     
     irParaInspecao();
   } else {
-    alert('⚠️ Você precisa acertar TODAS as questões. Tente novamente!');
+    alert('⚠️ Você precisa acertar TODAS as 4 questões para avançar. Tente novamente!');
     document.getElementById('form-prova').reset();
   }
 }
