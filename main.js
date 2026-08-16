@@ -61,32 +61,38 @@ async function verificarAcesso() {
 // ============================================
  
 async function concluirIntegracao() {
-  // Capturar novos dados cadastrais
   const nome = document.getElementById('reg-nome').value.trim();
+  const rg = document.getElementById('reg-rg').value.trim();
   const telefone = document.getElementById('reg-telefone').value.trim();
   let placa = document.getElementById('reg-placa').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
- 
-  if (!nome || !telefone || !placa) {
-    alert('⚠️ Por favor, preencha todos os dados de cadastro (Nome, Telefone e Placa do Cavalo)!');
+  
+  const aceitePPAE = document.getElementById('aceite-ppae').checked;
+  const aceiteFOB = document.getElementById('aceite-fob').checked;
+
+  if (!nome || !rg || !telefone || !placa) {
+    alert('⚠️ Por favor, preencha todos os dados de cadastro (Nome, RG, Telefone e Placa)!');
     return;
   }
- 
-  // Pegar respostas da prova
+
+  if (!aceitePPAE || !aceiteFOB) {
+    alert('⚠️ Você precisa marcar o aceite em AMBOS os termos para continuar!');
+    return;
+  }
+
   const respostas = {
     q1: document.querySelector('input[name="q1"]:checked')?.value,
     q2: document.querySelector('input[name="q2"]:checked')?.value,
     q3: document.querySelector('input[name="q3"]:checked')?.value
   };
- 
+
   if (!respostas.q1 || !respostas.q2 || !respostas.q3) {
     alert('⚠️ Responda todas as questões da prova!');
     return;
   }
- 
-  // Corrigir prova
+
   let acertos = 0;
   let feedback = 'Resultado da Prova:\n\n';
- 
+
   for (let questao in GABARITO) {
     if (respostas[questao] === GABARITO[questao]) {
       acertos++;
@@ -95,15 +101,13 @@ async function concluirIntegracao() {
       feedback += `❌ ${questao}: Incorreto. Resposta: ${GABARITO[questao]}\n`;
     }
   }
- 
+
   feedback += `\nTotal: ${acertos}/3 acertos`;
   alert(feedback);
- 
+
   if (acertos === 3) {
-    // Salvar o cadastro e aprovação do motorista no Cloudflare
-    await salvarMotoristaComProva(nome, telefone, placa, respostas);
+    await salvarMotoristaComProva(nome, rg, telefone, placa, respostas);
     
-    // Transfere o nome e a placa para o formulário da Etapa 3
     document.getElementById('nome').value = nome;
     document.getElementById('placa').value = placa;
     
@@ -113,8 +117,8 @@ async function concluirIntegracao() {
     document.getElementById('form-prova').reset();
   }
 }
- 
-async function salvarMotoristaComProva(nome, telefone, placa, respostas) {
+
+async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
   try {
     await fetch(`${WORKER_URL}/api/salvar-motorista`, {
       method: 'POST',
@@ -122,8 +126,12 @@ async function salvarMotoristaComProva(nome, telefone, placa, respostas) {
       body: JSON.stringify({
         cpf: cpfAtual,
         nome: nome,
+        rg: rg,
         telefone: telefone,
         placa: placa,
+        aceite_ppae: true,
+        aceite_fob: true,
+        data_aceite: new Date().toISOString(),
         prova_respondida: {
           data: new Date().toISOString(),
           respostas,
