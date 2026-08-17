@@ -37,7 +37,8 @@
     
     <!-- ETAPA 2: INTEGRAÇÃO & TERMOS (1º Acesso) -->
     <div class="card hidden" id="step-integracao">
-      <h2>📋 1º Acesso: Cadastro & Termos</h2>
+      <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar</button>
+      <h2>📋 1º Acesso: Cadastro & Termos</h2>      
       
       <form id="form-prova">
         <h3>Dados de Cadastro do Motorista</h3>
@@ -198,11 +199,12 @@
       </form>
     </div>
     
-    <!-- ETAPA 3: FORMULÁRIO DE INSPEÇÃO -->
-    <div class="card hidden" id="step-inspecao">
-      <h2>🔍 Formulário de Inspeção Veicular (FOB)</h2>
+  <!-- ETAPA 3: FORMULÁRIO DE INSPEÇÃO -->
+  <div class="card hidden" id="step-inspecao">
+    <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar para a Tela Inicial</button>
+    <h2>🔍 Formulário de Inspeção Veicular (FOB)</h2>      
       
-      <form id="form-inspecao">
+    <form id="form-inspecao">
         <!-- DADOS DO MOTORISTA E VEÍCULO -->
         <label for="nome">Nome Completo:</label>
         <input type="text" id="nome" placeholder="EX: João da Silva" required>
