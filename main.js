@@ -11,44 +11,47 @@ const GABARITO = {
   q3: 'Ir para um ponto mais próximo indicado pela brigada de emergência',
   q4: 'Bloqueada pelo responsável CSN CIMENTOS.'
 };
- 
+
 let cpfAtual = '';
 let dadosMotoristaAtual = {};
- 
+let ehPrimeiraVez = false;
+
 // ============================================
 // ETAPA 1: VERIFICAR CPF
 // ============================================
- 
+
 async function verificarAcesso() {
   const inputCPF = document.getElementById('input-cpf');
   const cpf = inputCPF.value.trim();
- 
+
   if (cpf.length !== 11 || isNaN(cpf)) {
     alert('❌ CPF inválido! Digite 11 números.');
     return;
   }
- 
+
   cpfAtual = cpf;
- 
+
   try {
     const response = await fetch(`${WORKER_URL}/api/verificar-cpf`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ cpf })
     });
- 
+
     const resultado = await response.json();
- 
+
     if (resultado.existe) {
+      ehPrimeiraVez = false; // Motorista veterano
       dadosMotoristaAtual = resultado.dados;
       console.log('Motorista encontrado:', dadosMotoristaAtual);
-      
-      // Auto-preenche os dados já cadastrados do motorista na tela de inspeção
+
+      // Auto-preenche os dados já cadastrados na tela de inspeção
       if (dadosMotoristaAtual.nome) document.getElementById('nome').value = dadosMotoristaAtual.nome;
       if (dadosMotoristaAtual.placa) document.getElementById('placa').value = dadosMotoristaAtual.placa;
-      
+
       irParaInspecao();
     } else {
+      ehPrimeiraVez = true; // Novo motorista
       console.log('Novo motorista - mostrando prova e cadastro');
       irParaIntegracao();
     }
@@ -57,20 +60,20 @@ async function verificarAcesso() {
     alert('⚠️ Erro ao conectar com o servidor. Verifique a conexão.');
   }
 }
- 
+
 // ============================================
 // ETAPA 2: INTEGRAÇÃO & PROVA (1º Acesso)
 // ============================================
- 
+
 async function concluirIntegracao() {
   const nome = document.getElementById('reg-nome').value.trim();
   const rg = document.getElementById('reg-rg').value.trim();
   const telefone = document.getElementById('reg-telefone').value.trim();
   let placa = document.getElementById('reg-placa').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-  
+
   const aceitePPAE = document.getElementById('aceite-ppae').checked;
   const aceiteFOB = document.getElementById('aceite-fob').checked;
-  const aceiteLGPD = document.getElementById('aceite-lgpd').checked; // CAPTURA ACEITE LGPD
+  const aceiteLGPD = document.getElementById('aceite-lgpd')?.checked; // Captura aceite LGPD
 
   if (!nome || !rg || !telefone || !placa) {
     alert('⚠️ Por favor, preencha todos os dados de cadastro (Nome, RG, Telefone e Placa)!');
@@ -78,7 +81,7 @@ async function concluirIntegracao() {
   }
 
   if (!aceitePPAE || !aceiteFOB || !aceiteLGPD) {
-    alert('⚠️ Você precisa marcar o aceite em TODOS os 3 termos para continuar!');
+    alert('⚠️ Você precisa marcar o aceite em TODOS os termos para continuar!');
     return;
   }
 
@@ -113,10 +116,10 @@ async function concluirIntegracao() {
 
   if (acertos === 4) {
     await salvarMotoristaComProva(nome, rg, telefone, placa, respostas);
-    
+
     document.getElementById('nome').value = nome;
     document.getElementById('placa').value = placa;
-    
+
     irParaInspecao();
   } else {
     alert('⚠️ Você precisa acertar TODAS as 4 questões para avançar. Tente novamente!');
@@ -137,7 +140,7 @@ async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
         placa: placa,
         aceite_ppae: true,
         aceite_fob: true,
-        aceite_lgpd: true, // ENVIADO AO WORKER
+        aceite_lgpd: true,
         data_aceite: new Date().toISOString(),
         prova_respondida: {
           data: new Date().toISOString(),
@@ -154,26 +157,29 @@ async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
 // ============================================
 // FUNÇÕES PARA CONTROLAR CAMPO DE PALETES
 // ============================================
- 
+
 function mostrarQuantidadePaletes() {
   document.getElementById('quantidade-paletes-container').style.display = 'block';
 }
- 
+
 function ocultarQuantidadePaletes() {
-  document.getElementById('quantidade-paletes-container').style.display = 'none';
-  document.getElementById('quantidade-paletes').value = '';
+  const container = document.getElementById('quantidade-paletes-container');
+  if (container) container.style.display = 'none';
+
+  const inputQtd = document.getElementById('quantidade-paletes');
+  if (inputQtd) inputQtd.value = '';
 }
- 
+
 // ============================================
 // ETAPA 3: INSPEÇÃO VEICULAR
 // ============================================
- 
+
 async function gerarJSONeToken() {
   let placaDigitada = document.getElementById('placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
   const paletesOpcao = document.querySelector('input[name="paletes_opcao"]:checked')?.value;
   let quantidadePaletes = '';
-  
+
   if (paletesOpcao === 'SIM') {
     quantidadePaletes = document.getElementById('quantidade-paletes').value.trim();
     if (!quantidadePaletes) {
@@ -239,51 +245,85 @@ async function gerarJSONeToken() {
     alert('⚠️ Erro ao salvar inspeção!');
   }
 }
- 
+
 function copiarToken() {
   const token = document.getElementById('token-gerado').innerText;
   navigator.clipboard.writeText(token).then(() => {
     alert('📋 Código copiado com sucesso!');
   });
 }
- 
+
 // ============================================
-// CONTROLE DE ABAS / ETAPAS
+// CONTROLE DE NAVEGAÇÃO / BOTÃO VOLTAR
 // ============================================
- 
+
+function voltarPaginaAnterior() {
+  const etapaInspecaoVisivel = !document.getElementById('step-inspecao').classList.contains('hidden');
+
+  // Se estiver na Inspeção e for a 1ª vez do motorista, volta para o Cadastro/Prova
+  if (etapaInspecaoVisivel && ehPrimeiraVez) {
+    irParaIntegracao();
+  } else {
+    // Se for motorista antigo ou estiver no Cadastro, volta direto para a Tela Inicial (CPF)
+    irParaCPF();
+  }
+}
+
 function irParaCPF() {
   ocultarTodas();
+
+  // Reset de todos os campos e formulários
+  const inputCPF = document.getElementById('input-cpf');
+  if (inputCPF) inputCPF.value = '';
+
+  const formProva = document.getElementById('form-prova');
+  if (formProva) formProva.reset();
+
+  const formInspecao = document.getElementById('form-inspecao');
+  if (formInspecao) formInspecao.reset();
+
+  ocultarQuantidadePaletes();
+
+  // Reseta variáveis globais
+  cpfAtual = '';
+  dadosMotoristaAtual = {};
+  ehPrimeiraVez = false;
+
   document.getElementById('step-cpf').classList.remove('hidden');
-  document.getElementById('input-cpf').value = '';
 }
- 
+
 function irParaIntegracao() {
   ocultarTodas();
+
+  // Reseta a inspeção ao voltar para a etapa de cadastro
+  const formInspecao = document.getElementById('form-inspecao');
+  if (formInspecao) formInspecao.reset();
+  ocultarQuantidadePaletes();
+
   document.getElementById('step-integracao').classList.remove('hidden');
 }
- 
+
 function irParaInspecao() {
   ocultarTodas();
   document.getElementById('step-inspecao').classList.remove('hidden');
-  
-  // Limita o tamanho e ajusta o placeholder da placa
+
   const inputPlaca = document.getElementById('placa');
   if (inputPlaca) {
     inputPlaca.maxLength = 7;
     inputPlaca.placeholder = 'abc1234';
   }
 }
- 
+
 function irParaSucesso() {
   ocultarTodas();
   document.getElementById('step-sucesso').classList.remove('hidden');
 }
- 
+
 function ocultarTodas() {
   document.getElementById('step-cpf').classList.add('hidden');
   document.getElementById('step-integracao').classList.add('hidden');
   document.getElementById('step-inspecao').classList.add('hidden');
   document.getElementById('step-sucesso').classList.add('hidden');
 }
- 
+
 document.addEventListener('DOMContentLoaded', irParaCPF);
