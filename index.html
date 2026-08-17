@@ -10,14 +10,31 @@
 <body>
   <div class="container">
     
-    <!-- ETAPA 1: BUSCA CPF -->
+<!-- ETAPA 1: BUSCA CPF -->
     <div class="card" id="step-cpf">
       <h2>🚗 Acesso do Motorista</h2>
+
+      <!-- INFORMATIVO LGPD (SUMÁRIO DE DADOS COLETADOS) -->
+      <details class="accordion-termo" style="margin-bottom: 20px;">
+        <summary>ℹ️ Aviso de Privacidade & LGPD (Lei nº 13.709/2018)</summary>
+        <div class="termo-box">
+          <p><strong>Tratamento Transparente de Dados Pessoais:</strong></p>
+          <p>Este sistema coleta dados exclusivamente para fins de segurança operacional, controle de acesso e emissão de checklists de inspeção veicular.</p>
+          <p><strong>📌 Dados Coletados:</strong></p>
+          <ul>
+            <li>CPF, Nome, RG e Telefone (Identificação do motorista);</li>
+            <li>CNH, Placa, Pedido e Eixos (Identificação e conformidade veicular).</li>
+          </ul>
+          <p><strong>🔒 Segurança e Retenção:</strong></p>
+          <p>Seus dados são armazenados de forma segura e criptografada. Não compartilhamos suas informações para fins comerciais. Para o primeiro acesso, será necessário o aceite dos termos regulamentares.</p>
+        </div>
+      </details>
+
       <label for="input-cpf">Informe seu CPF (somente números):</label>
       <input type="text" id="input-cpf" placeholder="EX: 00000000000" maxlength="11" inputmode="numeric">
       <button type="button" class="btn" onclick="verificarAcesso()">Continuar</button>
     </div>
-
+    
     <!-- ETAPA 2: INTEGRAÇÃO & TERMOS (1º Acesso) -->
     <div class="card hidden" id="step-integracao">
       <h2>📋 1º Acesso: Cadastro & Termos</h2>
