@@ -70,14 +70,15 @@ async function concluirIntegracao() {
   
   const aceitePPAE = document.getElementById('aceite-ppae').checked;
   const aceiteFOB = document.getElementById('aceite-fob').checked;
+  const aceiteLGPD = document.getElementById('aceite-lgpd').checked; // CAPTURA ACEITE LGPD
 
   if (!nome || !rg || !telefone || !placa) {
     alert('⚠️ Por favor, preencha todos os dados de cadastro (Nome, RG, Telefone e Placa)!');
     return;
   }
 
-  if (!aceitePPAE || !aceiteFOB) {
-    alert('⚠️ Você precisa marcar o aceite em AMBOS os termos para continuar!');
+  if (!aceitePPAE || !aceiteFOB || !aceiteLGPD) {
+    alert('⚠️ Você precisa marcar o aceite em TODOS os 3 termos para continuar!');
     return;
   }
 
@@ -136,6 +137,7 @@ async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
         placa: placa,
         aceite_ppae: true,
         aceite_fob: true,
+        aceite_lgpd: true, // ENVIADO AO WORKER
         data_aceite: new Date().toISOString(),
         prova_respondida: {
           data: new Date().toISOString(),
@@ -148,7 +150,7 @@ async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
     console.error('Erro ao salvar motorista:', erro);
   }
 }
- 
+
 // ============================================
 // FUNÇÕES PARA CONTROLAR CAMPO DE PALETES
 // ============================================
