@@ -189,17 +189,17 @@ async function concluirIntegracao() {
   alert(feedback);
 
   if (acertos === 4) {
-    await salvarMotoristaComProva(nome, rg, telefone, placa, respostas);
-
-    document.getElementById('nome').value = nome;
-    document.getElementById('placa').value = placa;
-
-    irParaInspecao();
-  } else {
-    alert('⚠️ Você precisa acertar TODAS as 4 questões para avançar. Tente novamente!');
+      await salvarMotoristaComProva(nome, rg, telefone, placa, respostas);
+  
+      document.getElementById('nome').value = nome;
+      document.getElementById('placa').value = placa;
+  
+      irParaInspecao();
+    } else {
+      // Mantém todos os campos intactos para o motorista apenas corrigir a resposta errada!
+      alert('⚠️ Você errou alguma(s) questão(ões). Verifique o resultado acima e tente novamente!');
+    }
   }
-}
-
 async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
   const aceiteVideo = document.getElementById('aceite-video').checked;
 
@@ -430,7 +430,7 @@ function voltarPaginaAnterior() {
 function irParaCPF() {
   ocultarTodas();
 
-  // Reset de campos
+  // Reset dos campos APENAS quando voltar para a Tela Inicial de CPF
   const inputCPF = document.getElementById('input-cpf');
   if (inputCPF) inputCPF.value = '';
 
@@ -454,6 +454,7 @@ function irParaCPF() {
 function irParaIntegracao() {
   ocultarTodas();
 
+  // NÃO limpamos o form-prova aqui para preservar os dados caso ele alterne de tela
   const formInspecao = document.getElementById('form-inspecao');
   if (formInspecao) formInspecao.reset();
 
