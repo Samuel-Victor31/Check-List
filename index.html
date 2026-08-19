@@ -234,13 +234,13 @@
         </div>        
         
         <label for="placa">Placa do Veículo (Cavalo):</label>
-        <input type="text" id="placa" placeholder="EX: ABC1234" required>
-    
+        <input type="text" id="placa" placeholder="EX: ABC1234 ou ABC1A34" maxlength="7" style="text-transform: uppercase;" required>    
+        
         <label for="pedido">Nº do Pedido:</label>
-        <input type="text" id="pedido" placeholder="EX: 8999999" maxlength="8" inputmode="numeric" required>
-                
+        <input type="text" id="pedido" placeholder="EX: 8900000" maxlength="8" inputmode="numeric" required>                
+        
         <label for="eixos">Quantidade total de eixos:</label>
-        <input type="text" id="eixos" placeholder="EX: 3" inputmode="numeric" required>
+        <input type="text" id="eixos" placeholder="EX: 3 (máx. 9)" maxlength="1" inputmode="numeric" required>
         
         <!-- BLOCO DE INFORMAÇÕES DA FOTO (REGRAS DE INSPEÇÃO) -->
         <h3>📜 REGRAS INSPEÇÃO VEÍCULOS DE CLIENTES</h3>
