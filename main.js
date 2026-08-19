@@ -1,53 +1,20 @@
 // ============================================
-// LÓGICA DINÂMICA DE EXIBIÇÃO POR TIPO DE VEÍCULO
+// CONFIGURAÇÃO INICIAL E CONSTANTES
 // ============================================
 
-function atualizarCamposPorTipoVeiculo() {
-  const tipoVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked')?.value;
-  
-  const containerTampaSilo = document.getElementById('container-tampa-silo');
-  const selectTampaSilo = document.getElementById('tampa_silo');
-  
-  const containerPaletes = document.getElementById('container-paletes');
-  const radioPaletesNA = id('paletes-na') || document.querySelector('input[name="paletes_opcao"][value="NA"]');
+const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev';
 
-  if (tipoVeiculo === 'CARGA_SECA') {
-    // 1. Oculta o campo Tampa do Silo e define automaticamente "NA"
-    if (containerTampaSilo) containerTampaSilo.style.display = 'none';
-    if (selectTampaSilo) selectTampaSilo.value = 'NA';
+// GABARITO DA PROVA (4 QUESTÕES)
+const GABARITO = {
+  q1: 'Borracha',
+  q2: 'Todos os dias',
+  q3: 'Ir para um ponto mais próximo indicado pela brigada de emergência',
+  q4: 'Bloqueada pelo responsável CSN CIMENTOS.'
+};
 
-    // 2. Exibe a seção de Paletes
-    if (containerPaletes) containerPaletes.style.display = 'block';
-
-  } else if (tipoVeiculo === 'CARRETA_SILO') {
-    // 1. Exibe o campo Tampa do Silo e restaura a seleção limpa se estiver em "NA"
-    if (containerTampaSilo) containerTampaSilo.style.display = 'flex';
-    if (selectTampaSilo && selectTampaSilo.value === 'NA') selectTampaSilo.value = '';
-
-    // 2. Oculta a seção de Paletes, seleciona "N/A" e esconde a quantidade
-    if (containerPaletes) containerPaletes.style.display = 'none';
-    if (radioPaletesNA) radioPaletesNA.checked = true;
-    ocultarQuantidadePaletes();
-  }
-}
-
-// Vincula o evento aos radios de tipo_veiculo
-document.addEventListener('change', function(e) {
-  if (e.target && e.target.name === 'tipo_veiculo') {
-    atualizarCamposPorTipoVeiculo();
-  }
-});
-
-// Função auxiliar simples para pegar elemento por ID
-function id(el) {
-  return document.getElementById(el);
-}
-
-// Valida se a quantidade de eixos é apenas 1 dígito numérico entre 1 e 9
-function validarEixos(eixos) {
-  const regexEixos = /^[1-9]{1}$/;
-  return regexEixos.test(eixos);
-}
+let cpfAtual = '';
+let dadosMotoristaAtual = {};
+let ehPrimeiraVez = false;
 
 // ============================================
 // FUNÇÕES AUXILIARES DE VALIDAÇÃO
@@ -71,23 +38,16 @@ function validarTelefone(telefone) {
   return regexTelefone.test(telefone);
 }
 
-// ============================================
-// CONFIGURAÇÃO INICIAL
-// ============================================
+// Valida se a quantidade de eixos é apenas 1 dígito numérico entre 1 e 9
+function validarEixos(eixos) {
+  const regexEixos = /^[1-9]{1}$/;
+  return regexEixos.test(eixos);
+}
 
-const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev';
-
-// GABARITO ATUALIZADO COM 4 QUESTÕES
-const GABARITO = {
-  q1: 'Borracha',
-  q2: 'Todos os dias',
-  q3: 'Ir para um ponto mais próximo indicado pela brigada de emergência',
-  q4: 'Bloqueada pelo responsável CSN CIMENTOS.'
-};
-
-let cpfAtual = '';
-let dadosMotoristaAtual = {};
-let ehPrimeiraVez = false;
+// Função auxiliar simples para obter elemento por ID
+function id(el) {
+  return document.getElementById(el);
+}
 
 // ============================================
 // ETAPA 1: VERIFICAR CPF
@@ -135,12 +95,14 @@ async function verificarAcesso() {
 }
 
 // ============================================
-// LÓGICA DE BLOQUEIO/DESBLOQUEIO DA PROVA
+// LÓGICA DE BLOQUEIO / DESBLOQUEIO DA PROVA
 // ============================================
 
 function alternarBloqueioProva() {
-  const aceiteVideo = document.getElementById('aceite-video').checked;
+  const aceiteVideo = document.getElementById('aceite-video')?.checked;
   const secaoProva = document.getElementById('secao-prova');
+
+  if (!secaoProva) return;
 
   if (aceiteVideo) {
     secaoProva.style.opacity = '1';
@@ -149,7 +111,7 @@ function alternarBloqueioProva() {
     secaoProva.style.opacity = '0.5';
     secaoProva.style.pointerEvents = 'none';
     
-    // Opcional: Reseta as marcações da prova se desmarcar o vídeo
+    // Reseta marcações da prova se desmarcar o vídeo
     const radios = secaoProva.querySelectorAll('input[type="radio"]');
     radios.forEach(radio => radio.checked = false);
   }
@@ -175,13 +137,13 @@ async function concluirIntegracao() {
     return;
   }
 
-  // VALIDAÇÃO DO TELEFONE (10 ou 11 DÍGITOS COM DDD VÁLIDO)
+  // VALIDAÇÃO DO TELEFONE
   if (!validarTelefone(telefone)) {
     alert('❌ Telefone/WhatsApp inválido! Digite um número válido com DDD (Ex: 11999999999 ou 1133334444).');
     return;
   }
 
-  // VALIDAÇÃO DA PLACA (TRADICIONAL OU MERCOSUL)
+  // VALIDAÇÃO DA PLACA
   if (!validarPlaca(placa)) {
     alert('❌ Placa do veículo inválida! A placa deve seguir o padrão ABC1234 ou ABC1A34.');
     return;
@@ -239,7 +201,7 @@ async function concluirIntegracao() {
 }
 
 async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
-  const aceiteVideo = document.getElementById('aceite-video').checked; // <--- CAPTURA O CHECKBOX DO VÍDEO
+  const aceiteVideo = document.getElementById('aceite-video').checked;
 
   try {
     await fetch(`${WORKER_URL}/api/salvar-motorista`, {
@@ -251,7 +213,7 @@ async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
         rg: rg,
         telefone: telefone,
         placa: placa,
-        aceite_video: aceiteVideo, // <--- ENVIA PARA A API DO WORKER
+        aceite_video: aceiteVideo,
         aceite_ppae: true,
         aceite_fob: true,
         aceite_lgpd: true,
@@ -269,11 +231,12 @@ async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
 }
 
 // ============================================
-// FUNÇÕES PARA CONTROLAR CAMPO DE PALETES
+// CONTROLE DO CAMPO DE PALETES E EXIBIÇÕES
 // ============================================
 
 function mostrarQuantidadePaletes() {
-  document.getElementById('quantidade-paletes-container').style.display = 'block';
+  const container = document.getElementById('quantidade-paletes-container');
+  if (container) container.style.display = 'block';
 }
 
 function ocultarQuantidadePaletes() {
@@ -288,7 +251,7 @@ function ocultarQuantidadePaletes() {
 // ETAPA 3: INSPEÇÃO VEICULAR E LÓGICA DE VEÍCULOS
 // ============================================
 
-// 1. Lógica em tempo real para alternar campos conforme Carga Seca vs Carreta Silo
+// Lógica em tempo real para alternar campos conforme Carga Seca vs Carreta Silo
 function atualizarCamposPorTipoVeiculo() {
   const tipoVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked')?.value;
   
@@ -296,36 +259,36 @@ function atualizarCamposPorTipoVeiculo() {
   const selectTampaSilo = document.getElementById('tampa_silo');
   
   const containerPaletes = document.getElementById('container-paletes');
-  const radioPaletesNA = document.getElementById('paletes-na') || document.querySelector('input[name="paletes_opcao"][value="NA"]');
+  const radioPaletesNA = id('paletes-na') || document.querySelector('input[name="paletes_opcao"][value="NA"]');
 
   if (tipoVeiculo === 'CARGA_SECA') {
-    // Oculta Tampa do Silo e define N/A automaticamente
+    // 1. Oculta Tampa do Silo e define N/A automaticamente
     if (containerTampaSilo) containerTampaSilo.style.display = 'none';
     if (selectTampaSilo) selectTampaSilo.value = 'NA';
 
-    // Exibe a seção de Paletes
+    // 2. Exibe a seção de Paletes
     if (containerPaletes) containerPaletes.style.display = 'block';
 
   } else if (tipoVeiculo === 'CARRETA_SILO') {
-    // Exibe Tampa do Silo e reseta o valor se estava em N/A
+    // 1. Exibe Tampa do Silo e limpa se estava em N/A
     if (containerTampaSilo) containerTampaSilo.style.display = 'flex';
     if (selectTampaSilo && selectTampaSilo.value === 'NA') selectTampaSilo.value = '';
 
-    // Oculta seção de Paletes, força a seleção "N/A" e esconde a quantidade
+    // 2. Oculta seção de Paletes, força a seleção "N/A" e esconde a quantidade
     if (containerPaletes) containerPaletes.style.display = 'none';
     if (radioPaletesNA) radioPaletesNA.checked = true;
     ocultarQuantidadePaletes();
   }
 }
 
-// Escutador de eventos para mudanças no tipo de veículo
+// Escutador global para mudanças no tipo de veículo
 document.addEventListener('change', function(e) {
   if (e.target && e.target.name === 'tipo_veiculo') {
     atualizarCamposPorTipoVeiculo();
   }
 });
 
-// 2. Função Principal de Envio e Salvamento da Inspeção
+// Função Principal de Envio e Salvamento da Inspeção
 async function gerarJSONeToken() {
   let placaDigitada = document.getElementById('placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
   let pedidoDigitado = document.getElementById('pedido').value.trim();
@@ -456,11 +419,9 @@ function copiarToken() {
 function voltarPaginaAnterior() {
   const etapaInspecaoVisivel = !document.getElementById('step-inspecao').classList.contains('hidden');
 
-  // Se estiver na Inspeção e for a 1ª vez do motorista, volta para o Cadastro/Prova
   if (etapaInspecaoVisivel && ehPrimeiraVez) {
     irParaIntegracao();
   } else {
-    // Se for motorista antigo ou estiver no Cadastro, volta direto para a Tela Inicial (CPF)
     irParaCPF();
   }
 }
@@ -468,7 +429,7 @@ function voltarPaginaAnterior() {
 function irParaCPF() {
   ocultarTodas();
 
-  // Reset de todos os campos e formulários
+  // Reset de campos
   const inputCPF = document.getElementById('input-cpf');
   if (inputCPF) inputCPF.value = '';
 
@@ -479,6 +440,7 @@ function irParaCPF() {
   if (formInspecao) formInspecao.reset();
 
   ocultarQuantidadePaletes();
+  alternarBloqueioProva();
 
   // Reseta variáveis globais
   cpfAtual = '';
@@ -491,10 +453,11 @@ function irParaCPF() {
 function irParaIntegracao() {
   ocultarTodas();
 
-  // Reseta a inspeção ao voltar para a etapa de cadastro
   const formInspecao = document.getElementById('form-inspecao');
   if (formInspecao) formInspecao.reset();
+
   ocultarQuantidadePaletes();
+  alternarBloqueioProva();
 
   document.getElementById('step-integracao').classList.remove('hidden');
 }
@@ -521,11 +484,11 @@ function ocultarTodas() {
   document.getElementById('step-inspecao').classList.add('hidden');
   document.getElementById('step-sucesso').classList.add('hidden');
   
-  // Rola a página suavemente de volta ao topo da tela (linha 0, 0)
+  // Rola a página suavemente de volta ao topo
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: 'smooth' // 'smooth' faz a rolagem ser suave, ou use 'auto' para ser instantânea
+    behavior: 'smooth'
   });
 }
 
