@@ -261,7 +261,33 @@
             <li><strong>TAMPA SILO – CARRETA GRANEL:</strong> As tampas da carreta silo deverão estar com uma trava de segurança, sem trincas, soldas e com todos os manípulos fechando corretamente.</li>
           </ul>
         </div>
-    
+
+        <!-- SEÇÃO: SELEÇÃO DO TIPO DE VEÍCULO -->
+        <h3>🚛 Seleção do Tipo de Veículo</h3>
+        <div class="tipo-veiculo-container">
+          <p style="font-weight: 600; margin-bottom: 12px; color: #333;">Seu veículo é:</p>
+        
+          <div class="tipo-veiculo-opcoes">
+            <!-- Opção 1: Carga Seca / Paletizado -->
+            <label class="card-tipo-veiculo">
+              <input type="radio" name="tipo_veiculo" value="CARGA_SECA" required>
+              <div class="conteudo-tipo">
+                <img src="arquivos/carga_seca.png" alt="Carga Seca (PALETIZADO)">
+                <span>Carga Seca (PALETIZADO)</span>
+              </div>
+            </label>
+        
+            <!-- Opção 2: Carreta Silo / Granel -->
+            <label class="card-tipo-veiculo">
+              <input type="radio" name="tipo_veiculo" value="CARRETA_SILO" required>
+              <div class="conteudo-tipo">
+                <img src="arquivos/carreta_silo.png" alt="Carreta Silo (POTE / GRANEL)">
+                <span>Carreta Silo (POTE / GRANEL)</span>
+              </div>
+            </label>
+          </div>
+        </div>
+        
         <!-- ITENS DE INSPEÇÃO VEICULAR -->
         <h3>Itens de Inspeção Veicular</h3>
     
