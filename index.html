@@ -430,10 +430,34 @@
     <div class="card hidden" id="step-inspecao-cif">
       <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar</button>
       <h2>📋 Inspeção Veicular - CIF / FCA</h2>
-
+    
       <form id="form-inspecao-cif">
+        <!-- DADOS DO MOTORISTA -->
+        <h3>👤 Dados do Motorista e Veículo</h3>
+        
+        <label for="cif-nome">Nome Completo:</label>
+        <input type="text" id="cif-nome" placeholder="EX: João da Silva" required>
+    
+        <div class="form-group-cnh">
+          <label for="cif-cnh">CNH:</label>
+          <input type="text" id="cif-cnh" placeholder="00000000000" maxlength="11" inputmode="numeric" required>
+        </div>
+    
+        <label for="cif-telefone">Telefone de Contato 'WHATSAPP' (com DDD):</label>
+        <input type="text" id="cif-telefone" placeholder="EX: 11999999999" maxlength="11" inputmode="numeric" required>
+    
+        <label for="cif-placa">Placa do Veículo (Cavalo):</label>
+        <input type="text" id="cif-placa" placeholder="EX: ABC1234 ou ABC1A34" maxlength="7" style="text-transform: uppercase;" required>
+    
+        <label for="cif-pedido">Nº do Pedido:</label>
+        <input type="text" id="cif-pedido" placeholder="EX: 104000000" maxlength="9" inputmode="numeric" required>
+    
+        <label for="cif-eixos">Quantidade total de eixos:</label>
+        <input type="text" id="cif-eixos" placeholder="EX: 3 (máx. 9)" maxlength="1" inputmode="numeric" required>
+    
+        <!-- TIPO DE CARGA E SEGMENTO -->
         <h3>📌 Tipo de Carga e Segmento</h3>
-        <label>Checklist CIP:</label>
+        <label for="cif-tipo-checklist">Checklist CIP:</label>
         <select id="cif-tipo-checklist" required>
           <option value="">-- Selecione --</option>
           <option value="Cimento">Cimento</option>
@@ -441,14 +465,14 @@
           <option value="Agregados">Agregados</option>
           <option value="Materias Primas">Matérias Primas</option>
         </select>
-
-        <label>Segmento:</label>
+    
+        <label for="cif-segmento">Segmento:</label>
         <select id="cif-segmento" required>
           <option value="">-- Selecione --</option>
           <option value="Transportador">Transportador</option>
           <option value="Autonomo">Autônomo</option>
         </select>
-
+    
         <h3>🔍 Check List de Verificação (32 Itens)</h3>
 
         <!-- OS 32 ITENS CONFORME ANEXO PDF -->
@@ -484,9 +508,6 @@
         <div class="item-check"><span>30. Sem alterações/adulterações nas características originais:</span><select id="cif-item-30" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
         <div class="item-check"><span>31. Protetor das partes rotativas do compressor presente:</span><select id="cif-item-31" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
         <div class="item-check"><span>32. Cintas e cordas em bom estado (sem cortes/avarias):</span><select id="cif-item-32" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
-
-        <label for="cif-observacoes" style="margin-top: 15px; display: block;">Observações / Falhas Identificadas:</label>
-        <textarea id="cif-observacoes" rows="3" placeholder="Digite observações adicionais, se houver..."></textarea>
 
         <button type="button" class="btn" onclick="salvarInspecaoCIF()" style="margin-top: 20px;">✅ Finalizar Inspeção CIF / FCA</button>
       </form>
