@@ -555,12 +555,13 @@ function irParaInspecao() {
 
 function irParaInspecaoCIF() {
   ocultarTodas();
-
-  // Transfere dados salvos do motorista caso existam
+  
+  // Preenche dados do motorista veterano se existirem
   if (dadosMotoristaAtual) {
-    if (id('cif-nome')) id('cif-nome').value = dadosMotoristaAtual.nome || '';
-    if (id('cif-placa')) id('cif-placa').value = dadosMotoristaAtual.placa || '';
-    if (id('cif-telefone')) id('cif-telefone').value = dadosMotoristaAtual.telefone || '';
+    if (dadosMotoristaAtual.nome) document.getElementById('cif-nome').value = dadosMotoristaAtual.nome;
+    if (dadosMotoristaAtual.cnh) document.getElementById('cif-cnh').value = dadosMotoristaAtual.cnh;
+    if (dadosMotoristaAtual.telefone) document.getElementById('cif-telefone').value = dadosMotoristaAtual.telefone;
+    if (dadosMotoristaAtual.placa) document.getElementById('cif-placa').value = dadosMotoristaAtual.placa;
   }
 
   document.getElementById('step-inspecao-cif').classList.remove('hidden');
