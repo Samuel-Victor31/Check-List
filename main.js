@@ -120,13 +120,15 @@ function preencherUltimoCarregamento() {
 
   const dados = ultimaInspecaoAtual;
 
-  // 1. Dados Básicos e do Veículo
+  // 1. Dados Básicos e do Veículo (O Pedido NUNCA é preenchido automaticamente)
   if (id('nome') && dados.nome) id('nome').value = dados.nome;
   if (id('cnh') && dados.cnh) id('cnh').value = dados.cnh;
   if (id('telefone') && dados.telefone) id('telefone').value = dados.telefone;
   if (id('placa') && dados.placa) id('placa').value = dados.placa;
-  if (id('pedido') && dados.pedido) id('pedido').value = dados.pedido;
   if (id('eixos') && dados.eixos) id('eixos').value = dados.eixos;
+  
+  // Limpa explicitamente o pedido para garantir que o motorista digite o atual
+  if (id('pedido')) id('pedido').value = '';
 
   // 2. Tipo de Veículo (Carga Seca ou Silo)
   if (dados.tipo_veiculo) {
@@ -483,7 +485,7 @@ async function salvarInspecaoCIF() {
   const cnh = getVal('cif-cnh', 'cnh') || dadosMotoristaAtual?.cnh || '';
   const telefone = getVal('cif-telefone', 'telefone') || dadosMotoristaAtual?.telefone || '';
   const placa = (getVal('cif-placa', 'placa') || dadosMotoristaAtual?.placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const pedido = getVal('cif-pedido', 'pedido') || ultimaInspecaoAtual?.pedido || '';
+  const pedido = getVal('cif-pedido', 'pedido'); // Deve ser digitado obrigatoriamente
   const eixos = getVal('cif-eixos', 'eixos') || ultimaInspecaoAtual?.eixos || '';
   const tipoChecklist = document.getElementById('cif-tipo-checklist')?.value || '';
   const segmento = document.getElementById('cif-segmento')?.value || '';
@@ -631,27 +633,28 @@ function irParaInspecao() {
   ocultarTodas();
   document.getElementById('step-inspecao').classList.remove('hidden');
   
-  // Puxa as informações preenchidas do último carregamento
+  // Puxa as informações preenchidas do último carregamento (exceto pedido)
   preencherUltimoCarregamento();
 }
 
 function irParaInspecaoCIF() {
   ocultarTodas();
 
-  // Puxa informações cadastradas para a inspeção CIF
+  // Puxa informações cadastradas para a inspeção CIF (exceto pedido)
   const nome = dadosMotoristaAtual?.nome || ultimaInspecaoAtual?.nome || '';
   const cnh = dadosMotoristaAtual?.cnh || ultimaInspecaoAtual?.cnh || '';
   const telefone = dadosMotoristaAtual?.telefone || ultimaInspecaoAtual?.telefone || '';
   const placa = dadosMotoristaAtual?.placa || ultimaInspecaoAtual?.placa || '';
-  const pedido = ultimaInspecaoAtual?.pedido || '';
   const eixos = ultimaInspecaoAtual?.eixos || '';
 
   if (id('cif-nome')) id('cif-nome').value = nome;
   if (id('cif-cnh')) id('cif-cnh').value = cnh;
   if (id('cif-telefone')) id('cif-telefone').value = telefone;
   if (id('cif-placa')) id('cif-placa').value = placa;
-  if (id('cif-pedido')) id('cif-pedido').value = pedido;
   if (id('cif-eixos')) id('cif-eixos').value = eixos;
+
+  // Deixa o pedido CIF limpo obrigatoriamente
+  if (id('cif-pedido')) id('cif-pedido').value = '';
 
   document.getElementById('step-inspecao-cif').classList.remove('hidden');
 }
