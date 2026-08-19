@@ -1,4 +1,26 @@
 // ============================================
+// FUNÇÕES AUXILIARES DE VALIDAÇÃO
+// ============================================
+
+// Valida Placa Tradicional (ABC1234) ou Mercosul (ABC1A34)
+function validarPlaca(placa) {
+  const regexPlaca = /^[A-Z]{3}[0-9]{1}[A-Z0-9]{1}[0-9]{2}$/;
+  return regexPlaca.test(placa);
+}
+
+// Valida se o número do pedido tem entre 7 e 8 dígitos numéricos
+function validarPedido(pedido) {
+  const regexPedido = /^[0-9]{7,8}$/;
+  return regexPedido.test(pedido);
+}
+
+// Valida Telefone com DDD (10 dígitos para Fixo, 11 para Celular)
+function validarTelefone(telefone) {
+  const regexTelefone = /^[1-9]{2}(?:[2-8][0-9]{7}|9[0-9]{8})$/;
+  return regexTelefone.test(telefone);
+}
+
+// ============================================
 // CONFIGURAÇÃO INICIAL
 // ============================================
 
