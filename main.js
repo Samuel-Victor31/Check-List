@@ -298,12 +298,7 @@ async function gerarJSONeToken() {
 
   // CAPTURA DO TIPO DE VEÍCULO
   const tipoVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked')?.value;
-
-  if (!tipoVeiculo) {
-    alert('⚠️ Por favor, selecione qual é o seu tipo de veículo (Carga Seca ou Carreta Silo)!');
-    return;
-  }
-
+  
   // VALIDAÇÕES DE FORMATO
   if (!validarPlaca(placaDigitada)) {
     alert('❌ Placa do veículo inválida! Digite no formato ABC1234 ou ABC1A34.');
@@ -320,6 +315,11 @@ async function gerarJSONeToken() {
     return;
   }
 
+  if (!tipoVeiculo) {
+    alert('⚠️ Por favor, selecione qual é o seu tipo de veículo (Carga Seca ou Carreta Silo)!');
+    return;
+  }
+  
  // CAPTURA E TRATAMENTO DE PALETES
   let paletesOpcao = document.querySelector('input[name="paletes_opcao"]:checked')?.value;
   let quantidadePaletes = '';
