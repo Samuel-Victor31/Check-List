@@ -258,26 +258,24 @@ function atualizarCamposPorTipoVeiculo() {
   const containerTampaSilo = document.getElementById('container-tampa-silo');
   const selectTampaSilo = document.getElementById('tampa_silo');
   
-  // Captura a seção inteira dos paletes (Incluindo o título <h3>)
   const secaoPaletes = document.getElementById('secao-paletes');
-  const radioPaletesNA = id('paletes-na') || document.querySelector('input[name="paletes_opcao"][value="NA"]');
+  const radiosPaletes = document.querySelectorAll('input[name="paletes_opcao"]');
 
   if (tipoVeiculo === 'CARGA_SECA') {
-    // 1. Oculta o campo Tampa do Silo e define N/A automaticamente
+    // 1. Oculta Tampa do Silo e reseta o select
     if (containerTampaSilo) containerTampaSilo.style.display = 'none';
-    if (selectTampaSilo) selectTampaSilo.value = 'NA';
+    if (selectTampaSilo) selectTampaSilo.value = '';
 
-    // 2. Exibe a seção de Paletes completa (com o título)
+    // 2. Exibe a seção de Paletes
     if (secaoPaletes) secaoPaletes.style.display = 'block';
 
   } else if (tipoVeiculo === 'CARRETA_SILO') {
-    // 1. Exibe o campo Tampa do Silo e reseta se estava em N/A
+    // 1. Exibe Tampa do Silo
     if (containerTampaSilo) containerTampaSilo.style.display = 'flex';
-    if (selectTampaSilo && selectTampaSilo.value === 'NA') selectTampaSilo.value = '';
 
-    // 2. Oculta TODA a seção de Paletes (Título + Opções), seleciona N/A e limpa quantidade
+    // 2. Oculta seção de Paletes, desmarca opções e esconde a quantidade
     if (secaoPaletes) secaoPaletes.style.display = 'none';
-    if (radioPaletesNA) radioPaletesNA.checked = true;
+    radiosPaletes.forEach(r => r.checked = false);
     ocultarQuantidadePaletes();
   }
 }
@@ -319,12 +317,12 @@ async function gerarJSONeToken() {
     return;
   }
 
-  // CAPTURA E TRATAMENTO DE PALETES
+ // CAPTURA E TRATAMENTO DE PALETES
   let paletesOpcao = document.querySelector('input[name="paletes_opcao"]:checked')?.value;
   let quantidadePaletes = '';
 
   if (tipoVeiculo === 'CARRETA_SILO') {
-    paletesOpcao = 'NA';
+    paletesOpcao = 'NA'; // Define automaticamente para o banco de dados
   } else if (paletesOpcao === 'SIM') {
     quantidadePaletes = document.getElementById('quantidade-paletes').value.trim();
     if (!quantidadePaletes) {
@@ -336,7 +334,7 @@ async function gerarJSONeToken() {
   // TRATAMENTO DA TAMPA DO SILO
   let valTampaSilo = document.getElementById('tampa_silo').value;
   if (tipoVeiculo === 'CARGA_SECA') {
-    valTampaSilo = 'NA';
+    valTampaSilo = 'NA'; // Define automaticamente para o banco de dados
   }
 
   // MONTAGEM DO OBJETO DE INSPEÇÃO
