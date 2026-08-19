@@ -194,6 +194,8 @@ async function concluirIntegracao() {
 }
 
 async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
+  const aceiteVideo = document.getElementById('aceite-video').checked; // <--- CAPTURA O CHECKBOX DO VÍDEO
+
   try {
     await fetch(`${WORKER_URL}/api/salvar-motorista`, {
       method: 'POST',
@@ -204,6 +206,7 @@ async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
         rg: rg,
         telefone: telefone,
         placa: placa,
+        aceite_video: aceiteVideo, // <--- ENVIA PARA A API DO WORKER
         aceite_ppae: true,
         aceite_fob: true,
         aceite_lgpd: true,
