@@ -363,7 +363,7 @@
           </select>
         </div>
     
-        <div class="item-check">
+        <div class="item-check" id="container-tampa-silo">
           <span>⚙️ Tampa Silo (Carreta Granel / Pote):</span>
           <select id="tampa_silo" required>
             <option value="">-- Selecione --</option>
@@ -371,8 +371,8 @@
             <option value="NAO_CONFORME">Não Conforme ❌</option>
             <option value="NA">N/A (Não Aplicável)</option>
           </select>
-        </div>
-    
+        </div>    
+        
         <!-- EQUIPAMENTOS DE PROTEÇÃO INDIVIDUAL (EPIs) -->
         <h3>🪖 Equipamentos de Proteção Individual (EPIs)</h3>
         
@@ -423,7 +423,7 @@
     
         <!-- SEÇÃO PALETES -->
         <h3>📦 Paletes</h3>
-        <div class="paletes-container">
+        <div class="paletes-container" id="container-paletes">
           <p style="font-weight: 600; margin-bottom: 15px;">Trouxe Paletes para Carregamento?</p>
           
           <div class="paletes-opcoes">
@@ -436,17 +436,17 @@
               <input type="number" id="quantidade-paletes" placeholder="0" min="0" max="999">
             </div>
           </div>
-    
+        
           <div class="paletes-opcoes">
             <label class="paletes-label">
               <input type="radio" name="paletes_opcao" value="NAO" onchange="ocultarQuantidadePaletes()">
               <span>NÃO</span>
             </label>
           </div>
-    
+        
           <div class="paletes-opcoes">
             <label class="paletes-label">
-              <input type="radio" name="paletes_opcao" value="NA" onchange="ocultarQuantidadePaletes()">
+              <input type="radio" name="paletes_opcao" value="NA" id="paletes-na" onchange="ocultarQuantidadePaletes()">
               <span>N/A</span>
             </label>
           </div>
