@@ -14,6 +14,7 @@ const GABARITO = {
 
 let cpfAtual = '';
 let dadosMotoristaAtual = {};
+let ultimaInspecaoAtual = null; // Guarda o último checklist retornado pelo backend
 let ehPrimeiraVez = false;
 let tipoCarregamentoSelecionado = '';
 
@@ -71,17 +72,14 @@ async function verificarAcesso() {
 
     if (resultado.existe) {
       ehPrimeiraVez = false;
-      dadosMotoristaAtual = resultado.dados;
-
-      // Auto-preenche formulário FOB
-      if (dadosMotoristaAtual.nome && id('nome')) id('nome').value = dadosMotoristaAtual.nome;
-      if (dadosMotoristaAtual.placa && id('placa')) id('placa').value = dadosMotoristaAtual.placa;
-      if (dadosMotoristaAtual.telefone && id('telefone')) id('telefone').value = dadosMotoristaAtual.telefone;
-      if (dadosMotoristaAtual.cnh && id('cnh')) id('cnh').value = dadosMotoristaAtual.cnh;
+      dadosMotoristaAtual = resultado.dados || {};
+      ultimaInspecaoAtual = resultado.ultima_inspecao || null; // Armazena o último checklist realizado
 
       irParaSelecaoCarregamento();
     } else {
       ehPrimeiraVez = true;
+      dadosMotoristaAtual = {};
+      ultimaInspecaoAtual = null; // Mantém desmarcado para o primeiro acesso
       irParaIntegracao();
     }
   } catch (erro) {
@@ -109,6 +107,68 @@ function confirmarTipoCarregamento() {
     irParaInspecao();
   } else if (opcao === 'CIF') {
     irParaInspecaoCIF();
+  }
+}
+
+// ============================================
+// AUTO-PREENCHIMENTO DO ÚLTIMO CARREGAMENTO
+// ============================================
+
+function preencherUltimoCarregamento() {
+  // Se for 1º acesso ou não houver histórico de inspeção, nada é preenchido
+  if (!ultimaInspecaoAtual) return;
+
+  const dados = ultimaInspecaoAtual;
+
+  // 1. Dados Básicos e do Veículo
+  if (id('nome') && dados.nome) id('nome').value = dados.nome;
+  if (id('cnh') && dados.cnh) id('cnh').value = dados.cnh;
+  if (id('telefone') && dados.telefone) id('telefone').value = dados.telefone;
+  if (id('placa') && dados.placa) id('placa').value = dados.placa;
+  if (id('pedido') && dados.pedido) id('pedido').value = dados.pedido;
+  if (id('eixos') && dados.eixos) id('eixos').value = dados.eixos;
+
+  // 2. Tipo de Veículo (Carga Seca ou Silo)
+  if (dados.tipo_veiculo) {
+    const radioTipo = document.querySelector(`input[name="tipo_veiculo"][value="${dados.tipo_veiculo}"]`);
+    if (radioTipo) {
+      radioTipo.checked = true;
+      atualizarCamposPorTipoVeiculo();
+    }
+  }
+
+  // 3. Itens de Inspeção Veicular
+  if (id('sinalizacao') && dados.sinalizacao) id('sinalizacao').value = dados.sinalizacao;
+  if (id('pneus') && dados.pneus) id('pneus').value = dados.pneus;
+  if (id('carroceria') && dados.carroceria) id('carroceria').value = dados.carroceria;
+  if (id('cinto') && dados.cinto) id('cinto').value = dados.cinto;
+  if (id('farois') && dados.farois) id('farois').value = dados.farois;
+  if (id('alarme_re') && dados.alarme_re) id('alarme_re').value = dados.alarme_re;
+  if (id('vazamentos') && dados.vazamentos) id('vazamentos').value = dados.vazamentos;
+  if (id('calcos') && dados.calcos) id('calcos').value = dados.calcos;
+  if (id('tampa_silo') && dados.tampa_silo) id('tampa_silo').value = dados.tampa_silo;
+
+  // 4. EPIs
+  if (id('epi_capacete') && dados.epi_capacete) id('epi_capacete').value = dados.epi_capacete;
+  if (id('epi_colete') && dados.epi_colete) id('epi_colete').value = dados.epi_colete;
+  if (id('epi_oculos') && dados.epi_oculos) id('epi_oculos').value = dados.epi_oculos;
+  if (id('epi_botina') && dados.epi_botina) id('epi_botina').value = dados.epi_botina;
+  if (id('epi_luvas') && dados.epi_luvas) id('epi_luvas').value = dados.epi_luvas;
+
+  // 5. Paletes
+  if (dados.paletes_opcao) {
+    const radioPalete = document.querySelector(`input[name="paletes_opcao"][value="${dados.paletes_opcao}"]`);
+    if (radioPalete) {
+      radioPalete.checked = true;
+      if (dados.paletes_opcao === 'SIM') {
+        mostrarQuantidadePaletes();
+        if (id('quantidade-paletes') && dados.paletes_quantidade) {
+          id('quantidade-paletes').value = dados.paletes_quantidade;
+        }
+      } else {
+        ocultarQuantidadePaletes();
+      }
+    }
   }
 }
 
@@ -278,8 +338,6 @@ function atualizarCamposPorTipoVeiculo() {
     if (containerTampaSilo) containerTampaSilo.style.display = 'none';
     if (selectTampaSilo) selectTampaSilo.value = '';
     if (secaoPaletes) secaoPaletes.style.display = 'block';
-    radiosPaletes.forEach(radio => radio.checked = false);
-    ocultarQuantidadePaletes();
   } else if (tipoVeiculo === 'CARRETA_SILO') {
     if (containerTampaSilo) containerTampaSilo.style.display = 'flex';
     if (selectTampaSilo) selectTampaSilo.value = '';
@@ -425,8 +483,8 @@ async function salvarInspecaoCIF() {
   const cnh = getVal('cif-cnh', 'cnh') || dadosMotoristaAtual?.cnh || '';
   const telefone = getVal('cif-telefone', 'telefone') || dadosMotoristaAtual?.telefone || '';
   const placa = (getVal('cif-placa', 'placa') || dadosMotoristaAtual?.placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const pedido = getVal('cif-pedido', 'pedido');
-  const eixos = getVal('cif-eixos', 'eixos');
+  const pedido = getVal('cif-pedido', 'pedido') || ultimaInspecaoAtual?.pedido || '';
+  const eixos = getVal('cif-eixos', 'eixos') || ultimaInspecaoAtual?.eixos || '';
   const tipoChecklist = document.getElementById('cif-tipo-checklist')?.value || '';
   const segmento = document.getElementById('cif-segmento')?.value || '';
   const observacoes = document.getElementById('cif-observacoes')?.value.trim() || '';
@@ -550,6 +608,7 @@ function irParaCPF() {
 
   cpfAtual = '';
   dadosMotoristaAtual = {};
+  ultimaInspecaoAtual = null;
   ehPrimeiraVez = false;
   tipoCarregamentoSelecionado = '';
 
@@ -571,18 +630,28 @@ function irParaIntegracao() {
 function irParaInspecao() {
   ocultarTodas();
   document.getElementById('step-inspecao').classList.remove('hidden');
+  
+  // Puxa as informações preenchidas do último carregamento
+  preencherUltimoCarregamento();
 }
 
 function irParaInspecaoCIF() {
   ocultarTodas();
 
-  // Preenche todos os dados do motorista veterano na tela CIF
-  if (dadosMotoristaAtual) {
-    if (dadosMotoristaAtual.nome && id('cif-nome')) id('cif-nome').value = dadosMotoristaAtual.nome;
-    if (dadosMotoristaAtual.cnh && id('cif-cnh')) id('cif-cnh').value = dadosMotoristaAtual.cnh;
-    if (dadosMotoristaAtual.telefone && id('cif-telefone')) id('cif-telefone').value = dadosMotoristaAtual.telefone;
-    if (dadosMotoristaAtual.placa && id('cif-placa')) id('cif-placa').value = dadosMotoristaAtual.placa;
-  }
+  // Puxa informações cadastradas para a inspeção CIF
+  const nome = dadosMotoristaAtual?.nome || ultimaInspecaoAtual?.nome || '';
+  const cnh = dadosMotoristaAtual?.cnh || ultimaInspecaoAtual?.cnh || '';
+  const telefone = dadosMotoristaAtual?.telefone || ultimaInspecaoAtual?.telefone || '';
+  const placa = dadosMotoristaAtual?.placa || ultimaInspecaoAtual?.placa || '';
+  const pedido = ultimaInspecaoAtual?.pedido || '';
+  const eixos = ultimaInspecaoAtual?.eixos || '';
+
+  if (id('cif-nome')) id('cif-nome').value = nome;
+  if (id('cif-cnh')) id('cif-cnh').value = cnh;
+  if (id('cif-telefone')) id('cif-telefone').value = telefone;
+  if (id('cif-placa')) id('cif-placa').value = placa;
+  if (id('cif-pedido')) id('cif-pedido').value = pedido;
+  if (id('cif-eixos')) id('cif-eixos').value = eixos;
 
   document.getElementById('step-inspecao-cif').classList.remove('hidden');
 }
