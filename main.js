@@ -427,8 +427,30 @@ async function gerarJSONeToken() {
 // ============================================
 
 async function salvarInspecaoCIF() {
+  const nome = document.getElementById('cif-nome').value.trim();
+  const cnh = document.getElementById('cif-cnh').value.trim();
+  const telefone = document.getElementById('cif-telefone').value.trim();
+  const placa = document.getElementById('cif-placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const pedido = document.getElementById('cif-pedido').value.trim();
+  const eixos = document.getElementById('cif-eixos').value.trim();
   const tipoChecklist = document.getElementById('cif-tipo-checklist').value;
   const segmento = document.getElementById('cif-segmento').value;
+
+  // Validações dos campos principais
+  if (!nome || !cnh || !telefone || !placa || !pedido || !eixos) {
+    alert('⚠️ Preencha todos os dados cadastrais (Nome, CNH, Telefone, Placa, Pedido e Eixos)!');
+    return;
+  }
+
+  if (!validarTelefone(telefone)) {
+    alert('❌ Telefone/WhatsApp inválido!');
+    return;
+  }
+
+  if (!validarPlaca(placa)) {
+    alert('❌ Placa do veículo inválida!');
+    return;
+  }
 
   if (!tipoChecklist || !segmento) {
     alert('⚠️ Por favor, selecione o Tipo de Checklist CIP e o Segmento!');
@@ -436,12 +458,12 @@ async function salvarInspecaoCIF() {
   }
 
   const inspecaoDados = {
-    nome: (dadosMotoristaAtual.nome || document.getElementById('nome').value).trim(),
-    cnh: (dadosMotoristaAtual.cnh || document.getElementById('cnh').value).trim(),
-    placa: (dadosMotoristaAtual.placa || document.getElementById('placa').value).toUpperCase().replace(/[^A-Z0-9]/g, ''),
-    telefone: (dadosMotoristaAtual.telefone || document.getElementById('telefone').value).trim(),
-    pedido: (document.getElementById('pedido')?.value || '').trim(),
-    eixos: (document.getElementById('eixos')?.value || '').trim(),
+    nome,
+    cnh,
+    telefone,
+    placa,
+    pedido,
+    eixos,
     data: new Date().toLocaleDateString('pt-BR'),
     tipo_checklist: tipoChecklist,
     segmento: segmento,
@@ -452,11 +474,11 @@ async function salvarInspecaoCIF() {
   for (let i = 1; i <= 32; i++) {
     const el = document.getElementById(`cif-item-${i}`);
     if (el) {
-      inspecaoDados[`item_${i}`] = el.value;
       if (!el.value) {
         alert(`⚠️ Por favor, selecione uma resposta para o Item ${i}!`);
         return;
       }
+      inspecaoDados[`item_${i}`] = el.value;
     }
   }
 
