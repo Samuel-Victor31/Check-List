@@ -555,6 +555,14 @@ function irParaInspecao() {
 
 function irParaInspecaoCIF() {
   ocultarTodas();
+
+  // Transfere dados salvos do motorista caso existam
+  if (dadosMotoristaAtual) {
+    if (id('cif-nome')) id('cif-nome').value = dadosMotoristaAtual.nome || '';
+    if (id('cif-placa')) id('cif-placa').value = dadosMotoristaAtual.placa || '';
+    if (id('cif-telefone')) id('cif-telefone').value = dadosMotoristaAtual.telefone || '';
+  }
+
   document.getElementById('step-inspecao-cif').classList.remove('hidden');
 }
 
