@@ -36,10 +36,10 @@
       <button type="button" class="btn" onclick="verificarAcesso()">Continuar</button>
     </div>
     
-    <!-- ETAPA 2: INTEGRAÇÃO & TERMOS (1º Acesso) -->
+    <!-- ETAPA 2: INTEGRAÇÃO (1º Acesso) -->
     <div class="card hidden" id="step-integracao">
       <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar</button>
-      <h2>📋 1º Acesso: Cadastro & Termos</h2>      
+      <h2>📋 1º Acesso: Cadastro, Vídeo & Prova</h2>     
       
       <form id="form-prova">
         <h3>Dados de Cadastro do Motorista</h3>
@@ -50,14 +50,85 @@
         <label for="reg-rg">RG:</label>
         <input type="text" id="reg-rg" placeholder="EX: 000000000" required>
     
-        <label for="reg-telefone">Telefone de Contato 'WHATS-APP' (com DDD):</label>
+        <label for="reg-telefone">Telefone de Contato 'WHATSAPP' (com DDD):</label>
         <input type="text" id="reg-telefone" placeholder="EX: 11999999999" maxlength="11" inputmode="numeric" required>
     
         <label for="reg-placa">Placa do Cavalo:</label>
         <input type="text" id="reg-placa" placeholder="EX: ABC1234" maxlength="7" style="text-transform: uppercase;" required>
     
-        <!-- TERMOS DE COMPROMISSO E ADESÃO (EXPANDÍVEIS) -->
-        <h3>📜 Termos e Condições (Clique para abrir)</h3>
+        <!-- ETAPA DO VÍDEO OBRIGATÓRIO -->
+        <div class="regras-container" style="border-left-color: #ff9800; background: #fff8e1; margin-top: 20px;">
+          <p style="font-weight: bold; color: #b71c1c; font-size: 15px;">📹 ATENÇÃO: VÍDEO DE INTEGRAÇÃO</p>
+          <p>Antes de iniciar a prova você deve solicitar ao Auxiliar da CSN Cimentos para que apresente o <strong>"VÍDEO DE INTRODUÇÃO ÀS NORMAS DA CSN"</strong>, para que depois responda às perguntas.</p>
+        </div>
+    
+        <div class="aceite-container">
+          <label class="aceite-label">
+            <input type="checkbox" id="aceite-video" onchange="alternarBloqueioProva()" required>
+            <span>Confirmo que assisti ao vídeo de integração.</span>
+          </label>
+        </div>
+    
+        <!-- SEÇÃO DA PROVA (INICIALMENTE DESABILITADA/OPACA) -->
+        <div id="secao-prova" style="opacity: 0.5; pointer-events: none; transition: opacity 0.3s ease;">
+          <h3>📝 Prova de Conhecimento</h3>
+          <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
+          
+          <!-- QUESTÃO 1 -->
+          <div class="radio-group">
+            <p><strong>1. Regra em Pátio: Ao estacionar o caminhão ao calçar as rodas, o calço deve ser de qual material?</strong></p>
+            <input type="radio" id="q1-a" name="q1" value="Borracha">
+            <label for="q1-a">Borracha</label><br>
+            <input type="radio" id="q1-b" name="q1" value="Madeira">
+            <label for="q1-b">Madeira</label><br>
+            <input type="radio" id="q1-c" name="q1" value="Plástico">
+            <label for="q1-c">Plástico</label><br>
+            <input type="radio" id="q1-d" name="q1" value="Lata">
+            <label for="q1-d">Lata</label>
+          </div>
+          
+          <!-- QUESTÃO 2 -->
+          <div class="radio-group">
+            <p><strong>2. Inspeção de Veículos: Em que dia da semana é feita a inspeção veicular?</strong></p>
+            <input type="radio" id="q2-a" name="q2" value="Segunda-Feira">
+            <label for="q2-a">Segunda-Feira</label><br>
+            <input type="radio" id="q2-b" name="q2" value="Quinta-Feira">
+            <label for="q2-b">Quinta-Feira</label><br>
+            <input type="radio" id="q2-c" name="q2" value="Todos os dias">
+            <label for="q2-c">Todos os dias</label><br>
+            <input type="radio" id="q2-d" name="q2" value="Terça-Feira">
+            <label for="q2-d">Terça-Feira</label>
+          </div>
+          
+          <!-- QUESTÃO 3 -->
+          <div class="radio-group">
+            <p><strong>3. Emergência: Em caso de emergência na unidade CSN CIMENTOS, ao ouvir a sirene o que devemos fazer?</strong></p>
+            <input type="radio" id="q3-a" name="q3" value="Sair correndo">
+            <label for="q3-a">Sair correndo</label><br>
+            <input type="radio" id="q3-b" name="q3" value="Entrar no caminhão">
+            <label for="q3-b">Entrar no caminhão</label><br>
+            <input type="radio" id="q3-c" name="q3" value="Ir para um ponto mais próximo indicado pela brigada de emergência">
+            <label for="q3-c">Ir para um ponto mais próximo indicado pela brigada de emergência</label><br>
+            <input type="radio" id="q3-d" name="q3" value="Ficar parado">
+            <label for="q3-d">Ficar parado</label>
+          </div>
+          
+          <!-- QUESTÃO 4 -->
+          <div class="radio-group">
+            <p><strong>4. Enlonamento/Desenlonamento: No que se diz respeito ao enlonamento/desenlonamento, onde ficará a chave do veículo?</strong></p>
+            <input type="radio" id="q4-a" name="q4" value="Com o motorista">
+            <label for="q4-a">Com o motorista</label><br>
+            <input type="radio" id="q4-b" name="q4" value="Bloqueada pelo responsável CSN CIMENTOS.">
+            <label for="q4-b">Bloqueada pelo responsável CSN CIMENTOS.</label><br>
+            <input type="radio" id="q4-c" name="q4" value="Dentro do caminhão">
+            <label for="q4-c">Dentro do caminhão</label><br>
+            <input type="radio" id="q4-d" name="q4" value="Na expedição">
+            <label for="q4-d">Na expedição</label>
+          </div>
+        </div>
+    
+        <!-- TERMOS DE COMPROMISSO E ADESÃO (APÓS A PROVA) -->
+        <h3 style="margin-top: 30px;">📜 Termos e Aceites Regulamentares</h3>
         
         <!-- TERMO 1: PPAE -->
         <details class="accordion-termo">
@@ -88,26 +159,26 @@
             <p><strong>Eu declaro que fui apresentado à Política de Saúde e Segurança e assumo o compromisso de seguir todas as orientações:</strong></p>
             <ol>
               <li>É proibido trabalhar sob efeito de álcool e drogas;</li>
-              <li>É proibido entrar nas unidades da CSN Cimentos com caronas, acompanhantes (familiares, funcionários CSN Cimentos ou outros prestadores de serviço);</li>
-              <li>É proibido o uso de dispositivos móveis de comunicação, como celular (incluindo mensagens de texto) ou rádio, fones de ouvido, ou sistemas de viva voz (Bluetooth) especificamente para os motoristas enquanto eles estão dirigindo;</li>
-              <li>É proibido subir na carroceria ou implemento do veículo nas unidades CSN Cimentos;</li>
-              <li>É proibido realizar manutenção no veículo dentro da unidade sem autorização prévia da expedição;</li>
-              <li>É obrigatório comunicar a CSN Cimentos, imediatamente (máximo de 2 horas após o ocorrido), qualquer acidente ocorrido nas áreas internas da unidade (inclusive pátios), mesmo que seja leve e não tenha causado ferimento (incidente);</li>
-              <li>É obrigatório utilizar todos os EPIs (capacete com jugular, óculos, óculos ampla visão durante descarga de cimento a granel, calçado de segurança com palmilha anti-perfuro e biqueira, colete de alta visibilidade/camisa com refletivo e luvas) de acordo com as normas internas;</li>
-              <li>É obrigatório respetar a capacidade máxima do conjunto (cavalo/carreta) estabelecida pela legislação;</li>
-              <li>Estacionar conforme orientação/sinalização, retirar a chave da ignição sempre que estacionar, além de manter o veículo calçado à frente e atrás da roda do lado esquerdo do eixo da tração, dentro e fora das dependências da CSN Cimentos;</li>
-              <li>É obrigatório o uso de faróis acesos mesmo durante o dia nas unidades CSN Cimentos;</li>
-              <li>Utilizar obrigatoriamente o cinto de segurança em qualquer movimentação de veículo, dentro e fora das dependências da CSN Cimentos;</li>
-              <li>Respeite a velocidade máxima indicada na placa de sinalização permitida para o tráfego no interior das unidades CSN Cimentos e nos clientes;</li>
-              <li>É proibido a utilização de fogões no pátio, bem como a manipulação (trocar, movimentar, conectar ou desconectar) botijões de gás nos pátios ou áreas internas das unidades;</li>
-              <li>Não transitar na área de carregamento. Mantenha distância dos equipamentos móveis (empilhadeira, paletizadora, etc.); permaneça nas áreas específicas para pedestres;</li>
-              <li>Comunique a CSN Cimentos as situações inseguras que encontrar;</li>
-              <li>É expressamente proibido bater no silo com materiais metálicos. De acordo com as recomendações do fabricante, durante a descarga é proibido bater com qualquer tipo de material no silo. É proibida utilização de celular nas baias de carga/descarga. Não utilizar alavanca para fechar ou abrir as conexões. Utilize o cabo anti-chicoteamento em todos os pontos de conexão pressurizada;</li>
-              <li>Proibido utilização de adornos (anéis, aliança, cordões, relógios etc.) dentro da operação de carga/descarga;</li>
-              <li>Proibido utilização de camisas regatas, short e chinelos nas unidades CSN Cimentos;</li>
-              <li>As carrocerias dos veículos devem estar organizadas;</li>
-              <li>Cumprir as demais regras internas de carregamento das unidades, conforme orientação das expedições das unidades;</li>
-              <li>É expressamente proibido tirar fotos ou realizar qualquer tipo de vídeo sem autorização formal da CSN Cimentos.</li>
+              <li>É proibido entrar nas unidades da CSN Cimentos com caronas, acompanhantes;</li>
+              <li>É proibido o uso de dispositivos móveis de comunicação enquanto dirigindo;</li>
+              <li>É proibido subir na carroceria ou implemento do veículo;</li>
+              <li>É proibido realizar manutenção no veículo sem autorização prévia;</li>
+              <li>É obrigatório comunicar qualquer acidente em até 2 horas;</li>
+              <li>É obrigatório utilizar todos os EPIs exigidos;</li>
+              <li>É obrigatório respeitar a capacidade máxima do veículo;</li>
+              <li>Estacionar conforme orientação e calçar as rodas;</li>
+              <li>É obrigatório o uso de faróis acesos durante o dia;</li>
+              <li>Utilizar o cinto de segurança;</li>
+              <li>Respeitar os limites de velocidade;</li>
+              <li>É proibido o uso de fogões no pátio;</li>
+              <li>Não transitar em áreas de carregamento a pé;</li>
+              <li>Comunique situações inseguras;</li>
+              <li>Proibido bater no silo com materiais metálicos;</li>
+              <li>Proibido o uso de adornos na operação;</li>
+              <li>Proibido regatas, shorts e chinelos;</li>
+              <li>Manter as carrocerias organizadas;</li>
+              <li>Cumprir as demais regras de carregamento;</li>
+              <li>Proibido tirar fotos ou gravar vídeos.</li>
             </ol>
           </div>
         </details>
@@ -118,87 +189,26 @@
             <span>Li e estou de acordo com o Termo de Compromisso de Saúde e Segurança.</span>
           </label>
         </div>
-        
-        <!-- TERMO 3: PRIVACIDADE E PROTEÇÃO DE DADOS (LGPD) -->
-        <details class="accordion-termo">
-          <summary>📜 3. Política de Privacidade e Proteção de Dados (LGPD)</summary>
-          <div class="termo-box">
-            <p><strong>Termo de Consentimento e Privacidade de Dados Pessoais</strong></p>
-            <p>Em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 - LGPD), declaro ciente e concordo com o tratamento dos meus dados pessoais fornecidos nesta aplicação:</p>
-            <ol>
-              <li><strong>Finalidade:</strong> Os dados coletados (CPF, Nome, RG, Telefone, CNH e Placa) têm como única finalidade a identificação do condutor, gestão de segurança operacional, controle de acesso às plantas e emissão do checklist de inspeção veicular.</li>
-              <li><strong>Armazenamento e Segurança:</strong> Os dados serão armazenados em ambiente seguro e criptografado, respeitando os padrões técnicos de segurança da informação.</li>
-              <li><strong>Compartilhamento:</strong> Os dados não serão comercializados nem compartilhados com terceiros para fins publicitários, sendo utilizados estritamente para o cumprimento do serviço contratado e obrigações legais/regulatórias de segurança.</li>
-              <li><strong>Direitos do Titular:</strong> O titular dos dados possui o direito de solicitar a confirmação, acesso, correção ou eliminação dos seus dados pessoais registrados no sistema, conforme prevê o Art. 18 da LGPD.</li>
-            </ol>
-          </div>
-        </details>
-        
-        <div class="aceite-container">
-          <label class="aceite-label">
-            <input type="checkbox" id="aceite-lgpd" required>
-            <span>Li e estou de acordo com a Política de Privacidade e Proteção de Dados (LGPD).</span>
-          </label>
-        </div>
-        
-      <h3>Prova de Conhecimento</h3>
-      <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
-      
-      <!-- QUESTÃO 1 -->
-      <div class="radio-group">
-        <p><strong>1. Regra em Pátio: Ao estacionar o caminhão ao calçar as rodas, o calço deve ser de qual material?</strong></p>
-        <input type="radio" id="q1-a" name="q1" value="Borracha">
-        <label for="q1-a">Borracha</label><br>
-        <input type="radio" id="q1-b" name="q1" value="Madeira">
-        <label for="q1-b">Madeira</label><br>
-        <input type="radio" id="q1-c" name="q1" value="Plástico">
-        <label for="q1-c">Plástico</label><br>
-        <input type="radio" id="q1-d" name="q1" value="Lata">
-        <label for="q1-d">Lata</label>
+    
+    <!-- TERMO 3: LGPD -->
+    <details class="accordion-termo">
+      <summary>📜 3. Política de Privacidade e Proteção de Dados (LGPD)</summary>
+      <div class="termo-box">
+        <p><strong>Termo de Consentimento e Privacidade de Dados Pessoais</strong></p>
+        <p>Em conformidade com a LGPD (Lei nº 13.709/2018), concordo com o tratamento dos meus dados pessoais fornecidos nesta aplicação exclusivamente para fins de segurança, controle e identificação veicular.</p>
       </div>
-      
-      <!-- QUESTÃO 2 -->
-      <div class="radio-group">
-        <p><strong>2. Inspeção de Veículos: Em que dia da semana é feita a inspeção veicular?</strong></p>
-        <input type="radio" id="q2-a" name="q2" value="Segunda-Feira">
-        <label for="q2-a">Segunda-Feira</label><br>
-        <input type="radio" id="q2-b" name="q2" value="Quinta-Feira">
-        <label for="q2-b">Quinta-Feira</label><br>
-        <input type="radio" id="q2-c" name="q2" value="Todos os dias">
-        <label for="q2-c">Todos os dias</label><br>
-        <input type="radio" id="q2-d" name="q2" value="Terça-Feira">
-        <label for="q2-d">Terça-Feira</label>
-      </div>
-      
-      <!-- QUESTÃO 3 (NOVA) -->
-      <div class="radio-group">
-        <p><strong>3. Emergência: Em caso de emergência na unidade CSN CIMENTOS, ao ouvir a sirene o que devemos fazer?</strong></p>
-        <input type="radio" id="q3-a" name="q3" value="Sair correndo">
-        <label for="q3-a">Sair correndo</label><br>
-        <input type="radio" id="q3-b" name="q3" value="Entrar no caminhão">
-        <label for="q3-b">Entrar no caminhão</label><br>
-        <input type="radio" id="q3-c" name="q3" value="Ir para um ponto mais próximo indicado pela brigada de emergência">
-        <label for="q3-c">Ir para um ponto mais próximo indicado pela brigada de emergência</label><br>
-        <input type="radio" id="q3-d" name="q3" value="Ficar parado">
-        <label for="q3-d">Ficar parado</label>
-      </div>
-      
-      <!-- QUESTÃO 4 -->
-      <div class="radio-group">
-        <p><strong>4. Enlonamento/Desenlonamento: No que se diz respeito ao enlonamento/desenlonamento, onde ficará a chave do veículo?</strong></p>
-        <input type="radio" id="q4-a" name="q4" value="Com o motorista">
-        <label for="q4-a">Com o motorista</label><br>
-        <input type="radio" id="q4-b" name="q4" value="Bloqueada pelo responsável CSN CIMENTOS.">
-        <label for="q4-b">Bloqueada pelo responsável CSN CIMENTOS.</label><br>
-        <input type="radio" id="q4-c" name="q4" value="Dentro do caminhão">
-        <label for="q4-c">Dentro do caminhão</label><br>
-        <input type="radio" id="q4-d" name="q4" value="Na expedição">
-        <label for="q4-d">Na expedição</label>
-      </div>
-      
-      <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova e Avançar</button>
-      </form>
+    </details>
+    
+    <div class="aceite-container">
+      <label class="aceite-label">
+        <input type="checkbox" id="aceite-lgpd" required>
+        <span>Li e estou de acordo com a Política de Privacidade e Proteção de Dados (LGPD).</span>
+      </label>
     </div>
+
+    <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova, Aceites e Avançar</button>
+  </form>
+</div>
     
   <!-- ETAPA 3: FORMULÁRIO DE INSPEÇÃO -->
   <div class="card hidden" id="step-inspecao">
