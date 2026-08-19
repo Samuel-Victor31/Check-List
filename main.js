@@ -236,6 +236,19 @@ function ocultarQuantidadePaletes() {
 
 async function gerarJSONeToken() {
   let placaDigitada = document.getElementById('placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  let pedidoDigitado = document.getElementById('pedido').value.trim();
+
+  // VALIDAÇÃO DA PLACA
+  if (!validarPlaca(placaDigitada)) {
+    alert('❌ Placa do veículo inválida! Digite no formato ABC1234 ou ABC1A34.');
+    return;
+  }
+
+  // VALIDAÇÃO DO PEDIDO (ENTRE 7 E 8 DÍGITOS)
+  if (!validarPedido(pedidoDigitado)) {
+    alert('❌ Número de Pedido inválido! O pedido deve conter exatamente de 7 a 8 dígitos numéricos.');
+    return;
+  }
 
   const paletesOpcao = document.querySelector('input[name="paletes_opcao"]:checked')?.value;
   let quantidadePaletes = '';
@@ -252,7 +265,7 @@ async function gerarJSONeToken() {
     nome: document.getElementById('nome').value,
     cnh: document.getElementById('cnh').value,
     placa: placaDigitada,
-    pedido: document.getElementById('pedido').value,
+    pedido: pedidoDigitado,
     eixos: document.getElementById('eixos').value,
     sinalizacao: document.getElementById('sinalizacao').value,
     pneus: document.getElementById('pneus').value,
