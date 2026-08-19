@@ -17,7 +17,7 @@
       <label for="input-cpf">Informe seu CPF (somente números):</label>
       <input type="text" id="input-cpf" placeholder="EX: 00000000000" maxlength="11" inputmode="numeric">
    
-      <!-- INFORMATIVO LGPD (SUMÁRIO DE DADOS COLETADOS) -->
+      <!-- INFORMATIVO LGPD -->
       <details class="accordion-termo" style="margin-bottom: 20px;">
         <summary>ℹ️ Aviso de Privacidade & LGPD (Lei nº 13.709/2018)</summary>
         <div class="termo-box">
@@ -69,7 +69,7 @@
           </label>
         </div>
     
-        <!-- SEÇÃO DA PROVA (INICIALMENTE DESABILITADA/OPACA) -->
+        <!-- SEÇÃO DA PROVA -->
         <div id="secao-prova" style="opacity: 0.5; pointer-events: none; transition: opacity 0.3s ease;">
           <h3>📝 Prova de Conhecimento</h3>
           <p><em>Você precisa acertar TODAS as questões para continuar. Boa sorte! 🍀</em></p>
@@ -127,21 +127,14 @@
           </div>
         </div>
     
-        <!-- TERMOS DE COMPROMISSO E ADESÃO (APÓS A PROVA) -->
+        <!-- TERMOS E ACEITES -->
         <h3 style="margin-top: 30px;">📜 Termos e Aceites Regulamentares</h3>
         
-        <!-- TERMO 1: PPAE -->
         <details class="accordion-termo">
           <summary>📜 1. Termo de Adesão ao PPAE (Álcool e Entorpecentes)</summary>
           <div class="termo-box">
             <p><strong>Programa de Prevenção para Álcool e Entorpecentes – PPAE</strong></p>
-            <p>Recebi o treinamento referente ao PPAE e declaro:</p>
-            <ol>
-              <li>Conhecer e aceitar integralmente as normas do Programa;</li>
-              <li>Concordar em submeter-me aos procedimentos de testes descritos no presente manual, autorizando desde já a coleta de qualquer material necessário para a realização daqueles exames e testes;</li>
-              <li>Autorizar que o resultado de tais testes seja informado de acordo com as informações constantes do presente manual;</li>
-              <li>Tenho conhecimento que o tratamento ambulatorial e/ou internação decorrente dos resultados positivos das testagens previstas neste Programa não gera estabilidade provisória de emprego ou salário.</li>
-            </ol>
+            <p>Recebi o treinamento referente ao PPAE e declaro conhecer e aceitar integralmente as normas.</p>
           </div>
         </details>
         
@@ -152,34 +145,10 @@
           </label>
         </div>
         
-        <!-- TERMO 2: SAÚDE E SEGURANÇA FOB -->
         <details class="accordion-termo">
           <summary>📜 2. Termo de Compromisso de Saúde e Segurança (CSN Cimentos)</summary>
           <div class="termo-box">
-            <p><strong>Eu declaro que fui apresentado à Política de Saúde e Segurança e assumo o compromisso de seguir todas as orientações:</strong></p>
-            <ol>
-              <li>É proibido trabalhar sob efeito de álcool e drogas;</li>
-              <li>É proibido entrar nas unidades da CSN Cimentos com caronas, acompanhantes;</li>
-              <li>É proibido o uso de dispositivos móveis de comunicação enquanto dirigindo;</li>
-              <li>É proibido subir na carroceria ou implemento do veículo;</li>
-              <li>É proibido realizar manutenção no veículo sem autorização prévia;</li>
-              <li>É obrigatório comunicar qualquer acidente em até 2 horas;</li>
-              <li>É obrigatório utilizar todos os EPIs exigidos;</li>
-              <li>É obrigatório respeitar a capacidade máxima do veículo;</li>
-              <li>Estacionar conforme orientação e calçar as rodas;</li>
-              <li>É obrigatório o uso de faróis acesos durante o dia;</li>
-              <li>Utilizar o cinto de segurança;</li>
-              <li>Respeitar os limites de velocidade;</li>
-              <li>É proibido o uso de fogões no pátio;</li>
-              <li>Não transitar em áreas de carregamento a pé;</li>
-              <li>Comunique situações inseguras;</li>
-              <li>Proibido bater no silo com materiais metálicos;</li>
-              <li>Proibido o uso de adornos na operação;</li>
-              <li>Proibido regatas, shorts e chinelos;</li>
-              <li>Manter as carrocerias organizadas;</li>
-              <li>Cumprir as demais regras de carregamento;</li>
-              <li>Proibido tirar fotos ou gravar vídeos.</li>
-            </ol>
+            <p>Declaro que assumo o compromisso de seguir todas as orientações de segurança operacional.</p>
           </div>
         </details>
         
@@ -190,12 +159,10 @@
           </label>
         </div>
     
-        <!-- TERMO 3: LGPD -->
         <details class="accordion-termo">
           <summary>📜 3. Política de Privacidade e Proteção de Dados (LGPD)</summary>
           <div class="termo-box">
-            <p><strong>Termo de Consentimento e Privacidade de Dados Pessoais</strong></p>
-            <p>Em conformidade com a LGPD (Lei nº 13.709/2018), concordo com o tratamento dos meus dados pessoais fornecidos nesta aplicação exclusivamente para fins de segurança, controle e identificação veicular.</p>
+            <p>Concordo com o tratamento dos meus dados pessoais exclusivamente para fins de segurança e identificação veicular.</p>
           </div>
         </details>
         
@@ -209,18 +176,46 @@
         <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova, Aceites e Avançar</button>
       </form>
     </div>
+
+    <!-- ETAPA: SELEÇÃO DO TIPO DE CARREGAMENTO -->
+    <div class="card hidden" id="step-tipo-carregamento">
+      <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar</button>
+      <h2>🚛 Selecione o Tipo de Carregamento</h2>
+      <p style="margin-bottom: 20px; color: #555;">Escolha qual o modelo da sua operação para abrir a inspeção correta:</p>
+
+      <div class="tipo-carregamento-opcoes">
+        <!-- OPÇÃO 1: FOB - CLIENTE -->
+        <label class="card-carregamento">
+          <input type="radio" name="modelo_carregamento" value="FOB">
+          <div class="conteudo-carregamento">
+            <h3>📦 FOB - Cliente</h3>
+            <p class="subtexto-exemplo">Exemplo de pedido: <strong>9999999</strong></p>
+          </div>
+        </label>
+
+        <!-- OPÇÃO 2: TRANSFERÊNCIA / CIF -->
+        <label class="card-carregamento">
+          <input type="radio" name="modelo_carregamento" value="CIF">
+          <div class="conteudo-carregamento">
+            <h3>🚚 TRANSFERÊNCIA / CIF</h3>
+            <p class="subtexto-transportadoras">Transportadoras: <strong>Targets / Tora / TransAgil</strong></p>
+            <p class="subtexto-exemplo">Exemplo de pedido: <strong>104000000</strong></p>
+          </div>
+        </label>
+      </div>
+
+      <button type="button" class="btn" onclick="confirmarTipoCarregamento()" style="margin-top: 25px;">Avançar para Inspeção ➡️</button>
+    </div>
     
-    <!-- ETAPA 3: FORMULÁRIO DE INSPEÇÃO -->
+    <!-- ETAPA 3A: FORMULÁRIO DE INSPEÇÃO (FOB) -->
     <div class="card hidden" id="step-inspecao">
-      <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar para a Tela Inicial</button>
+      <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar</button>
       <h2>🔍 Formulário de Inspeção Veicular (FOB)</h2>     
       
       <form id="form-inspecao">
-        <!-- DADOS DO MOTORISTA E VEÍCULO -->
         <label for="nome">Nome Completo:</label>
         <input type="text" id="nome" placeholder="EX: João da Silva" required>
     
-        <!-- CAMPO CNH COM BOTÃO RETRÁTIL DE AJUDA -->
         <div class="form-group-cnh">
           <label for="cnh">CNH:</label>
           <input type="text" id="cnh" placeholder="00000000000" maxlength="11" inputmode="numeric" required>
@@ -233,6 +228,9 @@
           </details>
         </div>        
         
+        <label for="telefone">Telefone de Contato 'WHATSAPP' (com DDD):</label>
+        <input type="text" id="telefone" placeholder="EX: 11999999999" maxlength="11" inputmode="numeric" required>
+
         <label for="placa">Placa do Veículo (Cavalo):</label>
         <input type="text" id="placa" placeholder="EX: ABC1234 ou ABC1A34" maxlength="7" style="text-transform: uppercase;" required>    
         
@@ -241,38 +239,13 @@
         
         <label for="eixos">Quantidade total de eixos:</label>
         <input type="text" id="eixos" placeholder="EX: 3 (máx. 9)" maxlength="1" inputmode="numeric" required>
-
-        <!-- CAMPO TELEFONE NA INSPEÇÃO -->
-        <label for="telefone">Telefone de Contato 'WHATSAPP' (com DDD):</label>
-        <input type="text" id="telefone" placeholder="EX: 11999999999" maxlength="11" inputmode="numeric" required>
-                
-        <!-- BLOCO DE INFORMAÇÕES DA FOTO (REGRAS DE INSPEÇÃO) -->
-        <h3>📜 REGRAS INSPEÇÃO VEÍCULOS DE CLIENTES</h3>
-        <div class="regras-container">
-          <p>Segurança é o valor que permeia toda nossa empresa e deve estar incorporado em tudo que fazemos. Por isso, o veículo deverá apresentar condições seguras para entrada nas plantas.</p>
-          <p>Os itens descritos neste formulário devem estar em boas condições de funcionamento. Eles zelam pela segurança de condutores, pedestres e passageiros.</p>
-          
-          <p style="margin-top: 15px; font-weight: bold; color: #333;">VERIFIQUE COM ATENÇÃO:</p>
-          <ul>
-            <li><strong>SINALIZAÇÃO / PLACAS / FAIXAS:</strong> Veículo deve estar devidamente identificado, com placa visível e faixas refletivas operacionais.</li>
-            <li><strong>PNEUS:</strong> Além de passível de multas, pneus carecas ou danificados (Cortes, rasgos, bolhas) afetam a dirigibilidade e podem estourar quando o peso da carga for posta sobre ele.</li>
-            <li><strong>CARROCERIA:</strong> Falhas na forração da carroceria podem levar a entrada de umidade pela parte inferior e provocar queda dos operadores que trabalham sobre ele.</li>
-            <li><strong>CINTO DE SEGURANÇA:</strong> A segurança do condutor está em primeiro lugar.</li>
-            <li><strong>FARÓIS:</strong> Devem estar em funcionamento.</li>
-            <li><strong>ALARME DE RÉ:</strong> Muitos acidentes acontecem em manobras de ré. Em um ambiente com intensa movimentação de empilhadeiras, outros caminhões e eventualmente pessoas, este é um item crítico para veículos pesados.</li>
-            <li><strong>ÓLEO / ÁGUA / COMBUSTÍVEL:</strong> Há vazamento contínuo de fluido (óleo, água, combustível)? A tampa de combustível está danificada?</li>
-            <li><strong>CALÇO DE RODA:</strong> A fim de evitar acidentes com locomoção inesperada do veículo, todos os veículos de carga devem possuir um par de calços.</li>
-            <li><strong>TAMPA SILO – CARRETA GRANEL:</strong> As tampas da carreta silo deverão estar com uma trava de segurança, sem trincas, soldas e com todos os manípulos fechando corretamente.</li>
-          </ul>
-        </div>
-
-        <!-- SEÇÃO: SELEÇÃO DO TIPO DE VEÍCULO -->
+        
+        <!-- SELEÇÃO DO TIPO DE VEÍCULO -->
         <h3>🚛 Seleção do Tipo de Veículo</h3>
         <div class="tipo-veiculo-container">
           <p style="font-weight: 600; margin-bottom: 12px; color: #333;">Seu veículo é:</p>
         
           <div class="tipo-veiculo-opcoes">
-            <!-- Opção 1: Carga Seca / Paletizado -->
             <label class="card-tipo-veiculo">
               <input type="radio" name="tipo_veiculo" value="CARGA_SECA" required>
               <div class="conteudo-tipo">
@@ -281,7 +254,6 @@
               </div>
             </label>
         
-            <!-- Opção 2: Carreta Silo / Granel -->
             <label class="card-tipo-veiculo">
               <input type="radio" name="tipo_veiculo" value="CARRETA_SILO" required>
               <div class="conteudo-tipo">
@@ -292,7 +264,7 @@
           </div>
         </div>
         
-        <!-- ITENS DE INSPEÇÃO VEICULAR -->
+        <!-- ITENS DE INSPEÇÃO -->
         <h3>Itens de Inspeção Veicular</h3>
     
         <div class="item-check">
@@ -376,7 +348,7 @@
           </select>
         </div>    
         
-        <!-- EQUIPAMENTOS DE PROTEÇÃO INDIVIDUAL (EPIs) -->
+        <!-- EPIs -->
         <h3>🪖 Equipamentos de Proteção Individual (EPIs)</h3>
         
         <div class="item-check">
@@ -424,7 +396,7 @@
           </select>
         </div>
     
-        <!-- SEÇÃO PALETES (COMPLETA E FECHADA CORRETAMENTE) -->
+        <!-- PALETES -->
         <div id="secao-paletes">
           <h3>📦 Paletes</h3>
           <div class="paletes-container" id="container-paletes">
@@ -450,7 +422,73 @@
           </div>
         </div>
 
-        <button type="button" class="btn" onclick="gerarJSONeToken()" style="margin-top: 20px;">✅ Finalizar Inspeção</button>
+        <button type="button" class="btn" onclick="gerarJSONeToken()" style="margin-top: 20px;">✅ Finalizar Inspeção FOB</button>
+      </form>
+    </div>
+
+    <!-- ETAPA 3B: FORMULÁRIO DE INSPEÇÃO (CIF / FCA - 32 ITENS) -->
+    <div class="card hidden" id="step-inspecao-cif">
+      <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar</button>
+      <h2>📋 Inspeção Veicular - CIF / FCA</h2>
+
+      <form id="form-inspecao-cif">
+        <h3>📌 Tipo de Carga e Segmento</h3>
+        <label>Checklist CIP:</label>
+        <select id="cif-tipo-checklist" required>
+          <option value="">-- Selecione --</option>
+          <option value="Cimento">Cimento</option>
+          <option value="Revalora">Revalora</option>
+          <option value="Agregados">Agregados</option>
+          <option value="Materias Primas">Matérias Primas</option>
+        </select>
+
+        <label>Segmento:</label>
+        <select id="cif-segmento" required>
+          <option value="">-- Selecione --</option>
+          <option value="Transportador">Transportador</option>
+          <option value="Autonomo">Autônomo</option>
+        </select>
+
+        <h3>🔍 Check List de Verificação (32 Itens)</h3>
+
+        <!-- OS 32 ITENS CONFORME ANEXO PDF -->
+        <div class="item-check"><span>1. Pneus (sem bolhas, rasgos, sulco >= 1,6mm):</span><select id="cif-item-1" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>2. Espelhos retrovisores em bom estado/visibilidade:</span><select id="cif-item-2" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>3. Placas de identificação legíveis e selo intacto:</span><select id="cif-item-3" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>4. Para-brisa sem trincas/fraturas na área de visão:</span><select id="cif-item-4" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>5. Cone de segurança (Laranja, 2 faixas, alt. min 70cm):</span><select id="cif-item-5" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>6. Extintor de incêndio pó ABC válido e com lacre:</span><select id="cif-item-6" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>7. Cinto de segurança retrátil 3 pontos em bom estado:</span><select id="cif-item-7" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>8. Tacógrafo lacrado, funcional e com disco correto:</span><select id="cif-item-8" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>9. Travas da báscula e pistão sem vazamentos:</span><select id="cif-item-9" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>10. Limpador de para-brisa e esguicho operantes:</span><select id="cif-item-10" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>11. Quebra-sol interno em bom estado:</span><select id="cif-item-11" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>12. Assoalho, cabine, assento e escada seguros:</span><select id="cif-item-12" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>13. Faróis alto e baixo sem mau funcionamento:</span><select id="cif-item-13" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>14. Portas, capô e carroceria sem avarias graves:</span><select id="cif-item-14" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>15. Sistema de sinalização completo (buzina, luzes, ré):</span><select id="cif-item-15" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>16. Suporte para mangueiras (Granel) em bom estado:</span><select id="cif-item-16" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>17. Ausência de peças/ferramentas soltas:</span><select id="cif-item-17" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>18. Faixas retrorefletivas em bom estado e limpas:</span><select id="cif-item-18" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>19. Par de calços amarelos de borracha amarrados:</span><select id="cif-item-19" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>20. Sem vazamento contínuo de fluidos (óleo/combustível):</span><select id="cif-item-20" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>21. Protetor lateral (barra anti-ciclista) presente:</span><select id="cif-item-21" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>22. Chassi do veículo em boas condições (sem trincas/soldas):</span><select id="cif-item-22" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>23. Suspensão sem adulterações/arqueamentos irregulares:</span><select id="cif-item-23" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>24. Sistema pneumático sem vazamento de ar:</span><select id="cif-item-24" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>25. Freio de estacionamento/manete operacional:</span><select id="cif-item-25" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>26. Motorista com todos os EPIs necessários:</span><select id="cif-item-26" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>27. Possui checklist da tampa do silo:</span><select id="cif-item-27" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>28. Cabo anti-chicoteamento presente e conservado:</span><select id="cif-item-28" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>29. Película dos vidros (Insulfilm) conforme legislação:</span><select id="cif-item-29" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>30. Sem alterações/adulterações nas características originais:</span><select id="cif-item-30" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>31. Protetor das partes rotativas do compressor presente:</span><select id="cif-item-31" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+        <div class="item-check"><span>32. Cintas e cordas em bom estado (sem cortes/avarias):</span><select id="cif-item-32" required><option value="">-- Selecione --</option><option value="SIM">SIM ✅</option><option value="NAO">NÃO ❌</option><option value="NA">N/A</option></select></div>
+
+        <label for="cif-observacoes" style="margin-top: 15px; display: block;">Observações / Falhas Identificadas:</label>
+        <textarea id="cif-observacoes" rows="3" placeholder="Digite observações adicionais, se houver..."></textarea>
+
+        <button type="button" class="btn" onclick="salvarInspecaoCIF()" style="margin-top: 20px;">✅ Finalizar Inspeção CIF / FCA</button>
       </form>
     </div>
 
