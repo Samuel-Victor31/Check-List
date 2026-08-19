@@ -262,20 +262,23 @@ function atualizarCamposPorTipoVeiculo() {
   const radiosPaletes = document.querySelectorAll('input[name="paletes_opcao"]');
 
   if (tipoVeiculo === 'CARGA_SECA') {
-    // 1. Oculta Tampa do Silo e reseta o select
+    // 1. Oculta Tampa do Silo e limpa o valor
     if (containerTampaSilo) containerTampaSilo.style.display = 'none';
     if (selectTampaSilo) selectTampaSilo.value = '';
 
-    // 2. Exibe a seção de Paletes
+    // 2. Exibe a seção de Paletes e RESETA qualquer marcação anterior
     if (secaoPaletes) secaoPaletes.style.display = 'block';
+    radiosPaletes.forEach(radio => radio.checked = false); // <--- Desmarca SIM/NÃO
+    ocultarQuantidadePaletes(); // <--- Oculta o campo de quantidade
 
   } else if (tipoVeiculo === 'CARRETA_SILO') {
-    // 1. Exibe Tampa do Silo
+    // 1. Exibe Tampa do Silo e RESETA para "-- Selecione --"
     if (containerTampaSilo) containerTampaSilo.style.display = 'flex';
+    if (selectTampaSilo) selectTampaSilo.value = ''; // <--- Volta para o "-- Selecione --" (value="")
 
-    // 2. Oculta seção de Paletes, desmarca opções e esconde a quantidade
+    // 2. Oculta a seção de Paletes, desmarca opções e limpa a quantidade
     if (secaoPaletes) secaoPaletes.style.display = 'none';
-    radiosPaletes.forEach(r => r.checked = false);
+    radiosPaletes.forEach(radio => radio.checked = false);
     ocultarQuantidadePaletes();
   }
 }
