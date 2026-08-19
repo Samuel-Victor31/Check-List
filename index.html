@@ -421,40 +421,37 @@
           </select>
         </div>
     
-        <!-- SEÇÃO PALETES -->
-        <h3>📦 Paletes</h3>
-        <div class="paletes-container" id="container-paletes">
-          <p style="font-weight: 600; margin-bottom: 15px;">Trouxe Paletes para Carregamento?</p>
-          
-          <div class="paletes-opcoes">
-            <label class="paletes-label">
-              <input type="radio" name="paletes_opcao" value="SIM" onchange="mostrarQuantidadePaletes()">
-              <span>SIM</span>
-            </label>
-            <div id="quantidade-paletes-container" style="display: none; margin-left: 20px; margin-bottom: 10px;">
-              <label for="quantidade-paletes">Quantidade:</label>
-              <input type="number" id="quantidade-paletes" placeholder="0" min="0" max="999">
+        <div id="secao-paletes">
+          <h3>📦 Paletes</h3>
+          <div class="paletes-container" id="container-paletes">
+            <p style="font-weight: 600; margin-bottom: 15px;">Trouxe Paletes para Carregamento?</p>
+            
+            <div class="paletes-opcoes">
+              <label class="paletes-label">
+                <input type="radio" name="paletes_opcao" value="SIM" onchange="mostrarQuantidadePaletes()">
+                <span>SIM</span>
+              </label>
+              <div id="quantidade-paletes-container" style="display: none; margin-left: 20px; margin-bottom: 10px;">
+                <label for="quantidade-paletes">Quantidade:</label>
+                <input type="number" id="quantidade-paletes" placeholder="0" min="0" max="999">
+              </div>
+            </div>
+        
+            <div class="paletes-opcoes">
+              <label class="paletes-label">
+                <input type="radio" name="paletes_opcao" value="NAO" onchange="ocultarQuantidadePaletes()">
+                <span>NÃO</span>
+              </label>
+            </div>
+        
+            <div class="paletes-opcoes">
+              <label class="paletes-label">
+                <input type="radio" name="paletes_opcao" value="NA" id="paletes-na" onchange="ocultarQuantidadePaletes()">
+                <span>N/A</span>
+              </label>
             </div>
           </div>
-        
-          <div class="paletes-opcoes">
-            <label class="paletes-label">
-              <input type="radio" name="paletes_opcao" value="NAO" onchange="ocultarQuantidadePaletes()">
-              <span>NÃO</span>
-            </label>
-          </div>
-        
-          <div class="paletes-opcoes">
-            <label class="paletes-label">
-              <input type="radio" name="paletes_opcao" value="NA" id="paletes-na" onchange="ocultarQuantidadePaletes()">
-              <span>N/A</span>
-            </label>
-          </div>
         </div>
-    
-        <button type="button" class="btn" onclick="gerarJSONeToken()" style="margin-top: 20px;">✅ Finalizar Inspeção</button>
-      </form>
-    </div>
 
     <!-- ETAPA 4: TELA FINAL / SUCESSO (FORA DO FORMULÁRIO) -->
     <div class="card hidden" id="step-sucesso" style="text-align: center;">
