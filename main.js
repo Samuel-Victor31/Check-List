@@ -21,31 +21,26 @@ let tipoCarregamentoSelecionado = '';
 // FUNÇÕES AUXILIARES DE VALIDAÇÃO
 // ============================================
 
-// Valida Placa Tradicional (ABC1234) ou Mercosul (ABC1A34)
 function validarPlaca(placa) {
   const regexPlaca = /^[A-Z]{3}[0-9]{1}[A-Z0-9]{1}[0-9]{2}$/;
   return regexPlaca.test(placa);
 }
 
-// Valida se o número do pedido tem entre 7 e 8 dígitos numéricos
 function validarPedido(pedido) {
-  const regexPedido = /^[0-9]{7,8}$/;
+  const regexPedido = /^[0-9]{7,9}$/;
   return regexPedido.test(pedido);
 }
 
-// Valida Telefone com DDD (10 dígitos para Fixo, 11 para Celular)
 function validarTelefone(telefone) {
   const regexTelefone = /^[1-9]{2}(?:[2-8][0-9]{7}|9[0-9]{8})$/;
   return regexTelefone.test(telefone);
 }
 
-// Valida se a quantidade de eixos é apenas 1 dígito numérico entre 1 e 9
 function validarEixos(eixos) {
   const regexEixos = /^[1-9]{1}$/;
   return regexEixos.test(eixos);
 }
 
-// Função auxiliar simples para obter elemento por ID
 function id(el) {
   return document.getElementById(el);
 }
@@ -75,20 +70,18 @@ async function verificarAcesso() {
     const resultado = await response.json();
 
     if (resultado.existe) {
-      ehPrimeiraVez = false; // Motorista veterano
+      ehPrimeiraVez = false;
       dadosMotoristaAtual = resultado.dados;
-      console.log('Motorista encontrado:', dadosMotoristaAtual);
 
-      // Auto-preenche os dados já cadastrados
-      if (dadosMotoristaAtual.nome) document.getElementById('nome').value = dadosMotoristaAtual.nome;
-      if (dadosMotoristaAtual.placa) document.getElementById('placa').value = dadosMotoristaAtual.placa;
-      if (dadosMotoristaAtual.telefone) document.getElementById('telefone').value = dadosMotoristaAtual.telefone;
-      if (dadosMotoristaAtual.cnh) document.getElementById('cnh').value = dadosMotoristaAtual.cnh;
+      // Auto-preenche formulário FOB
+      if (dadosMotoristaAtual.nome && id('nome')) id('nome').value = dadosMotoristaAtual.nome;
+      if (dadosMotoristaAtual.placa && id('placa')) id('placa').value = dadosMotoristaAtual.placa;
+      if (dadosMotoristaAtual.telefone && id('telefone')) id('telefone').value = dadosMotoristaAtual.telefone;
+      if (dadosMotoristaAtual.cnh && id('cnh')) id('cnh').value = dadosMotoristaAtual.cnh;
 
       irParaSelecaoCarregamento();
     } else {
-      ehPrimeiraVez = true; // Novo motorista
-      console.log('Novo motorista - mostrando prova e cadastro');
+      ehPrimeiraVez = true;
       irParaIntegracao();
     }
   } catch (erro) {
@@ -135,8 +128,7 @@ function alternarBloqueioProva() {
   } else {
     secaoProva.style.opacity = '0.5';
     secaoProva.style.pointerEvents = 'none';
-    
-    // Reseta marcações da prova se desmarcar o vídeo
+
     const radios = secaoProva.querySelectorAll('input[type="radio"]');
     radios.forEach(radio => radio.checked = false);
   }
@@ -163,17 +155,17 @@ async function concluirIntegracao() {
   }
 
   if (!validarTelefone(telefone)) {
-    alert('❌ Telefone/WhatsApp inválido! Digite um número válido com DDD (Ex: 11999999999).');
+    alert('❌ Telefone/WhatsApp inválido! Digite um número válido com DDD.');
     return;
   }
 
   if (!validarPlaca(placa)) {
-    alert('❌ Placa do veículo inválida! A placa deve seguir o padrão ABC1234 ou ABC1A34.');
+    alert('❌ Placa do veículo inválida!');
     return;
   }
 
   if (!aceiteVideo) {
-    alert('⚠️ Você precisa confirmar que assistiu ao VÍDEO DE INTRODUÇÃO para realizar a prova!');
+    alert('⚠️ Você precisa confirmar que assistiu ao VÍDEO DE INTRODUÇÃO!');
     return;
   }
 
@@ -190,7 +182,7 @@ async function concluirIntegracao() {
   }
 
   if (!aceitePPAE || !aceiteFOB || !aceiteLGPD) {
-    alert('⚠️ Você precisa marcar o aceite em TODOS os termos de compromisso (PPAE, FOB e LGPD) para continuar!');
+    alert('⚠️ Marque o aceite em TODOS os termos de compromisso!');
     return;
   }
 
@@ -212,13 +204,15 @@ async function concluirIntegracao() {
   if (acertos === 4) {
     await salvarMotoristaComProva(nome, rg, telefone, placa, respostas);
 
-    document.getElementById('nome').value = nome;
-    document.getElementById('placa').value = placa;
-    document.getElementById('telefone').value = telefone;
+    dadosMotoristaAtual = { nome, rg, telefone, placa };
+
+    if (id('nome')) id('nome').value = nome;
+    if (id('placa')) id('placa').value = placa;
+    if (id('telefone')) id('telefone').value = telefone;
 
     irParaSelecaoCarregamento();
   } else {
-    alert('⚠️ Você precisa acertar TODAS as 4 questões para avançar. Tente novamente!');
+    alert('⚠️ Você precisa acertar TODAS as 4 questões para avançar!');
   }
 }
 
@@ -253,7 +247,7 @@ async function salvarMotoristaComProva(nome, rg, telefone, placa, respostas) {
 }
 
 // ============================================
-// CONTROLE DO CAMPO DE PALETES E EXIBIÇÕES
+// CONTROLE DO CAMPO DE PALETES
 // ============================================
 
 function mostrarQuantidadePaletes() {
@@ -270,30 +264,25 @@ function ocultarQuantidadePaletes() {
 }
 
 // ============================================
-// ETAPA 3A: INSPEÇÃO FOB E LÓGICA DE VEÍCULOS
+// ETAPA 3A: INSPEÇÃO FOB
 // ============================================
 
 function atualizarCamposPorTipoVeiculo() {
   const tipoVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked')?.value;
-  
   const containerTampaSilo = document.getElementById('container-tampa-silo');
   const selectTampaSilo = document.getElementById('tampa_silo');
-  
   const secaoPaletes = document.getElementById('secao-paletes');
   const radiosPaletes = document.querySelectorAll('input[name="paletes_opcao"]');
 
   if (tipoVeiculo === 'CARGA_SECA') {
     if (containerTampaSilo) containerTampaSilo.style.display = 'none';
     if (selectTampaSilo) selectTampaSilo.value = '';
-
     if (secaoPaletes) secaoPaletes.style.display = 'block';
     radiosPaletes.forEach(radio => radio.checked = false);
     ocultarQuantidadePaletes();
-
   } else if (tipoVeiculo === 'CARRETA_SILO') {
     if (containerTampaSilo) containerTampaSilo.style.display = 'flex';
     if (selectTampaSilo) selectTampaSilo.value = '';
-
     if (secaoPaletes) secaoPaletes.style.display = 'none';
     radiosPaletes.forEach(radio => radio.checked = false);
     ocultarQuantidadePaletes();
@@ -315,27 +304,27 @@ async function gerarJSONeToken() {
   const tipoVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked')?.value;
 
   if (!tipoVeiculo) {
-    alert('⚠️ Por favor, selecione qual é o seu tipo de veículo (Carga Seca ou Carreta Silo)!');
+    alert('⚠️ Por favor, selecione qual é o seu tipo de veículo!');
     return;
   }
 
   if (!validarTelefone(telefoneDigitado)) {
-    alert('❌ Telefone/WhatsApp inválido! Digite um número válido com DDD (Ex: 11999999999).');
+    alert('❌ Telefone/WhatsApp inválido!');
     return;
   }
 
   if (!validarPlaca(placaDigitada)) {
-    alert('❌ Placa do veículo inválida! Digite no formato ABC1234 ou ABC1A34.');
+    alert('❌ Placa do veículo inválida!');
     return;
   }
 
   if (!validarPedido(pedidoDigitado)) {
-    alert('❌ Número de Pedido inválido! O pedido deve conter de 7 a 8 dígitos numéricos.');
+    alert('❌ Número de Pedido inválido!');
     return;
   }
 
   if (!validarEixos(eixosDigitados)) {
-    alert('❌ Quantidade de eixos inválida! Informe apenas 1 dígito numérico (ex: de 1 a 9).');
+    alert('❌ Quantidade de eixos inválida!');
     return;
   }
 
@@ -388,12 +377,7 @@ async function gerarJSONeToken() {
       !inspecao.farois || !inspecao.alarme_re || !inspecao.vazamentos || !inspecao.calcos || 
       !inspecao.tampa_silo || !inspecao.epi_capacete || !inspecao.epi_colete || 
       !inspecao.epi_oculos || !inspecao.epi_botina || !inspecao.epi_luvas) {
-    alert('⚠️ Preencha todos os campos obrigatórios da inspeção e EPIs!');
-    return;
-  }
-
-  if (tipoVeiculo === 'CARGA_SECA' && !paletesOpcao) {
-    alert('⚠️ Selecione uma opção para paletes!');
+    alert('⚠️ Preencha todos os campos obrigatórios!');
     return;
   }
 
@@ -427,7 +411,6 @@ async function gerarJSONeToken() {
 // ============================================
 
 async function salvarInspecaoCIF() {
-  // Função de busca ultra segura: pega o valor do ID CIF ou do ID padrão sem dar erro
   const getVal = (idCif, idPadrao) => {
     const elCif = document.getElementById(idCif);
     if (elCif && elCif.value.trim() !== '') return elCif.value.trim();
@@ -438,31 +421,33 @@ async function salvarInspecaoCIF() {
     return '';
   };
 
-  // Coleta os dados de forma resiliente
   const nome = getVal('cif-nome', 'nome') || dadosMotoristaAtual?.nome || '';
   const cnh = getVal('cif-cnh', 'cnh') || dadosMotoristaAtual?.cnh || '';
   const telefone = getVal('cif-telefone', 'telefone') || dadosMotoristaAtual?.telefone || '';
   const placa = (getVal('cif-placa', 'placa') || dadosMotoristaAtual?.placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
   const pedido = getVal('cif-pedido', 'pedido');
   const eixos = getVal('cif-eixos', 'eixos');
-  
-  const elChecklist = document.getElementById('cif-tipo-checklist');
-  const tipoChecklist = elChecklist ? elChecklist.value : '';
+  const tipoChecklist = document.getElementById('cif-tipo-checklist')?.value || '';
+  const segmento = document.getElementById('cif-segmento')?.value || '';
+  const observacoes = document.getElementById('cif-observacoes')?.value.trim() || '';
 
-  const elSegmento = document.getElementById('cif-segmento');
-  const segmento = elSegmento ? elSegmento.value : '';
-
-  const elObs = document.getElementById('cif-observacoes');
-  const observacoes = elObs ? elObs.value.trim() : '';
-
-  // Validação dos dados primários
   if (!nome || !cnh || !telefone || !placa || !pedido || !eixos) {
-    alert('⚠️ Preencha todos os dados básicos do motorista e veículo (Nome, CNH, Telefone, Placa, Pedido e Eixos)!');
+    alert('⚠️ Preencha todos os dados básicos do motorista e veículo!');
+    return;
+  }
+
+  if (!validarTelefone(telefone)) {
+    alert('❌ Telefone/WhatsApp inválido!');
+    return;
+  }
+
+  if (!validarPlaca(placa)) {
+    alert('❌ Placa do veículo inválida!');
     return;
   }
 
   if (!tipoChecklist || !segmento) {
-    alert('⚠️ Por favor, selecione o Tipo de Checklist CIP e o Segmento!');
+    alert('⚠️ Selecione o Tipo de Checklist CIP e o Segmento!');
     return;
   }
 
@@ -479,7 +464,6 @@ async function salvarInspecaoCIF() {
     observacoes: observacoes
   };
 
-  // Leitura dos 32 itens sem risco de quebrar no `.value`
   for (let i = 1; i <= 32; i++) {
     const elItem = document.getElementById(`cif-item-${i}`);
     const valorItem = elItem ? elItem.value : '';
@@ -513,7 +497,7 @@ async function salvarInspecaoCIF() {
 
       irParaSucesso();
     } else {
-      alert('❌ Erro ao salvar inspeção CIF: ' + (resultado.erro || 'Verifique se a rota existe no Worker.'));
+      alert('❌ Erro ao salvar inspeção CIF: ' + (resultado.erro || 'Erro no servidor'));
     }
   } catch (erro) {
     console.error('Erro ao salvar CIF:', erro);
@@ -591,13 +575,13 @@ function irParaInspecao() {
 
 function irParaInspecaoCIF() {
   ocultarTodas();
-  
-  // Preenche dados do motorista veterano se existirem
+
+  // Preenche todos os dados do motorista veterano na tela CIF
   if (dadosMotoristaAtual) {
-    if (dadosMotoristaAtual.nome) document.getElementById('cif-nome').value = dadosMotoristaAtual.nome;
-    if (dadosMotoristaAtual.cnh) document.getElementById('cif-cnh').value = dadosMotoristaAtual.cnh;
-    if (dadosMotoristaAtual.telefone) document.getElementById('cif-telefone').value = dadosMotoristaAtual.telefone;
-    if (dadosMotoristaAtual.placa) document.getElementById('cif-placa').value = dadosMotoristaAtual.placa;
+    if (dadosMotoristaAtual.nome && id('cif-nome')) id('cif-nome').value = dadosMotoristaAtual.nome;
+    if (dadosMotoristaAtual.cnh && id('cif-cnh')) id('cif-cnh').value = dadosMotoristaAtual.cnh;
+    if (dadosMotoristaAtual.telefone && id('cif-telefone')) id('cif-telefone').value = dadosMotoristaAtual.telefone;
+    if (dadosMotoristaAtual.placa && id('cif-placa')) id('cif-placa').value = dadosMotoristaAtual.placa;
   }
 
   document.getElementById('step-inspecao-cif').classList.remove('hidden');
@@ -611,17 +595,17 @@ function irParaSucesso() {
 function ocultarTodas() {
   document.getElementById('step-cpf').classList.add('hidden');
   document.getElementById('step-integracao').classList.add('hidden');
-  
+
   const stepCarregamento = document.getElementById('step-tipo-carregamento');
   if (stepCarregamento) stepCarregamento.classList.add('hidden');
 
   document.getElementById('step-inspecao').classList.add('hidden');
-  
+
   const stepCIF = document.getElementById('step-inspecao-cif');
   if (stepCIF) stepCIF.classList.add('hidden');
 
   document.getElementById('step-sucesso').classList.add('hidden');
-  
+
   window.scrollTo({
     top: 0,
     left: 0,
