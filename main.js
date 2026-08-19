@@ -248,6 +248,14 @@ async function gerarJSONeToken() {
   let pedidoDigitado = document.getElementById('pedido').value.trim();
   let eixosDigitados = document.getElementById('eixos').value.trim();
 
+  // CAPTURA DO TIPO DE VEÍCULO
+  const tipoVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked')?.value;
+
+  if (!tipoVeiculo) {
+    alert('⚠️ Por favor, selecione qual é o seu tipo de veículo (Carga Seca ou Carreta Silo)!');
+    return;
+  }
+
   // VALIDAÇÃO DA PLACA
   if (!validarPlaca(placaDigitada)) {
     alert('❌ Placa do veículo inválida! Digite no formato ABC1234 ou ABC1A34.');
@@ -282,7 +290,8 @@ async function gerarJSONeToken() {
     cnh: document.getElementById('cnh').value,
     placa: placaDigitada,
     pedido: pedidoDigitado,
-    eixos: document.getElementById('eixos').value,
+    eixos: eixosDigitados,
+    tipo_veiculo: tipoVeiculo, // <--- NOVO CAMPO ADICIONADO AQUI
     sinalizacao: document.getElementById('sinalizacao').value,
     pneus: document.getElementById('pneus').value,
     carroceria: document.getElementById('carroceria').value,
