@@ -6,7 +6,7 @@ const WORKER_URL = 'https://sistema-inspecoes.samuelvivi1996.workers.dev';
 
 // GABARITO ATUALIZADO COM 4 QUESTÕES
 const GABARITO = {
-  q1: 'Madeira',
+  q1: 'Borracha',
   q2: 'Todos os dias',
   q3: 'Ir para um ponto mais próximo indicado pela brigada de emergência',
   q4: 'Bloqueada pelo responsável CSN CIMENTOS.'
@@ -324,6 +324,13 @@ function ocultarTodas() {
   document.getElementById('step-integracao').classList.add('hidden');
   document.getElementById('step-inspecao').classList.add('hidden');
   document.getElementById('step-sucesso').classList.add('hidden');
+  
+  // Rola a página suavemente de volta ao topo da tela (linha 0, 0)
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth' // 'smooth' faz a rolagem ser suave, ou use 'auto' para ser instantânea
+  });
 }
 
 document.addEventListener('DOMContentLoaded', irParaCPF);
