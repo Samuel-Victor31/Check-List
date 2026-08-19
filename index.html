@@ -10,7 +10,7 @@
 <body>
   <div class="container">
     
-<!-- ETAPA 1: BUSCA CPF -->
+    <!-- ETAPA 1: BUSCA CPF -->
     <div class="card" id="step-cpf">
       <h2>🚗 Acesso do Motorista</h2>
       
@@ -190,32 +190,32 @@
           </label>
         </div>
     
-    <!-- TERMO 3: LGPD -->
-    <details class="accordion-termo">
-      <summary>📜 3. Política de Privacidade e Proteção de Dados (LGPD)</summary>
-      <div class="termo-box">
-        <p><strong>Termo de Consentimento e Privacidade de Dados Pessoais</strong></p>
-        <p>Em conformidade com a LGPD (Lei nº 13.709/2018), concordo com o tratamento dos meus dados pessoais fornecidos nesta aplicação exclusivamente para fins de segurança, controle e identificação veicular.</p>
-      </div>
-    </details>
-    
-    <div class="aceite-container">
-      <label class="aceite-label">
-        <input type="checkbox" id="aceite-lgpd" required>
-        <span>Li e estou de acordo com a Política de Privacidade e Proteção de Dados (LGPD).</span>
-      </label>
-    </div>
+        <!-- TERMO 3: LGPD -->
+        <details class="accordion-termo">
+          <summary>📜 3. Política de Privacidade e Proteção de Dados (LGPD)</summary>
+          <div class="termo-box">
+            <p><strong>Termo de Consentimento e Privacidade de Dados Pessoais</strong></p>
+            <p>Em conformidade com a LGPD (Lei nº 13.709/2018), concordo com o tratamento dos meus dados pessoais fornecidos nesta aplicação exclusivamente para fins de segurança, controle e identificação veicular.</p>
+          </div>
+        </details>
+        
+        <div class="aceite-container">
+          <label class="aceite-label">
+            <input type="checkbox" id="aceite-lgpd" required>
+            <span>Li e estou de acordo com a Política de Privacidade e Proteção de Dados (LGPD).</span>
+          </label>
+        </div>
 
-    <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova, Aceites e Avançar</button>
-  </form>
-</div>
+        <button type="button" class="btn" onclick="concluirIntegracao()">✅ Concluir Prova, Aceites e Avançar</button>
+      </form>
+    </div>
     
-  <!-- ETAPA 3: FORMULÁRIO DE INSPEÇÃO -->
-  <div class="card hidden" id="step-inspecao">
-    <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar para a Tela Inicial</button>
-    <h2>🔍 Formulário de Inspeção Veicular (FOB)</h2>      
+    <!-- ETAPA 3: FORMULÁRIO DE INSPEÇÃO -->
+    <div class="card hidden" id="step-inspecao">
+      <button type="button" class="btn-voltar" onclick="voltarPaginaAnterior()">⬅️ Voltar para a Tela Inicial</button>
+      <h2>🔍 Formulário de Inspeção Veicular (FOB)</h2>     
       
-    <form id="form-inspecao">
+      <form id="form-inspecao">
         <!-- DADOS DO MOTORISTA E VEÍCULO -->
         <label for="nome">Nome Completo:</label>
         <input type="text" id="nome" placeholder="EX: João da Silva" required>
@@ -420,6 +420,7 @@
           </select>
         </div>
     
+        <!-- SEÇÃO PALETES (COMPLETA E FECHADA CORRETAMENTE) -->
         <div id="secao-paletes">
           <h3>📦 Paletes</h3>
           <div class="paletes-container" id="container-paletes">
@@ -442,11 +443,14 @@
                 <span>NÃO</span>
               </label>
             </div>
-        
           </div>
         </div>
 
-    <!-- ETAPA 4: TELA FINAL / SUCESSO (FORA DO FORMULÁRIO) -->
+        <button type="button" class="btn" onclick="gerarJSONeToken()" style="margin-top: 20px;">✅ Finalizar Inspeção</button>
+      </form>
+    </div>
+
+    <!-- ETAPA 4: TELA FINAL / SUCESSO -->
     <div class="card hidden" id="step-sucesso" style="text-align: center;">
       <h2>🎉 Inspeção Concluída!</h2>
       <p>A inspeção foi registrada com sucesso no sistema.</p>
@@ -465,4 +469,3 @@
   <script src="main.js"></script>
 </body>
 </html>
-
