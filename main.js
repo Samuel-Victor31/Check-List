@@ -285,9 +285,47 @@ function ocultarQuantidadePaletes() {
 }
 
 // ============================================
-// ETAPA 3: INSPEÇÃO VEICULAR
+// ETAPA 3: INSPEÇÃO VEICULAR E LÓGICA DE VEÍCULOS
 // ============================================
 
+// 1. Lógica em tempo real para alternar campos conforme Carga Seca vs Carreta Silo
+function atualizarCamposPorTipoVeiculo() {
+  const tipoVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked')?.value;
+  
+  const containerTampaSilo = document.getElementById('container-tampa-silo');
+  const selectTampaSilo = document.getElementById('tampa_silo');
+  
+  const containerPaletes = document.getElementById('container-paletes');
+  const radioPaletesNA = document.getElementById('paletes-na') || document.querySelector('input[name="paletes_opcao"][value="NA"]');
+
+  if (tipoVeiculo === 'CARGA_SECA') {
+    // Oculta Tampa do Silo e define N/A automaticamente
+    if (containerTampaSilo) containerTampaSilo.style.display = 'none';
+    if (selectTampaSilo) selectTampaSilo.value = 'NA';
+
+    // Exibe a seção de Paletes
+    if (containerPaletes) containerPaletes.style.display = 'block';
+
+  } else if (tipoVeiculo === 'CARRETA_SILO') {
+    // Exibe Tampa do Silo e reseta o valor se estava em N/A
+    if (containerTampaSilo) containerTampaSilo.style.display = 'flex';
+    if (selectTampaSilo && selectTampaSilo.value === 'NA') selectTampaSilo.value = '';
+
+    // Oculta seção de Paletes, força a seleção "N/A" e esconde a quantidade
+    if (containerPaletes) containerPaletes.style.display = 'none';
+    if (radioPaletesNA) radioPaletesNA.checked = true;
+    ocultarQuantidadePaletes();
+  }
+}
+
+// Escutador de eventos para mudanças no tipo de veículo
+document.addEventListener('change', function(e) {
+  if (e.target && e.target.name === 'tipo_veiculo') {
+    atualizarCamposPorTipoVeiculo();
+  }
+});
+
+// 2. Função Principal de Envio e Salvamento da Inspeção
 async function gerarJSONeToken() {
   let placaDigitada = document.getElementById('placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
   let pedidoDigitado = document.getElementById('pedido').value.trim();
@@ -301,28 +339,29 @@ async function gerarJSONeToken() {
     return;
   }
 
-  // VALIDAÇÃO DA PLACA
+  // VALIDAÇÕES DE FORMATO
   if (!validarPlaca(placaDigitada)) {
     alert('❌ Placa do veículo inválida! Digite no formato ABC1234 ou ABC1A34.');
     return;
   }
 
-  // VALIDAÇÃO DO PEDIDO (ENTRE 7 E 8 DÍGITOS)
   if (!validarPedido(pedidoDigitado)) {
     alert('❌ Número de Pedido inválido! O pedido deve conter de 7 a 8 dígitos numéricos.');
     return;
   }
 
-  // VALIDAÇÃO DE EIXOS (1 DÍGITO ENTRE 1 E 9)
   if (!validarEixos(eixosDigitados)) {
     alert('❌ Quantidade de eixos inválida! Informe apenas 1 dígito numérico (ex: de 1 a 9).');
     return;
   }
 
-  const paletesOpcao = document.querySelector('input[name="paletes_opcao"]:checked')?.value;
+  // CAPTURA E TRATAMENTO DE PALETES
+  let paletesOpcao = document.querySelector('input[name="paletes_opcao"]:checked')?.value;
   let quantidadePaletes = '';
 
-  if (paletesOpcao === 'SIM') {
+  if (tipoVeiculo === 'CARRETA_SILO') {
+    paletesOpcao = 'NA';
+  } else if (paletesOpcao === 'SIM') {
     quantidadePaletes = document.getElementById('quantidade-paletes').value.trim();
     if (!quantidadePaletes) {
       alert('⚠️ Se selecionou SIM em paletes, informe a quantidade!');
@@ -330,13 +369,20 @@ async function gerarJSONeToken() {
     }
   }
 
+  // TRATAMENTO DA TAMPA DO SILO
+  let valTampaSilo = document.getElementById('tampa_silo').value;
+  if (tipoVeiculo === 'CARGA_SECA') {
+    valTampaSilo = 'NA';
+  }
+
+  // MONTAGEM DO OBJETO DE INSPEÇÃO
   const inspecao = {
-    nome: document.getElementById('nome').value,
-    cnh: document.getElementById('cnh').value,
+    nome: document.getElementById('nome').value.trim(),
+    cnh: document.getElementById('cnh').value.trim(),
     placa: placaDigitada,
     pedido: pedidoDigitado,
     eixos: eixosDigitados,
-    tipo_veiculo: tipoVeiculo, // <--- NOVO CAMPO ADICIONADO AQUI
+    tipo_veiculo: tipoVeiculo,
     sinalizacao: document.getElementById('sinalizacao').value,
     pneus: document.getElementById('pneus').value,
     carroceria: document.getElementById('carroceria').value,
@@ -345,18 +391,22 @@ async function gerarJSONeToken() {
     alarme_re: document.getElementById('alarme_re').value,
     vazamentos: document.getElementById('vazamentos').value,
     calcos: document.getElementById('calcos').value,
-    tampa_silo: document.getElementById('tampa_silo').value,
+    tampa_silo: valTampaSilo,
     epi_capacete: document.getElementById('epi_capacete').value,
     epi_colete: document.getElementById('epi_colete').value,
     epi_oculos: document.getElementById('epi_oculos').value,
     epi_botina: document.getElementById('epi_botina').value,
     epi_luvas: document.getElementById('epi_luvas').value,
-    paletes_opcao: paletesOpcao || '',
+    paletes_opcao: paletesOpcao || 'NA',
     paletes_quantidade: quantidadePaletes || ''
   };
 
-  if (!inspecao.nome || !inspecao.cnh || !inspecao.placa || !inspecao.sinalizacao || !inspecao.tampa_silo ||
-      !inspecao.epi_capacete || !inspecao.epi_colete || !inspecao.epi_oculos || !inspecao.epi_botina || !inspecao.epi_luvas) {
+  // VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS
+  if (!inspecao.nome || !inspecao.cnh || !inspecao.placa || !inspecao.pedido || !inspecao.eixos ||
+      !inspecao.sinalizacao || !inspecao.pneus || !inspecao.carroceria || !inspecao.cinto || 
+      !inspecao.farois || !inspecao.alarme_re || !inspecao.vazamentos || !inspecao.calcos || 
+      !inspecao.tampa_silo || !inspecao.epi_capacete || !inspecao.epi_colete || 
+      !inspecao.epi_oculos || !inspecao.epi_botina || !inspecao.epi_luvas) {
     alert('⚠️ Preencha todos os campos obrigatórios da inspeção e EPIs!');
     return;
   }
@@ -366,6 +416,7 @@ async function gerarJSONeToken() {
     return;
   }
 
+  // ENVIO PARA O CLOUDFLARE WORKER
   try {
     const response = await fetch(`${WORKER_URL}/api/salvar-inspecao`, {
       method: 'POST',
@@ -382,10 +433,12 @@ async function gerarJSONeToken() {
       document.getElementById('form-inspecao').reset();
       document.getElementById('token-gerado').innerText = resultado.id_inspecao;
       irParaSucesso();
+    } else {
+      alert('⚠️ Erro ao salvar inspeção: ' + (resultado.erro || 'Falha no servidor.'));
     }
   } catch (erro) {
     console.error('Erro ao salvar inspeção:', erro);
-    alert('⚠️ Erro ao salvar inspeção!');
+    alert('⚠️ Erro de conexão ao salvar inspeção!');
   }
 }
 
