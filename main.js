@@ -124,6 +124,18 @@ async function concluirIntegracao() {
     return;
   }
 
+  // VALIDAÇÃO DO TELEFONE (10 ou 11 DÍGITOS COM DDD VÁLIDO)
+  if (!validarTelefone(telefone)) {
+    alert('❌ Telefone/WhatsApp inválido! Digite um número válido com DDD (Ex: 11999999999 ou 1133334444).');
+    return;
+  }
+
+  // VALIDAÇÃO DA PLACA (TRADICIONAL OU MERCOSUL)
+  if (!validarPlaca(placa)) {
+    alert('❌ Placa do veículo inválida! A placa deve seguir o padrão ABC1234 ou ABC1A34.');
+    return;
+  }
+
   if (!aceiteVideo) {
     alert('⚠️ Você precisa confirmar que assistiu ao VÍDEO DE INTRODUÇÃO para realizar a prova!');
     return;
