@@ -74,14 +74,15 @@ async function verificarAcesso() {
     const resultado = await response.json();
 
     if (resultado.existe) {
-      ehPrimeiraVez = false; // Motorista veterano
+      ehPrimeiraVez = false;
       dadosMotoristaAtual = resultado.dados;
-      console.log('Motorista encontrado:', dadosMotoristaAtual);
-
-      // Auto-preenche os dados já cadastrados na tela de inspeção
+    
+      // Auto-preenche os dados cadastrados na tela de inspeção
       if (dadosMotoristaAtual.nome) document.getElementById('nome').value = dadosMotoristaAtual.nome;
       if (dadosMotoristaAtual.placa) document.getElementById('placa').value = dadosMotoristaAtual.placa;
-
+      if (dadosMotoristaAtual.telefone) document.getElementById('telefone').value = dadosMotoristaAtual.telefone; // <--- NOVO
+      if (dadosMotoristaAtual.cnh) document.getElementById('cnh').value = dadosMotoristaAtual.cnh; // <--- NOVO
+    
       irParaInspecao();
     } else {
       ehPrimeiraVez = true; // Novo motorista
@@ -295,7 +296,8 @@ async function gerarJSONeToken() {
   let placaDigitada = document.getElementById('placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
   let pedidoDigitado = document.getElementById('pedido').value.trim();
   let eixosDigitados = document.getElementById('eixos').value.trim();
-
+  let telefoneDigitado = document.getElementById('telefone').value.trim();
+  
   // CAPTURA DO TIPO DE VEÍCULO
   const tipoVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked')?.value;
   
@@ -317,6 +319,11 @@ async function gerarJSONeToken() {
 
   if (!tipoVeiculo) {
     alert('⚠️ Por favor, selecione qual é o seu tipo de veículo (Carga Seca ou Carreta Silo)!');
+    return;
+  }
+
+  if (!validarTelefone(telefoneDigitado)) {
+    alert('❌ Telefone/WhatsApp inválido! Digite um número válido com DDD (Ex: 11999999999).');
     return;
   }
   
@@ -344,6 +351,7 @@ async function gerarJSONeToken() {
   const inspecao = {
     nome: document.getElementById('nome').value.trim(),
     cnh: document.getElementById('cnh').value.trim(),
+    telefone: telefoneDigitado,
     placa: placaDigitada,
     pedido: pedidoDigitado,
     eixos: eixosDigitados,
