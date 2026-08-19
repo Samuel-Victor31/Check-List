@@ -258,24 +258,25 @@ function atualizarCamposPorTipoVeiculo() {
   const containerTampaSilo = document.getElementById('container-tampa-silo');
   const selectTampaSilo = document.getElementById('tampa_silo');
   
-  const containerPaletes = document.getElementById('container-paletes');
+  // Captura a seção inteira dos paletes (Incluindo o título <h3>)
+  const secaoPaletes = document.getElementById('secao-paletes');
   const radioPaletesNA = id('paletes-na') || document.querySelector('input[name="paletes_opcao"][value="NA"]');
 
   if (tipoVeiculo === 'CARGA_SECA') {
-    // 1. Oculta Tampa do Silo e define N/A automaticamente
+    // 1. Oculta o campo Tampa do Silo e define N/A automaticamente
     if (containerTampaSilo) containerTampaSilo.style.display = 'none';
     if (selectTampaSilo) selectTampaSilo.value = 'NA';
 
-    // 2. Exibe a seção de Paletes
-    if (containerPaletes) containerPaletes.style.display = 'block';
+    // 2. Exibe a seção de Paletes completa (com o título)
+    if (secaoPaletes) secaoPaletes.style.display = 'block';
 
   } else if (tipoVeiculo === 'CARRETA_SILO') {
-    // 1. Exibe Tampa do Silo e limpa se estava em N/A
+    // 1. Exibe o campo Tampa do Silo e reseta se estava em N/A
     if (containerTampaSilo) containerTampaSilo.style.display = 'flex';
     if (selectTampaSilo && selectTampaSilo.value === 'NA') selectTampaSilo.value = '';
 
-    // 2. Oculta seção de Paletes, força a seleção "N/A" e esconde a quantidade
-    if (containerPaletes) containerPaletes.style.display = 'none';
+    // 2. Oculta TODA a seção de Paletes (Título + Opções), seleciona N/A e limpa quantidade
+    if (secaoPaletes) secaoPaletes.style.display = 'none';
     if (radioPaletesNA) radioPaletesNA.checked = true;
     ocultarQuantidadePaletes();
   }
