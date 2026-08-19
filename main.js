@@ -62,6 +62,27 @@ async function verificarAcesso() {
 }
 
 // ============================================
+// LÓGICA DE BLOQUEIO/DESBLOQUEIO DA PROVA
+// ============================================
+
+function alternarBloqueioProva() {
+  const aceiteVideo = document.getElementById('aceite-video').checked;
+  const secaoProva = document.getElementById('secao-prova');
+
+  if (aceiteVideo) {
+    secaoProva.style.opacity = '1';
+    secaoProva.style.pointerEvents = 'auto';
+  } else {
+    secaoProva.style.opacity = '0.5';
+    secaoProva.style.pointerEvents = 'none';
+    
+    // Opcional: Reseta as marcações da prova se desmarcar o vídeo
+    const radios = secaoProva.querySelectorAll('input[type="radio"]');
+    radios.forEach(radio => radio.checked = false);
+  }
+}
+
+// ============================================
 // ETAPA 2: INTEGRAÇÃO & PROVA (1º Acesso)
 // ============================================
 
@@ -71,17 +92,18 @@ async function concluirIntegracao() {
   const telefone = document.getElementById('reg-telefone').value.trim();
   let placa = document.getElementById('reg-placa').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
 
+  const aceiteVideo = document.getElementById('aceite-video').checked;
   const aceitePPAE = document.getElementById('aceite-ppae').checked;
   const aceiteFOB = document.getElementById('aceite-fob').checked;
-  const aceiteLGPD = document.getElementById('aceite-lgpd')?.checked; // Captura aceite LGPD
+  const aceiteLGPD = document.getElementById('aceite-lgpd')?.checked;
 
   if (!nome || !rg || !telefone || !placa) {
     alert('⚠️ Por favor, preencha todos os dados de cadastro (Nome, RG, Telefone e Placa)!');
     return;
   }
 
-  if (!aceitePPAE || !aceiteFOB || !aceiteLGPD) {
-    alert('⚠️ Você precisa marcar o aceite em TODOS os termos para continuar!');
+  if (!aceiteVideo) {
+    alert('⚠️ Você precisa confirmar que assistiu ao VÍDEO DE INTRODUÇÃO para realizar a prova!');
     return;
   }
 
@@ -95,6 +117,11 @@ async function concluirIntegracao() {
 
   if (!respostas.q1 || !respostas.q2 || !respostas.q3 || !respostas.q4) {
     alert('⚠️ Responda todas as 4 questões da prova!');
+    return;
+  }
+
+  if (!aceitePPAE || !aceiteFOB || !aceiteLGPD) {
+    alert('⚠️ Você precisa marcar o aceite em TODOS os termos de compromisso (PPAE, FOB e LGPD) para continuar!');
     return;
   }
 
@@ -123,7 +150,6 @@ async function concluirIntegracao() {
     irParaInspecao();
   } else {
     alert('⚠️ Você precisa acertar TODAS as 4 questões para avançar. Tente novamente!');
-    document.getElementById('form-prova').reset();
   }
 }
 
