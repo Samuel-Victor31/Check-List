@@ -427,23 +427,28 @@ async function gerarJSONeToken() {
 // ============================================
 
 async function salvarInspecaoCIF() {
-  const nome = document.getElementById('cif-nome').value.trim();
-  const cnh = document.getElementById('cif-cnh').value.trim();
-  const telefone = document.getElementById('cif-telefone').value.trim();
-  const placa = document.getElementById('cif-placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const pedido = document.getElementById('cif-pedido').value.trim();
-  const eixos = document.getElementById('cif-eixos').value.trim();
-  const tipoChecklist = document.getElementById('cif-tipo-checklist').value;
-  const segmento = document.getElementById('cif-segmento').value;
+  // Função auxiliar interna para pegar o valor de forma segura sem dar erro de 'null'
+  const getVal = (id) => document.getElementById(id)?.value?.trim() || '';
 
-  // Validações dos campos principais
+  // Captura os dados tentando o formato novo (cif-id) ou o antigo (id)
+  const nome = getVal('cif-nome') || getVal('nome');
+  const cnh = getVal('cif-cnh') || getVal('cnh');
+  const telefone = getVal('cif-telefone') || getVal('telefone');
+  const placa = (getVal('cif-placa') || getVal('placa')).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const pedido = getVal('cif-pedido') || getVal('pedido');
+  const eixos = getVal('cif-eixos') || getVal('eixos');
+  const tipoChecklist = getVal('cif-tipo-checklist');
+  const segmento = getVal('cif-segmento');
+  const observacoes = getVal('cif-observacoes');
+
+  // Validação dos dados do motorista/veículo
   if (!nome || !cnh || !telefone || !placa || !pedido || !eixos) {
     alert('⚠️ Preencha todos os dados cadastrais (Nome, CNH, Telefone, Placa, Pedido e Eixos)!');
     return;
   }
 
   if (!validarTelefone(telefone)) {
-    alert('❌ Telefone/WhatsApp inválido!');
+    alert('❌ Telefone/WhatsApp inválido! Digite um número válido com DDD.');
     return;
   }
 
@@ -467,19 +472,19 @@ async function salvarInspecaoCIF() {
     data: new Date().toLocaleDateString('pt-BR'),
     tipo_checklist: tipoChecklist,
     segmento: segmento,
-    observacoes: document.getElementById('cif-observacoes').value.trim()
+    observacoes: observacoes
   };
 
-  // Coleta dinamicamente todos os 32 itens
+  // Coleta dinamicamente todos os 32 itens de forma segura
   for (let i = 1; i <= 32; i++) {
-    const el = document.getElementById(`cif-item-${i}`);
-    if (el) {
-      if (!el.value) {
-        alert(`⚠️ Por favor, selecione uma resposta para o Item ${i}!`);
-        return;
-      }
-      inspecaoDados[`item_${i}`] = el.value;
+    const valorItem = getVal(`cif-item-${i}`);
+    
+    if (!valorItem) {
+      alert(`⚠️ Por favor, selecione uma resposta para o Item ${i}!`);
+      return;
     }
+    
+    inspecaoDados[`item_${i}`] = valorItem;
   }
 
   try {
@@ -495,14 +500,17 @@ async function salvarInspecaoCIF() {
     const resultado = await response.json();
 
     if (resultado.sucesso) {
-      document.getElementById('form-inspecao-cif').reset();
-      document.getElementById('token-gerado').innerText = resultado.id_inspecao;
+      document.getElementById('form-inspecao-cif')?.reset();
+      
+      const tokenEl = document.getElementById('token-gerado');
+      if (tokenEl) tokenEl.innerText = resultado.id_inspecao;
+      
       irParaSucesso();
     } else {
       alert('❌ Erro ao salvar inspeção CIF: ' + (resultado.erro || 'Erro no servidor'));
     }
   } catch (erro) {
-    console.error('Erro:', erro);
+    console.error('Erro ao salvar CIF:', erro);
     alert('⚠️ Erro de conexão ao salvar inspeção CIF!');
   }
 }
