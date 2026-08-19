@@ -1,3 +1,9 @@
+// Valida se a quantidade de eixos é apenas 1 dígito numérico entre 1 e 9
+function validarEixos(eixos) {
+  const regexEixos = /^[1-9]{1}$/;
+  return regexEixos.test(eixos);
+}
+
 // ============================================
 // FUNÇÕES AUXILIARES DE VALIDAÇÃO
 // ============================================
@@ -237,6 +243,7 @@ function ocultarQuantidadePaletes() {
 async function gerarJSONeToken() {
   let placaDigitada = document.getElementById('placa').value.toUpperCase().replace(/[^A-Z0-9]/g, '');
   let pedidoDigitado = document.getElementById('pedido').value.trim();
+  let eixosDigitados = document.getElementById('eixos').value.trim();
 
   // VALIDAÇÃO DA PLACA
   if (!validarPlaca(placaDigitada)) {
@@ -246,7 +253,13 @@ async function gerarJSONeToken() {
 
   // VALIDAÇÃO DO PEDIDO (ENTRE 7 E 8 DÍGITOS)
   if (!validarPedido(pedidoDigitado)) {
-    alert('❌ Número de Pedido inválido! O pedido deve conter exatamente de 7 a 8 dígitos numéricos.');
+    alert('❌ Número de Pedido inválido! O pedido deve conter de 7 a 8 dígitos numéricos.');
+    return;
+  }
+
+  // VALIDAÇÃO DE EIXOS (1 DÍGITO ENTRE 1 E 9)
+  if (!validarEixos(eixosDigitados)) {
+    alert('❌ Quantidade de eixos inválida! Informe apenas 1 dígito numérico (ex: de 1 a 9).');
     return;
   }
 
