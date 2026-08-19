@@ -550,3 +550,62 @@ select:focus {
     gap: 10px;
   }
 }
+
+/* ========== SELEÇÃO DE TIPO DE CARREGAMENTO ========== */
+.tipo-carregamento-opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card-carregamento {
+  cursor: pointer;
+  margin: 0;
+}
+
+.card-carregamento input[type="radio"] {
+  display: none;
+}
+
+.conteudo-carregamento {
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 18px;
+  transition: all 0.2s ease-in-out;
+  text-align: left;
+}
+
+.conteudo-carregamento h3 {
+  margin: 0 0 6px 0;
+  color: #1e293b;
+  font-size: 18px;
+}
+
+.subtexto-transportadoras {
+  margin: 2px 0;
+  font-size: 13px;
+  color: #475569;
+}
+
+.subtexto-exemplo {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: #0284c7;
+}
+
+/* Hover e Seleção */
+.card-carregamento:hover .conteudo-carregamento {
+  border-color: #667eea;
+  background-color: #f8fafc;
+}
+
+.card-carregamento input[type="radio"]:checked + .conteudo-carregamento {
+  border-color: #28a745;
+  background-color: #f0fdf4;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+}
+
+.card-carregamento input[type="radio"]:checked + .conteudo-carregamento h3 {
+  color: #15803d;
+}
