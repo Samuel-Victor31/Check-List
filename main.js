@@ -427,33 +427,37 @@ async function gerarJSONeToken() {
 // ============================================
 
 async function salvarInspecaoCIF() {
-  // Função auxiliar interna para pegar o valor de forma segura sem dar erro de 'null'
-  const getVal = (id) => document.getElementById(id)?.value?.trim() || '';
+  // Função de busca ultra segura: pega o valor do ID CIF ou do ID padrão sem dar erro
+  const getVal = (idCif, idPadrao) => {
+    const elCif = document.getElementById(idCif);
+    if (elCif && elCif.value.trim() !== '') return elCif.value.trim();
+    
+    const elPadrao = document.getElementById(idPadrao);
+    if (elPadrao && elPadrao.value.trim() !== '') return elPadrao.value.trim();
+    
+    return '';
+  };
 
-  // Captura os dados tentando o formato novo (cif-id) ou o antigo (id)
-  const nome = getVal('cif-nome') || getVal('nome');
-  const cnh = getVal('cif-cnh') || getVal('cnh');
-  const telefone = getVal('cif-telefone') || getVal('telefone');
-  const placa = (getVal('cif-placa') || getVal('placa')).toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const pedido = getVal('cif-pedido') || getVal('pedido');
-  const eixos = getVal('cif-eixos') || getVal('eixos');
-  const tipoChecklist = getVal('cif-tipo-checklist');
-  const segmento = getVal('cif-segmento');
-  const observacoes = getVal('cif-observacoes');
+  // Coleta os dados de forma resiliente
+  const nome = getVal('cif-nome', 'nome') || dadosMotoristaAtual?.nome || '';
+  const cnh = getVal('cif-cnh', 'cnh') || dadosMotoristaAtual?.cnh || '';
+  const telefone = getVal('cif-telefone', 'telefone') || dadosMotoristaAtual?.telefone || '';
+  const placa = (getVal('cif-placa', 'placa') || dadosMotoristaAtual?.placa || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const pedido = getVal('cif-pedido', 'pedido');
+  const eixos = getVal('cif-eixos', 'eixos');
+  
+  const elChecklist = document.getElementById('cif-tipo-checklist');
+  const tipoChecklist = elChecklist ? elChecklist.value : '';
 
-  // Validação dos dados do motorista/veículo
+  const elSegmento = document.getElementById('cif-segmento');
+  const segmento = elSegmento ? elSegmento.value : '';
+
+  const elObs = document.getElementById('cif-observacoes');
+  const observacoes = elObs ? elObs.value.trim() : '';
+
+  // Validação dos dados primários
   if (!nome || !cnh || !telefone || !placa || !pedido || !eixos) {
-    alert('⚠️ Preencha todos os dados cadastrais (Nome, CNH, Telefone, Placa, Pedido e Eixos)!');
-    return;
-  }
-
-  if (!validarTelefone(telefone)) {
-    alert('❌ Telefone/WhatsApp inválido! Digite um número válido com DDD.');
-    return;
-  }
-
-  if (!validarPlaca(placa)) {
-    alert('❌ Placa do veículo inválida!');
+    alert('⚠️ Preencha todos os dados básicos do motorista e veículo (Nome, CNH, Telefone, Placa, Pedido e Eixos)!');
     return;
   }
 
@@ -475,15 +479,16 @@ async function salvarInspecaoCIF() {
     observacoes: observacoes
   };
 
-  // Coleta dinamicamente todos os 32 itens de forma segura
+  // Leitura dos 32 itens sem risco de quebrar no `.value`
   for (let i = 1; i <= 32; i++) {
-    const valorItem = getVal(`cif-item-${i}`);
-    
+    const elItem = document.getElementById(`cif-item-${i}`);
+    const valorItem = elItem ? elItem.value : '';
+
     if (!valorItem) {
       alert(`⚠️ Por favor, selecione uma resposta para o Item ${i}!`);
       return;
     }
-    
+
     inspecaoDados[`item_${i}`] = valorItem;
   }
 
@@ -500,14 +505,15 @@ async function salvarInspecaoCIF() {
     const resultado = await response.json();
 
     if (resultado.sucesso) {
-      document.getElementById('form-inspecao-cif')?.reset();
-      
+      const formCIF = document.getElementById('form-inspecao-cif');
+      if (formCIF) formCIF.reset();
+
       const tokenEl = document.getElementById('token-gerado');
       if (tokenEl) tokenEl.innerText = resultado.id_inspecao;
-      
+
       irParaSucesso();
     } else {
-      alert('❌ Erro ao salvar inspeção CIF: ' + (resultado.erro || 'Erro no servidor'));
+      alert('❌ Erro ao salvar inspeção CIF: ' + (resultado.erro || 'Verifique se a rota existe no Worker.'));
     }
   } catch (erro) {
     console.error('Erro ao salvar CIF:', erro);
